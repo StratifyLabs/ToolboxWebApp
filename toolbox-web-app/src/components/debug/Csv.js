@@ -1,44 +1,105 @@
 import React from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { Chart } from 'react-charts'
-
+import { Line, Scatter } from 'react-chartjs-2'
+import { VictoryChart, VictoryZoomContainer, VictoryLine, VictoryScatter } from "victory";
 
 
 const Csv = props => {
-  const data = React.useMemo(
-    () => [
-      {
-        label: 'Series 1',
-        data: [[0, 1], [1, 2], [2, 4], [3, 2], [5, 7]]
-      },
-      {
-        label: 'Series 2',
-        data: [[0, 3], [1, 1], [2, 5], [3, 6], [5, 4]]
-      }
-    ],
-    []
-  )
- 
-  const axes = React.useMemo(
-    () => [
-      { primary: true, type: 'linear', position: 'bottom' },
-      { type: 'linear', position: 'right' },
-      { type: 'linear', position: 'left' },
-    ],
-    []
-  )
+
+  const [count, setCount] = React.useState(0)
+
+  const sckData =
+    [
+      { x: -1, y: 0 },
+      { x: 2, y: 1 },
+      { x: 3, y: 0 },
+      { x: 4, y: 1 },
+      { x: 5, y: 0 },
+      { x: 6, y: 1 },
+      { x: 7, y: 0 },
+      { x: 8, y: 1 },
+      { x: 9, y: 0 },
+      { x: 11, y: 0 }
+    ];
+
+  const misoData =
+    [
+      { x: -1, y: 2 },
+      { x: 1.5, y: 2 },
+      { x: 6.5, y: 3 },
+      { x: 7.5, y: 2 },
+      { x: 8.5, y: 3 },
+      { x: 11, y: 3 }
+    ];
+
+  const mosiData =
+    [
+      { x: -1, y: 4 },
+      { x: 2, y: 5 },
+      { x: 3, y: 4 },
+      { x: 6.8, y: 5 },
+      { x: 7, y: 4 },
+      { x: 8, y: 5 },
+      { x: 11, y: 5 }
+    ];
+
+  const csData =
+    [
+      { x: -1, y: 7 },
+      { x: 2, y: 6 },
+      { x: 8, y: 7 },
+      { x: 11, y: 7 }
+    ];
+
   return (
     <Card className="mb-2">
       <Card.Header className="flex">CSV <Button className="float-right btn-sm">Reset</Button></Card.Header>
       <Card.Body>
-      <div
-          style={{
-            width: '100%',
-            height: '300px'
-          }}
+        <VictoryChart domainPadding={{ y: 10 }}
+          containerComponent={
+            <VictoryZoomContainer
+              zoomDimension={"x"}
+            />
+          }
         >
-          <Chart data={data} axes={axes} />
-        </div>
+          <VictoryLine
+            interpolation={'stepAfter'}
+            data={sckData} 
+            style={{
+              data: {
+                stroke: "tomato",
+                strokeWidth: ({ active }) => active ? 4 : 2
+              },
+              labels: { fill: "tomato" }
+            }}/>
+
+          <VictoryLine
+            interpolation={'stepAfter'}
+            data={misoData} 
+            style={{
+              data: {
+                stroke: "blue",
+                strokeWidth: ({ active }) => active ? 4 : 2
+              },
+              labels: { fill: "blue" }
+            }}/>
+
+          <VictoryLine
+            interpolation={'stepAfter'}
+            data={mosiData} 
+            style={{
+              data: {
+                stroke: "green",
+                strokeWidth: ({ active }) => active ? 4 : 2
+              },
+              labels: { fill: "green" }
+            }}/>
+
+          <VictoryLine
+            interpolation={'stepAfter'}
+            data={csData} />
+        </VictoryChart>
       </Card.Body>
     </Card>
   )

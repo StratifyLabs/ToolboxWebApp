@@ -1,4 +1,5 @@
 import logo from './logo.svg';
+import React from 'react'
 import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
@@ -7,6 +8,7 @@ import Top from './components/Top'
 import Debug from './views/Debug'
 
 function App() {
+
   return (
     <div className="App">
       <Top />

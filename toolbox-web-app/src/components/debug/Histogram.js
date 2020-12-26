@@ -1,56 +1,61 @@
 import React from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { Chart } from 'react-charts'
-
+import { Line, Scatter } from 'react-chartjs-2'
+import { VictoryChart, VictoryZoomContainer, VictoryLine, VictorHistogram, VictoryHistogram } from "victory";
 
 
 const Histogram = props => {
-  const data = React.useMemo(
-    () => [
-      {
-        label: 'Variable',
-        data: [
-          ['< 0', 50], 
-          ['[0-5)', 75], 
-          ['[5-10)', 30], 
-          ['[10-15)', 20], 
-          ['[15-20)', 10], 
-          ['[20-25)', 5], 
-          ['[25-30)', 2], 
-          ['> 30', 1], 
 
-        ]
-      }
-    ],
-    []
-  )
+  const [count, setCount] = React.useState(0)
 
-  const series = React.useMemo(
-    () => ({
-      type: 'bar'
-    }),
-    []
-  )
- 
-  const axes = React.useMemo(
-    () => [
-      { primary: true, type: 'ordinal', position: 'bottom' },
-      { type: 'linear', position: 'left' },
-    ],
-    []
-  )
+  const temperatureData =
+    [
+      { x: 20 },
+      { x: 21 },
+      { x: 22 },
+      { x: 23 },
+      { x: 23 },
+      { x: 23 },
+      { x: 23 },
+      { x: 23 },
+      { x: 23 },
+      { x: 23 },
+      { x: 23 },
+      { x: 23 },
+      { x: 24 },
+      { x: 24 },
+      { x: 24 },
+      { x: 24 },
+      { x: 24 },
+      { x: 25 },
+      { x: 25 },
+      { x: 25 },
+      { x: 24 },
+      { x: 23 },
+      { x: 19 },
+      { x: 15 },
+      { x: 16 },
+      { x: 14 },
+      { x: 27 },
+      { x: 27 },
+      { x: 27 },
+      { x: 16 },
+      { x: 30 },
+      { x: 14 }
+    ];
+
+
   return (
     <Card className="mb-2">
-      <Card.Header className="flex">Histogram: {props.name} <Button className="float-right btn-sm">Reset</Button></Card.Header>
+      <Card.Header className="flex">Histogram: Temperature <Button className="float-right btn-sm">Reset</Button></Card.Header>
       <Card.Body>
-      <div
-          style={{
-            width: '100%',
-            height: '300px'
-          }}
-        >
-          <Chart data={data} axes={axes} series={series}/>
-        </div>
+        <VictoryChart>
+          <VictoryHistogram
+            data={temperatureData} 
+           />
+
+        </VictoryChart>
       </Card.Body>
     </Card>
   )
