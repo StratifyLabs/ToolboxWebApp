@@ -57,48 +57,17 @@ const Csv = props => {
       <Card.Header className="flex">CSV <Button className="float-right btn-sm">Reset</Button></Card.Header>
       <Card.Body>
         <VictoryChart domainPadding={{ y: 10 }}
-          containerComponent={
-            <VictoryZoomContainer
-              zoomDimension={"x"}
+        >
+
+          {props.data.map((object, index) => {
+            return <VictoryLine key={`${object.name}_${index}`} data={object.data} />
+          })}
+
+          {(props.data.length !== undefined) && (props.data.length > 1) &&
+            <VictoryLine
+              data={props.data}
             />
           }
-        >
-          <VictoryLine
-            interpolation={'stepAfter'}
-            data={sckData} 
-            style={{
-              data: {
-                stroke: "tomato",
-                strokeWidth: ({ active }) => active ? 4 : 2
-              },
-              labels: { fill: "tomato" }
-            }}/>
-
-          <VictoryLine
-            interpolation={'stepAfter'}
-            data={misoData} 
-            style={{
-              data: {
-                stroke: "blue",
-                strokeWidth: ({ active }) => active ? 4 : 2
-              },
-              labels: { fill: "blue" }
-            }}/>
-
-          <VictoryLine
-            interpolation={'stepAfter'}
-            data={mosiData} 
-            style={{
-              data: {
-                stroke: "green",
-                strokeWidth: ({ active }) => active ? 4 : 2
-              },
-              labels: { fill: "green" }
-            }}/>
-
-          <VictoryLine
-            interpolation={'stepAfter'}
-            data={csData} />
         </VictoryChart>
       </Card.Body>
     </Card>
