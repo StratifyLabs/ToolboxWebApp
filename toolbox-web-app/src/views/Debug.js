@@ -12,9 +12,11 @@ import Table from '../components/debug/Table'
 
 const Debug = props => {
 
+
   const [csv, setCsv] = React.useState({ plots: [] });
   const [input, setInput] = React.useState({});
   const [output, setOutput] = React.useState({});
+  const [incoming, setIncoming] = React.useState({});
 
   function find(input, type, name) {
     for (var i = 0; i < input.length; i++) {
@@ -32,101 +34,110 @@ const Debug = props => {
     return floatValue;
   }
 
+  function receiveInput(elements) {
+    const name = elements[2];
+    const values = elements[3].split(",");
+    if (values.length < 2) {
+      console.log("need x and y value");
+      return;
+    }
 
+    const xValue = convertToFloat(values[0]);
+    const yValue = convertToFloat(values[1]);
+    const value = [xValue, yValue];
 
-  React.useEffect(() => {
-
-    function updatePlot(elements){
-      const name = elements[2];
-      const values = elements[3].split(",");
-      if (values.length > 1) {
-        const t = values[0];
-        //first value is time
-        //next values are according to headers
-  
-        let csvNext = Object.assign({}, csv);
-        let item = find(csvNext.plots, "csv", name);
-        if (item === undefined) {
-          csvNext.plots.push({
-            name: name,
-            type: "csv",
-            data: [{ label: "unknown", data: [] }]
-          });
-          item = csvNext.plots[csvNext.plots.length - 1];
+    let inputNext = Object.assign({}, input);
+    if (inputNext[name] !== undefined && inputNext[name].outputs !== undefined) {
+      //add the input to each output
+      var outputNext = Object.assign({}, output);
+      for(let index=0; index < inputNext[name].outputs.length; index++){
+        const outputName = inputNext[name].outputs[index];
+        if (outputNext[outputName] !== undefined && outputNext[outputName].inputs[name] !== undefined) {
+          outputNext[outputName].inputs[name].push(value);
         }
-  
-        //for (var i = 1; i < values.length; i++) {
-        //  console.log("appending item to trace");
-        item.data[1 - 1].data.push({x:convertToFloat(t), y:convertToFloat(values[1])});
-        //}
-        console.log('update csv');
-        //console.log(`csv plot data ${JSON.stringify(csvNext.plots[0].data)}`)
-        setCsv(csvNext);
       }
+      console.log(`output: ${JSON.stringify(output)} -> ${JSON.stringify(outputNext)}`)
+      setOutput(outputNext);
     }
+  }
 
-    function updateInputs(elements){
-      const name = elements[2];
-      const value = JSON.stringify(elements[3]);
+  function receiveOutput(elements) {
+    const name = elements[2];
+    const value = JSON.parse(elements[3]);
 
-      let inputNext = Object.assign({}, input);
-      if( inputNext[name] !== undefined && inputNext[name].outputs !== undefined ){
-        //add the input to each output
-        let outputNext = Object.assign({}, output);
-        inputNext[name].outputs.forEach((outputName,index) => {
-            outputNext[outputName].inputs[name].push[value];
-        });
-      }
+    let outputNext = Object.assign({}, output);
+    let inputNext = Object.assign({}, input);
 
-    }
+    outputNext[name] = value;
+    //type: hist
+    //inputs [t0,t1,t2]
+    if (value.inputs !== undefined) {
 
-    function updateOutput(elements){
-      const name = elements[2];
-      const value = JSON.stringify(elements[3]);
-
-      let outputNext = Object.assign({}, output);
-      let inputNext = Object.assign({}, input);
-
-      outputNext[name] = value;
-      //type: hist
-      //inputs [t0,t1,t2]
-      value.inputs.forEach((input, index) => {
+      Object.keys(value.inputs).forEach((key, index) => {
         //create the input
         //add a data point to the output
-        const inputObject = inputNext[input];
-        if( inputObject === undefined || inputObject.outputs === undefined ){
-          inputNext[input] = {
+        let inputObject = inputNext[key];
+        if (inputObject === undefined || inputObject.outputs === undefined) {
+          inputNext[key] = {
             outputs: [name]
           }
-        } else if( inputObject.outputs.indexOf(name) === -1 ){
-          inputObject.outputs.push[name];
+        } else if (inputObject.outputs.indexOf(name) === -1) {
+          return inputObject.outputs.push[name];
         }
       });
     }
+    console.log(`input: ${JSON.stringify(input)} -> ${JSON.stringify(inputNext)}`)
+    setInput(inputNext);
+    setOutput(outputNext);
+  }
 
-    let eventSource = new EventSource("http://localhost:3002/terminal")
-    eventSource.onmessage = e => {
-      //console.log(`message ${e.data}`)
-      const lines = String(e.data).split("\n");
-      lines.forEach((item, index) => {
-        if (item.length > 0) {
-          const elements = item.split("|");
-          if (elements.length > 3 && elements[0] === "tb") {
-            if (elements[1] === "csv") {
-              updatePlot(elements);
-            }
-          }
-        }
-      })
+  React.useEffect(() => {
+    console.log("create new event source");
+    const source = new EventSource("http://localhost:3002/terminal");
+
+    source.onmessage = function (event) {
+      setIncoming(String(event.data));
     }
+
+    source.onError = function (error) {
+      source.close();
+    }
+
+    return () => {
+      console.log("cleanup event source");
+      source.close();
+    }
+
   }, [])
 
-
+  React.useEffect(() => {
+    const lines = String(incoming).split("\n");
+    lines.forEach((item, index) => {
+      if (item.length > 0) {
+        const elements = item.split("|");
+        if (elements.length > 2 && elements[0] === "tb") {
+          if (elements[1] === "o") {
+            receiveOutput(elements);
+          } else if (elements[1] === "i") {
+            receiveInput(elements);
+          }
+        }
+      }
+    })
+  }, [incoming])
 
   return (
     <div>
       <h2>Trace Output</h2>
       <small>demo.elf 20201223</small>
+      {
+        Object.keys(output).map((key,index) => {
+          if( output[key].type === "plot" ){
+            return <Plot data={output[key]} key={"plot" + key} />
+          }
+        })
+      }
+
       <Raw />
       {csv.plots.map((object, index) => {
         return <Plot key={`${object.name}_${index}`} data={object.data} />

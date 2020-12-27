@@ -58,11 +58,9 @@ const Plot = props => {
       <Card.Body>
         <VictoryChart domainPadding={{ y: 10 }}
         >
-          {props.data.map((object, index) => {
-            if( object.data.length > 2 ){
-              return <VictoryLine key={`${object.name}_${index}`} data={object.data} />
-            }
-          })}
+          { Object.keys(props.data.inputs).map((key, index) => {
+            return <VictoryLine data={props.data.inputs[key]} x={0} y={1} key={"series" + key} /> 
+          }) }
         </VictoryChart>
       </Card.Body>
     </Card>

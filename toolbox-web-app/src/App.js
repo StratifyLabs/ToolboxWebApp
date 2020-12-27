@@ -9,6 +9,7 @@ import Debug from './views/Debug'
 
 function App() {
 
+
   return (
     <div className="App">
       <Top />
