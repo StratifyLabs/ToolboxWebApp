@@ -5,7 +5,7 @@ import { Line, Scatter } from 'react-chartjs-2'
 import { VictoryChart, VictoryZoomContainer, VictoryLine, VictoryScatter } from "victory";
 
 
-const Csv = props => {
+const Plot = props => {
 
   const [count, setCount] = React.useState(0)
 
@@ -58,20 +58,15 @@ const Csv = props => {
       <Card.Body>
         <VictoryChart domainPadding={{ y: 10 }}
         >
-
           {props.data.map((object, index) => {
-            return <VictoryLine key={`${object.name}_${index}`} data={object.data} />
+            if( object.data.length > 2 ){
+              return <VictoryLine key={`${object.name}_${index}`} data={object.data} />
+            }
           })}
-
-          {(props.data.length !== undefined) && (props.data.length > 1) &&
-            <VictoryLine
-              data={props.data}
-            />
-          }
         </VictoryChart>
       </Card.Body>
     </Card>
   )
 }
 
-export default Csv
+export default Plot
