@@ -12,11 +12,9 @@ import Table from '../components/debug/Table'
 
 const Debug = props => {
 
-
-  const [csv, setCsv] = React.useState({ plots: [] });
-  const [input, setInput] = React.useState({});
-  const [output, setOutput] = React.useState({});
-  const [incoming, setIncoming] = React.useState({});
+  const [dataList, setDataList] = React.useState({});
+  const [configuration, setConfiguration] = React.useState({});
+  const [incoming, setIncoming] = React.useState("");
 
   function find(input, type, name) {
     for (var i = 0; i < input.length; i++) {
@@ -34,61 +32,41 @@ const Debug = props => {
     return floatValue;
   }
 
-  function receiveInput(elements) {
-    const name = elements[2];
-    const values = elements[3].split(",");
-    if (values.length < 2) {
-      console.log("need x and y value");
-      return;
-    }
-
-    const xValue = convertToFloat(values[0]);
-    const yValue = convertToFloat(values[1]);
-    const value = [xValue, yValue];
-
-    let inputNext = Object.assign({}, input);
-    if (inputNext[name] !== undefined && inputNext[name].outputs !== undefined) {
+  function processData(dataName, value, configurationNext) {
+    const dataItem = dataList[dataName];
+    if (dataItem !== undefined && dataItem.configurations !== undefined) {
       //add the input to each output
-      var outputNext = Object.assign({}, output);
-      for(let index=0; index < inputNext[name].outputs.length; index++){
-        const outputName = inputNext[name].outputs[index];
-        if (outputNext[outputName] !== undefined && outputNext[outputName].inputs[name] !== undefined) {
-          outputNext[outputName].inputs[name].push(value);
+      dataItem.configurations.forEach((configurationName, index) => {
+        if (configurationNext[configurationName] !== undefined && configurationNext[configurationName].data[dataName] !== undefined) {
+          configurationNext[configurationName].data[dataName].push(value);
         }
-      }
-      console.log(`output: ${JSON.stringify(output)} -> ${JSON.stringify(outputNext)}`)
-      setOutput(outputNext);
+      })
     }
   }
 
-  function receiveOutput(elements) {
-    const name = elements[2];
-    const value = JSON.parse(elements[3]);
+  function processConfig(configurationName, item, configurationNext, dataListNext) {
+    //make sure item is valid
+    if (item.data !== undefined && item.type !== undefined) {
+      //item type must be plot, hist, log, raw, etc
+      if (configurationNext[configurationName] === undefined) {
+        configurationNext[configurationName] = item;
+      }
 
-    let outputNext = Object.assign({}, output);
-    let inputNext = Object.assign({}, input);
-
-    outputNext[name] = value;
-    //type: hist
-    //inputs [t0,t1,t2]
-    if (value.inputs !== undefined) {
-
-      Object.keys(value.inputs).forEach((key, index) => {
-        //create the input
-        //add a data point to the output
-        let inputObject = inputNext[key];
-        if (inputObject === undefined || inputObject.outputs === undefined) {
-          inputNext[key] = {
-            outputs: [name]
+      //now associate the data with the configuration in the data list
+      const dataKeys = Object.keys(item.data);
+      dataKeys.forEach((dataName, index) => {
+        if (dataListNext[dataName] === undefined) {
+          dataListNext[dataName] = {
+            configurations: [configurationName]
           }
-        } else if (inputObject.outputs.indexOf(name) === -1) {
-          return inputObject.outputs.push[name];
+        } else {
+          let configurationList = dataListNext[dataName].configurations;
+          if (configurationList.indexOf(configurationName) < 0) {
+            configurationList.push(configurationName);
+          }
         }
       });
     }
-    console.log(`input: ${JSON.stringify(input)} -> ${JSON.stringify(inputNext)}`)
-    setInput(inputNext);
-    setOutput(outputNext);
   }
 
   React.useEffect(() => {
@@ -112,18 +90,41 @@ const Debug = props => {
 
   React.useEffect(() => {
     const lines = String(incoming).split("\n");
+
+    let configurationNext = Object.assign({}, configuration);
+    let dataListNext = Object.assign({}, dataList);
+
+    function processItem(item) {
+      const keys = Object.keys(item);
+
+      keys.forEach((key) => {
+        if (item[key].type !== undefined) {
+          processConfig(key, item[key], configurationNext, dataListNext);
+        } else {
+          processData(key, item[key], configurationNext);
+        }
+      });
+
+    }
+
     lines.forEach((item, index) => {
       if (item.length > 0) {
-        const elements = item.split("|");
-        if (elements.length > 2 && elements[0] === "tb") {
-          if (elements[1] === "o") {
-            receiveOutput(elements);
-          } else if (elements[1] === "i") {
-            receiveInput(elements);
-          }
+        const value = JSON.parse(item);
+        if (Array.isArray(value)) {
+          value.forEach((item, index) => {
+            processItem(item);
+          })
+        } else {
+          processItem(value);
         }
       }
     })
+
+    console.log(`configuration: ${JSON.stringify(configuration)} -> ${JSON.stringify(configurationNext)}`)
+    console.log(`data: ${JSON.stringify(dataList)} -> ${JSON.stringify(dataListNext)}`)
+    setDataList(dataListNext);
+    setConfiguration(configurationNext);
+
   }, [incoming])
 
   return (
@@ -131,17 +132,17 @@ const Debug = props => {
       <h2>Trace Output</h2>
       <small>demo.elf 20201223</small>
       {
-        Object.keys(output).map((key,index) => {
-          if( output[key].type === "plot" ){
-            return <Plot data={output[key]} key={"plot" + key} />
+        Object.keys(configuration).map((key, index) => {
+          if (configuration[key].type === "plot") {
+            return <Plot name={key} configuration={configuration[key]} key={"plot" + key} />
+          }
+          if (configuration[key].type === "raw") {
+            return <Raw name={key} configuration={configuration[key]} key={"raw" + key} />
           }
         })
       }
 
-      <Raw />
-      {csv.plots.map((object, index) => {
-        return <Plot key={`${object.name}_${index}`} data={object.data} />
-      })}
+
       <Log type="message" />
       <Histogram name="Temperature" />
       <ProgramCounterSamplePlot />

@@ -54,12 +54,12 @@ const Plot = props => {
 
   return (
     <Card className="mb-2">
-      <Card.Header className="flex">CSV <Button className="float-right btn-sm">Reset</Button></Card.Header>
+      <Card.Header className="flex">Plot: {props.name} <Button className="float-right btn-sm">Reset</Button></Card.Header>
       <Card.Body>
         <VictoryChart domainPadding={{ y: 10 }}
         >
-          { Object.keys(props.data.inputs).map((key, index) => {
-            return <VictoryLine data={props.data.inputs[key]} x={0} y={1} key={"series" + key} /> 
+          { Object.keys(props.configuration.data).map((key, index) => {
+            return <VictoryLine data={props.configuration.data[key]} x={0} y={1} key={"series" + key} /> 
           }) }
         </VictoryChart>
       </Card.Body>

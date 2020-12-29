@@ -2,11 +2,18 @@ import React from 'react'
 import { Card } from 'react-bootstrap'
 
 const Raw = props => {
+
+  console.log(`config is ${props.configuration}`);
+  //const displayText = String(props.configuration.data.text.join('')).replace("\n", "<br /> ");
+  const displayText = String(props.configuration.data.text.join(''));
+
   return (
     <Card className="mb-2">
-      <Card.Header>Raw</Card.Header>
+      <Card.Header>printf(): {props.name}</Card.Header>
       <Card.Body>
-        <pre>Hello World.<br />Hello World.<br />Hello World.<br />Hello World.</pre>
+        <pre>
+          {displayText}
+        </pre>
       </Card.Body>
     </Card>
   )
