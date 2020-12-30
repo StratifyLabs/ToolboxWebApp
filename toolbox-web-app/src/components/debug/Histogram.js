@@ -4,6 +4,8 @@ import { Chart } from 'react-charts'
 import { Line, Scatter } from 'react-chartjs-2'
 import { VictoryChart, VictoryZoomContainer, VictoryLine, VictorHistogram, VictoryHistogram } from "victory";
 
+import Theme from '../Theme'
+
 
 const Histogram = props => {
 
@@ -50,10 +52,12 @@ const Histogram = props => {
     <Card className="mb-2">
       <Card.Header className="flex">Histogram: Temperature <Button className="float-right btn-sm">Reset</Button></Card.Header>
       <Card.Body>
-        <VictoryChart>
+        <VictoryChart
+          theme={Theme}
+        >
           <VictoryHistogram
-            data={temperatureData} 
-           />
+            data={temperatureData}
+          />
 
         </VictoryChart>
       </Card.Body>

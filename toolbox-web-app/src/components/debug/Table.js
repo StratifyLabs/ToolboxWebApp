@@ -2,12 +2,26 @@ import React from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { Chart } from 'react-charts'
 import { Line, Scatter } from 'react-chartjs-2'
-import { VictoryChart, VictoryZoomContainer, VictoryLine, VictoryScatter } from "victory";
+import {
+  VictoryChart,
+  VictoryZoomContainer,
+  VictoryLine,
+  VictoryBrushContainer,
+  VictoryAxis,
+  VictoryTooltip,
+  VictoryVoronoiContainer
+} from "victory";
+import Theme from '../Theme'
 
 
-const LogicCapture = props => {
+const Table = props => {
 
-  const [count, setCount] = React.useState(0)
+
+  const [zoomDomain, setZoomDomain] = React.useState({ zoomDomain: { x: [] } });
+
+  function handleZoom(domain) {
+    setZoomDomain(domain);
+  }
 
   const sckData =
     [
@@ -56,49 +70,78 @@ const LogicCapture = props => {
     <Card className="mb-2">
       <Card.Header className="flex">Testing <Button className="float-right btn-sm">Reset</Button></Card.Header>
       <Card.Body>
-        <VictoryChart domainPadding={{ y: 10 }}
+        <VictoryChart domainPadding={{ x: 0, y: 5 }} height={200}
+          theme={Theme}
           containerComponent={
+
             <VictoryZoomContainer
+              allowZoom={false}
               zoomDimension={"x"}
+              zoomDomain={zoomDomain}
+              onZoomDomainChange={handleZoom}
             />
           }
         >
           <VictoryLine
+            labels={({ datum }) => datum.x}
+            labelComponent={<VictoryTooltip />}
             interpolation={'stepAfter'}
-            data={sckData} 
+            data={sckData}
             style={{
-              data: {
-                stroke: "tomato",
-                strokeWidth: ({ active }) => active ? 4 : 2
-              },
-              labels: { fill: "tomato" }
-            }}/>
+
+            }} />
+
+          <VictoryLine
+            style={{ data: { stroke: Theme.colors[0] } }}
+            interpolation={'stepAfter'}
+            data={misoData}
+            style={{
+            }} />
+
 
           <VictoryLine
             interpolation={'stepAfter'}
-            data={misoData} 
+            data={mosiData}
             style={{
-              data: {
-                stroke: "blue",
-                strokeWidth: ({ active }) => active ? 4 : 2
-              },
-              labels: { fill: "blue" }
-            }}/>
+
+            }} />
 
           <VictoryLine
             interpolation={'stepAfter'}
-            data={mosiData} 
-            style={{
-              data: {
-                stroke: "green",
-                strokeWidth: ({ active }) => active ? 4 : 2
-              },
-              labels: { fill: "green" }
-            }}/>
+            data={csData}
+            y={"cs"} />
+        </VictoryChart>
+
+        <VictoryChart domainPadding={{ y: 2 }} height={40}
+          theme={Theme}
+          padding={{ top: 5, bottom: 0, left: 25, right: 10 }}
+          containerComponent={
+            <VictoryBrushContainer
+              brushDimension="x"
+              brushDomain={zoomDomain}
+              onBrushDomainChange={handleZoom}
+            />
+          }
+        >
+          <VictoryAxis />
+          <VictoryLine
+            interpolation={'stepAfter'}
+            data={sckData}
+          />
 
           <VictoryLine
             interpolation={'stepAfter'}
-            data={csData} 
+            data={misoData}
+          />
+
+          <VictoryLine
+            interpolation={'stepAfter'}
+            data={mosiData}
+          />
+
+          <VictoryLine
+            interpolation={'stepAfter'}
+            data={csData}
             y={"cs"} />
         </VictoryChart>
       </Card.Body>
@@ -106,4 +149,4 @@ const LogicCapture = props => {
   )
 }
 
-export default LogicCapture
+export default Table

@@ -6,21 +6,26 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import Menu from './components/Menu'
 import Top from './components/Top'
 import Debug from './views/Debug'
+import Network from './views/Network'
 
 function App() {
+
+  const [server, setServer] = React.useState("http://localhost:3002");
+  const [page, setPage] = React.useState("Debug");
 
 
   return (
     <div className="App">
-      <Top />
+      <Top server={server}/>
       <Container fluid className="bodyContainer">
         <Row>
-          <Col md={2} className="fixed-top sidebarMenu">
-            <Menu /> 
+          <Col sm={2} className="fixed-top sidebarMenu">
+            <Menu setPage={setPage} page={page} /> 
 
           </Col>
-          <Col md={8} className="offset-md-2">
-            <Debug />
+          <Col lg={8} className="offset-md-2" md={10}>
+          {page === "Debug" && <Debug server={server} />}
+          {page === "Network" && <Network server={server} setServer={setServer}/>}
           </Col>
         </Row>
       </Container>      

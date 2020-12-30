@@ -1,9 +1,8 @@
 import React from 'react'
 import { Card } from 'react-bootstrap'
 
-const Raw = props => {
+const Terminal = props => {
 
-  console.log(`config is ${props.configuration}`);
   //const displayText = String(props.configuration.data.text.join('')).replace("\n", "<br /> ");
   const displayText = String(props.configuration.data.text.join(''));
 
@@ -19,4 +18,4 @@ const Raw = props => {
   )
 }
 
-export default Raw
+export default Terminal

@@ -1,9 +1,9 @@
 import React from 'react'
-import { Container, Card } from 'react-bootstrap'
+import { Badge } from 'react-bootstrap'
 
-import Raw from '../components/debug/Raw'
+import Terminal from '../components/debug/Terminal'
 import Plot from '../components/debug/Plot'
-import LogicCapture from '../components/debug/LogicCapture'
+import Logic from '../components/debug/Logic'
 import Histogram from '../components/debug/Histogram'
 import ProgramCounterSamplePlot from '../components/debug/ProgramCounterSamplePlot'
 import Log from '../components/debug/Log'
@@ -16,21 +16,7 @@ const Debug = props => {
   const [configuration, setConfiguration] = React.useState({});
   const [incoming, setIncoming] = React.useState("");
 
-  function find(input, type, name) {
-    for (var i = 0; i < input.length; i++) {
-      if (input[i].type === type && input[i].name === name) {
-        return input[i];
-      }
-    }
-    return undefined;
-  }
-
-  function convertToFloat(b) {
-    // Type conversion of string to float
-    var floatValue = +(b);
-    // Return float value
-    return floatValue;
-  }
+  const [serverStatus, setServerStatus] = React.useState("danger")
 
   function processData(dataName, value, configurationNext) {
     const dataItem = dataList[dataName];
@@ -71,17 +57,23 @@ const Debug = props => {
 
   React.useEffect(() => {
     console.log("create new event source");
-    const source = new EventSource("http://localhost:3002/terminal");
+    const source = new EventSource(`${props.server}/terminal`);
+
+    source.onopen = function(event){
+      setServerStatus("success");
+    }
 
     source.onmessage = function (event) {
       setIncoming(String(event.data));
     }
 
     source.onError = function (error) {
+      setServerStatus("danger");
       source.close();
     }
 
     return () => {
+      setServerStatus("danger");
       console.log("cleanup event source");
       source.close();
     }
@@ -109,19 +101,22 @@ const Debug = props => {
 
     lines.forEach((item, index) => {
       if (item.length > 0) {
-        const value = JSON.parse(item);
-        if (Array.isArray(value)) {
-          value.forEach((item, index) => {
-            processItem(item);
-          })
-        } else {
-          processItem(value);
+        try {
+          const value = JSON.parse(item);
+          if (Array.isArray(value)) {
+            value.forEach((item, index) => {
+              processItem(item);
+            })
+          } else {
+            processItem(value);
+          }
+        } catch (e) {
+          console.log(e);
         }
+
       }
     })
 
-    console.log(`configuration: ${JSON.stringify(configuration)} -> ${JSON.stringify(configurationNext)}`)
-    console.log(`data: ${JSON.stringify(dataList)} -> ${JSON.stringify(dataListNext)}`)
     setDataList(dataListNext);
     setConfiguration(configurationNext);
 
@@ -129,15 +124,20 @@ const Debug = props => {
 
   return (
     <div>
-      <h2>Trace Output</h2>
+      <h2>Debug Output</h2>
+      <Badge pill variant={serverStatus} className="mr-2">Server: {props.server === "" ? "NA" : props.server}</Badge>
+      <hr />
       <small>demo.elf 20201223</small>
       {
         Object.keys(configuration).map((key, index) => {
           if (configuration[key].type === "plot") {
             return <Plot name={key} configuration={configuration[key]} key={"plot" + key} />
           }
-          if (configuration[key].type === "raw") {
-            return <Raw name={key} configuration={configuration[key]} key={"raw" + key} />
+          if (configuration[key].type === "terminal") {
+            return <Terminal name={key} configuration={configuration[key]} key={"raw" + key} />
+          }
+          if (configuration[key].type === "logic") {
+            return <Logic name={key} configuration={configuration[key]} key={"logic" + key} />
           }
         })
       }

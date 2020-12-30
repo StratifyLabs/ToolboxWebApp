@@ -1,13 +1,23 @@
 import React from 'react'
 import { ListGroup } from 'react-bootstrap'
 
+
+
+const Item = props => {
+  return (
+    <ListGroup.Item action onClick={() => props.setPage(props.name)} active={props.page==props.name}>{props.name}</ListGroup.Item>
+  )
+}
+
 const Menu = props => {
+
+
   return (
     <ListGroup fixed="top">
-      <ListGroup.Item>Debug</ListGroup.Item>
-      <ListGroup.Item>Network</ListGroup.Item>
-      <ListGroup.Item>Files</ListGroup.Item>
-      <ListGroup.Item>Toolbox</ListGroup.Item>
+      <Item setPage={props.setPage} name="Network" page={props.page} />
+      <Item setPage={props.setPage} name="Debug" page={props.page} />
+      <Item setPage={props.setPage} name="Files" page={props.page} />
+      <Item setPage={props.setPage} name="About" page={props.page} />
     </ListGroup>
   )
 }

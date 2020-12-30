@@ -6,30 +6,42 @@ The Toolbox web applciation accepts server sent events from the Toolbox. Events 
 
 Configuration events are used to create visual cards (like a plot) and associate future data with the card. Each card should be uniquely named (as should each data source). Creating a card uses the following data object.
 
-```javascript
-{ `<name>`: {
-    type: "plot",
-    data: {
-      input0_name: [],
-      input1_name: [],
-      input2_name: [],
-      input3_name: []
+```json
+{ "<name": {
+    "type": "<type",
+    "data": {
+      "<data name>": [],
+      "<data name>": [],
+      "<data name>": [],
+      "<data name>": []
     }
     //additional per card options
   }
 }
 ```
 
-
 ## Data
 
-Data (like cards) should always be uniquely name and always consists of two values. The values must be a fundamental type such as a number of string. For brevity, the `type` is assumed to be data if no type is provided.
+Data (like configuration) should always be uniquely named. The data format depends on the configuration type.
 
-```javascript
+
+```json
 {
-  `<name>`: [x, y]
+  "<name>": <data>
 }
 ```
+
+The data value will be a JSON value that depends on the configuration types.
+
+
+- `plot`: `[<x>, <y>]`
+- `hist`: `[<x>, <y>]` (`x` is ignored)
+- `logic`: `[<x>, <y>]`
+- `terminal`: `<text>`
+
+
+
+
 
 ## Example
 
