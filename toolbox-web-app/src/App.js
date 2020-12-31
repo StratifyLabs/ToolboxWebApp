@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import React from 'react'
 import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import SideBar from './components/SideBar'
 import Top from './components/Top'
 import Debug from './views/Debug'
@@ -26,7 +26,7 @@ function App() {
 
   React.useEffect(() => {
     mql.addListener(mediaQueryChanged);
-  },[])
+  }, [])
 
   return (
     <div className="App">
@@ -36,8 +36,11 @@ function App() {
           <SideBar page={page} setPage={setPage} />}
         styles={{ sidebar: { background: "white" } }}
         open={isSidebarOpen}
+        onSetOpen={setSidebarOpen}
       >
+        <Top />
         <Container fluid>
+
           {page === "Debug" && <Debug server={server} />}
           {page === "Network" && <Network server={server} setServer={setServer} />}
         </Container>
