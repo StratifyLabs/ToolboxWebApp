@@ -5,8 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import SideBar from './components/SideBar'
 import Top from './components/Top'
-import Debug from './views/Debug'
+import DebugClient from './DebugClient'
 import Network from './views/Network'
+import Charts from './views/Charts'
+import Terminal from './views/Terminal'
 import Sidebar from "react-sidebar";
 
 const mql = window.matchMedia(`(min-width: 800px)`);
@@ -15,9 +17,13 @@ const mql = window.matchMedia(`(min-width: 800px)`);
 function App() {
 
   const [server, setServer] = React.useState("http://localhost:3002");
+  const [serverStatus, setServerStatus] = React.useState(false);
   const [page, setPage] = React.useState("Debug");
   const [isSidebarOpen, setSidebarOpen] = React.useState(true);
   const [isSidebarDocked, setSidebarDocked] = React.useState(true);
+
+  const [configuration, setConfiguration] = React.useState({});
+  const [data, setData] = React.useState({});
 
   function mediaQueryChanged() {
     setSidebarDocked(mql.matches);
@@ -27,6 +33,11 @@ function App() {
   React.useEffect(() => {
     mql.addListener(mediaQueryChanged);
   }, [])
+
+  function onMenuClicked(){
+    setSidebarOpen(!isSidebarOpen);
+    setSidebarDocked(!isSidebarOpen);
+  }
 
   return (
     <div className="App">
@@ -38,11 +49,28 @@ function App() {
         open={isSidebarOpen}
         onSetOpen={setSidebarOpen}
       >
-        <Top />
+        <Top 
+        page={page} 
+        menuClicked={onMenuClicked} 
+        isSidebarOpen={isSidebarOpen}
+        serverStatus={serverStatus}
+        server={server}
+        />
         <Container fluid>
 
-          {page === "Debug" && <Debug server={server} />}
+           <DebugClient 
+           configuration={configuration}
+           setConfiguration={setConfiguration}
+           data={data}
+           setData={setData}
+           serverStatus={serverStatus}
+           setServerStatus={setServerStatus}
+           server={server} 
+           
+           />
           {page === "Network" && <Network server={server} setServer={setServer} />}
+          {page === "Charts" && <Charts server={server} setServer={setServer} />}
+          {page === "Terminal" && <Terminal configuration={configuration["output"]}/>}
         </Container>
       </Sidebar>
 

@@ -1,22 +1,32 @@
 import React from 'react'
-import { Badge } from 'react-bootstrap'
+import { Toast } from 'react-bootstrap'
 
-import Terminal from '../components/debug/Terminal'
-import Plot from '../components/debug/Plot'
-import Logic from '../components/debug/Logic'
-import Histogram from '../components/debug/Histogram'
-import ProgramCounterSamplePlot from '../components/debug/ProgramCounterSamplePlot'
-import Log from '../components/debug/Log'
-import Table from '../components/debug/Table'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInfo } from '@fortawesome/free-solid-svg-icons'
+
+import Terminal from './components/debug/Terminal'
+import Plot from './components/debug/Plot'
+import Logic from './components/debug/Logic'
+import Histogram from './components/debug/Histogram'
+import ProgramCounterSamplePlot from './components/debug/ProgramCounterSamplePlot'
+import Log from './components/debug/Log'
+import Table from './components/debug/Table'
 
 
-const Debug = props => {
+const DebugClient = props => {
 
-  const [dataList, setDataList] = React.useState({});
-  const [configuration, setConfiguration] = React.useState({});
   const [incoming, setIncoming] = React.useState("");
+  const [newMessage, setNewMessage] = React.useState("");
 
-  const [serverStatus, setServerStatus] = React.useState("danger")
+  const configuration = props.configuration;
+  const setConfiguration = props.setConfiguration;
+  const dataList = props.data;
+  const setDataList = props.setData;
+  const serverStatus = props.serverStatus;
+  const setServerStatus = props.setServerStatus;
+
+
+
 
   function processData(dataName, value, configurationNext) {
     const dataItem = dataList[dataName];
@@ -59,21 +69,24 @@ const Debug = props => {
     console.log("create new event source");
     const source = new EventSource(`${props.server}/terminal`);
 
-    source.onopen = function(event){
+    source.onopen = function (event) {
+      setNewMessage(`connected to ${props.server}`);
       setServerStatus("success");
     }
+
+    source.addEventListener('error', function (e) {
+      setNewMessage(`failed to connect to ${props.server}`);
+      setServerStatus("danger");
+    }, false);
 
     source.onmessage = function (event) {
       setIncoming(String(event.data));
     }
 
-    source.onError = function (error) {
-      setServerStatus("danger");
-      source.close();
-    }
 
     return () => {
       setServerStatus("danger");
+      setNewMessage(`closed connection to ${props.server}`);
       console.log("cleanup event source");
       source.close();
     }
@@ -124,28 +137,22 @@ const Debug = props => {
 
   return (
     <div>
-      <h2>Debug Output</h2>
-      <Badge pill variant={serverStatus} className="mr-2">Server: {props.server === "" ? "NA" : props.server}</Badge>
-      <hr />
-      <small>demo.elf 20201223</small>
-      {
-        Object.keys(configuration).map((key, index) => {
-          if (configuration[key].type === "plot") {
-            return <Plot name={key} configuration={configuration[key]} key={"plot" + key} />
-          }
-          if (configuration[key].type === "terminal") {
-            return <Terminal name={key} configuration={configuration[key]} key={"raw" + key} />
-          }
-          if (configuration[key].type === "logic") {
-            return <Logic name={key} configuration={configuration[key]} key={"logic" + key} />
-          }
-        })
-      }
-
-      <Log type="message" />
-      <Table />
-    </div >
+      <Toast
+        style={{
+          position: 'absolute',
+          top: 75,
+          right: 10,
+        }}
+        delay={3000}
+        autohide={true}
+        animation={true}
+        show={newMessage !== ""}
+        onClose={() => { setNewMessage("") }}
+      >
+        <Toast.Body><FontAwesomeIcon icon={faInfo} /> {newMessage}</Toast.Body>
+      </Toast>
+    </div>
   )
 }
 
-export default Debug
+export default DebugClient

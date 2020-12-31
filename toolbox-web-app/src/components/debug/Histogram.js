@@ -49,19 +49,14 @@ const Histogram = props => {
 
 
   return (
-    <Card className="mb-2">
-      <Card.Header className="flex">Histogram: Temperature <Button className="float-right btn-sm">Reset</Button></Card.Header>
-      <Card.Body>
-        <VictoryChart
-          theme={Theme}
-        >
-          <VictoryHistogram
-            data={temperatureData}
-          />
+    <VictoryChart
+      theme={Theme}
+    >
+      <VictoryHistogram
+        data={temperatureData}
+      />
 
-        </VictoryChart>
-      </Card.Body>
-    </Card>
+    </VictoryChart>
   )
 }
 
