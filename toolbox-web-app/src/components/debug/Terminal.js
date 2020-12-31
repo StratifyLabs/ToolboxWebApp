@@ -1,20 +1,20 @@
 import React from 'react'
-import { Card } from 'react-bootstrap'
+import { Container, Card } from 'react-bootstrap'
+import '../../App.scss';
 
 const Terminal = props => {
 
-  //const displayText = String(props.configuration.data.text.join('')).replace("\n", "<br /> ");
-  const displayText = String(props.configuration.data.text.join(''));
-
   return (
+    <div>
     <Card className="mb-2">
       <Card.Header>printf(): {props.name}</Card.Header>
-      <Card.Body>
+      <Card.Body className="scroll">
         <pre>
-          {displayText}
+          {String(props.configuration.data.text.join(''))}
         </pre>
       </Card.Body>
     </Card>
+    </div>
   )
 }
 

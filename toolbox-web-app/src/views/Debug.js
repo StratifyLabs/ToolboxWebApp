@@ -142,10 +142,7 @@ const Debug = props => {
         })
       }
 
-
       <Log type="message" />
-      <Histogram name="Temperature" />
-      <ProgramCounterSamplePlot />
       <Table />
     </div >
   )

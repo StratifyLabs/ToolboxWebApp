@@ -10,7 +10,6 @@ const Network = props => {
   return (
     <div>
       <h2>Network</h2>
-      <small>demo.elf 20201223</small>
       <Card>
         <Card.Body>
           <Form>
@@ -28,9 +27,6 @@ const Network = props => {
             }}>
               Ping
             </Button>
-            <Form.Group>
-              <Form.File id="exampleFormControlFile1" label="Example file input" />
-            </Form.Group>
           </Form>
         </Card.Body>
       </Card>
