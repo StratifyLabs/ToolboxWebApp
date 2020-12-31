@@ -28,7 +28,7 @@ const Logic = props => {
 
   return (
     <div>
-      <VictoryChart domainPadding={{ y: 0 }} width={400} height={40}
+      <VictoryChart domainPadding={{ y: 0 }} width={400} height={30}
         theme={Theme}
         padding={{ top: 5, bottom: 0, left: 25, right: 10 }}
         containerComponent={

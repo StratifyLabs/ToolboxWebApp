@@ -19,7 +19,8 @@ function App() {
 
   const [server, setServer] = React.useState("http://localhost:3002");
   const [serverStatus, setServerStatus] = React.useState(false);
-  const [page, setPage] = React.useState("Debug");
+  const [page, setPageState] = React.useState("Network");
+  const [pageName, setPageName] = React.useState("Network");
   const [isSidebarOpen, setSidebarOpen] = React.useState(true);
   const [isSidebarDocked, setSidebarDocked] = React.useState(true);
 
@@ -42,9 +43,18 @@ function App() {
     setSidebarDocked(!isSidebarOpen);
   }
 
-  function setInsightDetail(config){
+  function setInsightDetail(name, config){
     setInsightConfiguration(config)
-    setPage("InsightDetail")
+    setPageState("InsightDetail")
+    setPageName(`${name} ${config.type}`)
+
+  }
+
+  function setPage(value){
+    if( value !== "InsightDetail" ){
+      setPageState(value)
+      setPageName(value)
+    }
   }
 
   return (
@@ -58,7 +68,7 @@ function App() {
         onSetOpen={setSidebarOpen}
       >
         <Top 
-        page={page} 
+        page={pageName} 
         menuClicked={onMenuClicked} 
         isSidebarOpen={isSidebarOpen}
         serverStatus={serverStatus}

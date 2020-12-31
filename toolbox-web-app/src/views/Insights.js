@@ -43,7 +43,7 @@ const Summary = props => {
         <h5>{props.name} {props.configuration.type}</h5>
       </Card.Header>
       <Card.Body>
-        <Button variant="outline-primary" onClick={() => { props.setInsightDetail(props.configuration) }}><FontAwesomeIcon icon={getIcon(props.configuration.type)} size="4x" /></Button>
+        <Button variant="outline-primary" onClick={() => { props.setInsightDetail(props.name, props.configuration) }}><FontAwesomeIcon icon={getIcon(props.configuration.type)} size="4x" /></Button>
       </Card.Body>
       <Card.Footer>
         {
