@@ -8,7 +8,7 @@ const Item = props => {
   return (
     <ListGroup.Item action onClick={() => props.setPage(props.name)} active={props.page == props.name}>
       <FontAwesomeIcon icon={props.icon} /> {props.name}
-      </ListGroup.Item>
+    </ListGroup.Item>
   )
 }
 
@@ -22,11 +22,12 @@ const SideBar = props => {
         <Item setPage={props.setPage} icon={faNetworkWired} name="Network" page={props.page} />
         <Item setPage={props.setPage} icon={faFolderOpen} name="Files" page={props.page} />
       </ListGroup>
+      <hr />
       <h5 className="ml-2 mr-2">Target</h5>
 
       <ListGroup variant="flush" className="mb-2">
         <Item setPage={props.setPage} icon={faTerminal} name="Terminal" page={props.page} />
-        <Item setPage={props.setPage} icon={faChartArea} name="Charts" page={props.page} />
+        <Item setPage={props.setPage} icon={faChartArea} name="Insights" page={props.page} />
       </ListGroup>
       <Row className="mb-1 ml-1 mr-1">
         <Button variant="secondary" size="lg" block>Reset</Button>
@@ -36,7 +37,7 @@ const SideBar = props => {
       </Row>
       <hr />
       <ListGroup variant="flush" className="mb-2">
-      <Item setPage={props.setPage} icon={faInfoCircle} name="About" page={props.page} />
+        <Item setPage={props.setPage} icon={faInfoCircle} name="About" page={props.page} />
 
       </ListGroup>
     </div>

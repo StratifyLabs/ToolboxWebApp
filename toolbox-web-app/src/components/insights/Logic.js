@@ -13,7 +13,7 @@ import {
   VictoryLegend
 } from "victory";
 
-import Theme from '../Theme'
+import Theme from './Theme'
 
 
 const Logic = props => {

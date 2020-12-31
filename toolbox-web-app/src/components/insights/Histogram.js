@@ -4,7 +4,7 @@ import { Chart } from 'react-charts'
 import { Line, Scatter } from 'react-chartjs-2'
 import { VictoryChart, VictoryZoomContainer, VictoryLine, VictorHistogram, VictoryHistogram } from "victory";
 
-import Theme from '../Theme'
+import Theme from './Theme'
 
 
 const Histogram = props => {
@@ -51,10 +51,19 @@ const Histogram = props => {
   return (
     <VictoryChart
       theme={Theme}
+      height={250}
     >
-      <VictoryHistogram
-        data={temperatureData}
-      />
+      { Object.keys(props.configuration.data).map((key, index) => {
+        return (
+          <VictoryHistogram
+            data={props.configuration.data[key]}
+            key={key}
+            x={1}
+          />
+        )
+      })}
+
+
 
     </VictoryChart>
   )

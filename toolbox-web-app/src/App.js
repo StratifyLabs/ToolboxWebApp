@@ -7,7 +7,8 @@ import SideBar from './components/SideBar'
 import Top from './components/Top'
 import DebugClient from './DebugClient'
 import Network from './views/Network'
-import Charts from './views/Charts'
+import Insights from './views/Insights'
+import InsightDetail from './views/InsightDetail'
 import Terminal from './views/Terminal'
 import Sidebar from "react-sidebar";
 
@@ -25,6 +26,8 @@ function App() {
   const [configuration, setConfiguration] = React.useState({});
   const [data, setData] = React.useState({});
 
+  const [insightConfiguration, setInsightConfiguration] = React.useState({});
+
   function mediaQueryChanged() {
     setSidebarDocked(mql.matches);
     setSidebarOpen(false);
@@ -37,6 +40,11 @@ function App() {
   function onMenuClicked(){
     setSidebarOpen(!isSidebarOpen);
     setSidebarDocked(!isSidebarOpen);
+  }
+
+  function setInsightDetail(config){
+    setInsightConfiguration(config)
+    setPage("InsightDetail")
   }
 
   return (
@@ -69,8 +77,13 @@ function App() {
            
            />
           {page === "Network" && <Network server={server} setServer={setServer} />}
-          {page === "Charts" && <Charts server={server} setServer={setServer} />}
+          {page === "Insights" && 
+          <Insights 
+          setInsightDetail={setInsightDetail} 
+          configuration={configuration} 
+          />}
           {page === "Terminal" && <Terminal configuration={configuration["output"]}/>}
+          {page === "InsightDetail" && <InsightDetail configuration={insightConfiguration} />}
         </Container>
       </Sidebar>
 

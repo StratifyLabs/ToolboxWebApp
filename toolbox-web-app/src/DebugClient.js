@@ -4,15 +4,6 @@ import { Toast } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfo } from '@fortawesome/free-solid-svg-icons'
 
-import Terminal from './components/debug/Terminal'
-import Plot from './components/debug/Plot'
-import Logic from './components/debug/Logic'
-import Histogram from './components/debug/Histogram'
-import ProgramCounterSamplePlot from './components/debug/ProgramCounterSamplePlot'
-import Log from './components/debug/Log'
-import Table from './components/debug/Table'
-
-
 const DebugClient = props => {
 
   const [incoming, setIncoming] = React.useState("");
@@ -143,7 +134,6 @@ const DebugClient = props => {
           top: 75,
           right: 10,
         }}
-        delay={3000}
         autohide={true}
         animation={true}
         show={newMessage !== ""}

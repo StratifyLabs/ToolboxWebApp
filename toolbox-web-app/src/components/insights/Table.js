@@ -11,7 +11,7 @@ import {
   VictoryTooltip,
   VictoryVoronoiContainer
 } from "victory";
-import Theme from '../Theme'
+import Theme from './Theme'
 
 
 const Table = props => {
