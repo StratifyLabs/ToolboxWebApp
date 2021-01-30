@@ -6,10 +6,19 @@ import { Container, Row, Col, Button, Navbar, Nav, NavDropdown } from 'react-boo
 import SideBar from './components/SideBar'
 import Top from './components/Top'
 import DebugClient from './DebugClient'
+
 import Network from './views/Network'
 import Insights from './views/Insights'
 import InsightDetail from './views/InsightDetail'
 import Terminal from './views/Terminal'
+import QuickStart from './views/QuickStart'
+import About from './views/About'
+import Docs from './views/Docs'
+import Debug from './views/Debug'
+import Flash from './views/Flash'
+import Files from './views/Files'
+import Trace from './views/Trace'
+import Settings from './views/Settings'
 import Sidebar from "react-sidebar";
 
 const mql = window.matchMedia(`(min-width: 800px)`);
@@ -92,6 +101,14 @@ function App() {
           setInsightDetail={setInsightDetail} 
           configuration={configuration} 
           />}
+          {page === "About" && <About />}
+          {page === "Quick Start" && <QuickStart />}
+          {page === "Docs" && <Docs />}
+          {page === "Debug" && <Debug configuration={configuration["output"]}/>}
+          {page === "Flash" && <Flash configuration={configuration["output"]}/>}
+          {page === "Files" && <Files configuration={configuration["output"]}/>}
+          {page === "Trace" && <Trace configuration={configuration["output"]}/>}
+          {page === "Settings" && <Settings configuration={configuration["output"]}/>}
           {page === "Terminal" && <Terminal configuration={configuration["output"]}/>}
           {page === "InsightDetail" && <InsightDetail configuration={insightConfiguration} />}
         </Container>

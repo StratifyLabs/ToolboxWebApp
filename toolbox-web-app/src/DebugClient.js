@@ -16,9 +16,6 @@ const DebugClient = props => {
   const serverStatus = props.serverStatus;
   const setServerStatus = props.setServerStatus;
 
-
-
-
   function processData(dataName, value, configurationNext) {
     const dataItem = dataList[dataName];
     if (dataItem !== undefined && dataItem.configurations !== undefined) {

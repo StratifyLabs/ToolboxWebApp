@@ -13,7 +13,7 @@ const Top = props => {
       <Button variant={serverStatus}>
         <FontAwesomeIcon icon={serverStatus === "success" ? faStop : faSync} /> {props.server}
         </Button>
-      <Navbar.Brand href="#home" className="ml-auto">{props.page}</Navbar.Brand>
+      <Navbar.Brand href="#home" className="ml-auto">{props.page} | Stratify Toolbox</Navbar.Brand>
     </Navbar>
   )
 }

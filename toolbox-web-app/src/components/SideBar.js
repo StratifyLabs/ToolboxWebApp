@@ -1,7 +1,18 @@
 import React from 'react'
 import { Container, ListGroup, ButtonGroup, Button, Badge, Row } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTerminal, faNetworkWired, faChartArea, faFolderOpen, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import {
+  faBook,
+  faNetworkWired,
+  faChartArea,
+  faFolderOpen,
+  faInfoCircle,
+  faBug,
+  faBolt,
+  faWaveSquare,
+  faPlay,
+  faSlidersH
+} from '@fortawesome/free-solid-svg-icons'
 
 
 const Item = props => {
@@ -14,31 +25,23 @@ const Item = props => {
 
 const SideBar = props => {
 
-
   return (
     <div>
-      <h5 className="ml-2 mr-2">Stratify Toolbox</h5>
+      <h3 className="ml-2 mr-2">Target</h3>
       <ListGroup variant="flush" className="mb-2">
-        <Item setPage={props.setPage} icon={faNetworkWired} name="Network" page={props.page} />
-        <Item setPage={props.setPage} icon={faFolderOpen} name="Files" page={props.page} />
-      </ListGroup>
-      <hr />
-      <h5 className="ml-2 mr-2">Target</h5>
-
-      <ListGroup variant="flush" className="mb-2">
-        <Item setPage={props.setPage} icon={faTerminal} name="Terminal" page={props.page} />
+        <Item setPage={props.setPage} icon={faPlay} name="Quick Start" page={props.page} />
+        <Item setPage={props.setPage} icon={faBug} name="Debug" page={props.page} />
+        <Item setPage={props.setPage} icon={faBolt} name="Flash" page={props.page} />
+        <Item setPage={props.setPage} icon={faWaveSquare} name="Trace" page={props.page} />
         <Item setPage={props.setPage} icon={faChartArea} name="Insights" page={props.page} />
       </ListGroup>
-      <Row className="mb-1 ml-1 mr-1">
-        <Button variant="secondary" size="lg" block>Reset</Button>
-      </Row>
-      <Row className="mb-1 ml-1 mr-1">
-        <Button variant="primary" size="lg" block>Flash</Button>
-      </Row>
-      <hr />
+      <h3 className="ml-2 mr-2">Extras</h3>
       <ListGroup variant="flush" className="mb-2">
+        <Item setPage={props.setPage} icon={faSlidersH} name="Settings" page={props.page} />
+        <Item setPage={props.setPage} icon={faFolderOpen} name="Files" page={props.page} />
+        <Item setPage={props.setPage} icon={faBook} name="Docs" page={props.page} />
+        <Item setPage={props.setPage} icon={faNetworkWired} name="Network" page={props.page} />
         <Item setPage={props.setPage} icon={faInfoCircle} name="About" page={props.page} />
-
       </ListGroup>
     </div>
   )
