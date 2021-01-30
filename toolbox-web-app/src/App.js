@@ -105,10 +105,10 @@ function App() {
           {page === "Quick Start" && <QuickStart page={page} setPage={setPage} />}
           {page === "Reference" && <Reference page={page} setPage={setPage} />}
           {page === "Debug" && <Debug configuration={configuration["output"]}/>}
-          {page === "Flash" && <Flash configuration={configuration["output"]}/>}
-          {page === "Files" && <Files configuration={configuration["output"]}/>}
-          {page === "Trace" && <Trace configuration={configuration["output"]}/>}
-          {page === "Settings" && <Settings configuration={configuration["output"]}/>}
+          {page === "Flash" && <Flash setPage={setPage} />}
+          {page === "Files" && <Files setPage={setPage} />}
+          {page === "Trace" && <Trace setPage={setPage} />}
+          {page === "Settings" && <Settings />}
           {page === "Terminal" && <Terminal configuration={configuration["output"]}/>}
           {page === "InsightDetail" && <InsightDetail configuration={insightConfiguration} />}
         </Container>

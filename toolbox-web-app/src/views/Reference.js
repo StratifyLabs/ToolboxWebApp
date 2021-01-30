@@ -119,19 +119,12 @@ using a timestamp notation. Only the 100 most recent images are kept. You can us
 the filesystem API to see which files are available as well as save copies of
 older versions.
 
-\`HTTP1.1 POST /flash/program\`
+\`HTTP1.1 POST /flash/program/fs/<path>\`
 
-Programs the target with a firmware binary stored on the Toolbox. The 
-path specified in the JSON post data. For example,
-
-\`\`\`
-{
-  "path": "/home/flash/image/image-20210128-121212.elf"
-}
-\`\`\`
+Programs the target with a firmware binary stored on the Toolbox.
 
 \`\`\`
-curl -X POST -d @path/to/path.json http://<local ip address>/flash/program
+curl -X POST -d @path/to/path.json http://<local ip address>/flash/program/fs/home/user/firmware.elf
 \`\`\`
 `
 
@@ -157,6 +150,10 @@ curl http://<local ip address>/trace/settings
 Starts streaming the trace data. If the HTTP request header specifies server-side
 events, the response will for formatted as server-side events and encapsulated as
 JSON. The stream will stay open until it is closed by the client.
+
+\`HTTP1.1 POST /trace/reset\`
+
+Same as \`HTTP1.1 GET /trace\` but will reset the device before tracing starts.
   
 `
   const tracePost = `\`HTTP1.1 POST /trace/settings\`
@@ -168,7 +165,7 @@ the file returned using \`HTTP1.1 GET /trace/settings\`.
 curl -X POST -d @path/to/settings.json http://<local ip address>/trace/settings
 \`\`\`
 
-\`HTTP1.1 POST /trace\`
+
 
 Starts streaming the trace data just like the \`GET\` request but allows you
 to reset the device before starting the trace.
@@ -193,21 +190,31 @@ Returns the current trace settings as JSON.
 curl http://<local ip address>/debug/settings
 \`\`\` 
 
-### Core Dumps
+The following HTTP GET requests perform various debugging functions. The response is a core dump in
+JSON format.
 
-The following HTTP GET requests perform various debugging functions. The response is a core dump.
+- \`HTTP1.1 GET /debug/start\`
+- \`HTTP1.1 GET /debug/halt\`
+- \`HTTP1.1 GET /debug/step\`
+- \`HTTP1.1 GET /debug/reset\`
 
-\`HTTP1.1 GET /debug/start\`
-\`HTTP1.1 GET /debug/halt\`
-\`HTTP1.1 GET /debug/step\`
-\`HTTP1.1 GET /debug/reset\`
-
-
-These just do what you think they do, but respond with a simple \`{ "result" : "success" }\` rather
+These just do what you think they do, but respond with a simple \`{ "result" : "[success|failed]" }\` rather
 than the full core dump.
 
-\`HTTP1.1 GET /debug/resume\`
-\`HTTP1.1 GET /debug/run\`
+- \`HTTP1.1 GET /debug/resume\`
+- \`HTTP1.1 GET /debug/run\`
+
+
+\`HTTP1.1 GET /debug/read/<address>/<size>\`
+
+Reads memory using the debug port. The \`<address>\` and \`<size>\`
+can be specified in hexidecimal or decimal. Use the \`0x\` prefix to
+specify a hex address.
+
+\`\`\`
+curl http://<local ip address>/debug/read/0x08000000/1024
+\`\`\` 
+
     
 `
   const debugPost = `### Debug POST Requests
@@ -222,13 +229,15 @@ curl -X POST -d @path/to/settings.json http://<local ip address>/debug/settings
 \`\`\`
 
 
-## Memory Access
+\`HTTP1.1 POST /debug/write/<address>/\`
 
-You can also read/write the address space of the target.
+Writes data to the memory address space on the target device. The size
+is determined by the content length of the request. The data is interpreted
+as raw binary data.
 
-\`HTTP1.1 POST /debug\`
-
-TO DO
+\`\`\`
+curl -X POST -d @path/to/register/values.bin http://<local ip address>/debug/write/0x00000000
+\`\`\`
   
 `
 
@@ -293,7 +302,7 @@ curl http://<local ip address>/fs/home/flash/image
 \`\`\` 
 
 
-\`HTTP1.1 POST /file/<path>\`
+\`HTTP1.1 POST /fs/<path>\`
 
 Sends a file to the device to be saved at \`path\`.
 
@@ -301,9 +310,10 @@ Sends a file to the device to be saved at \`path\`.
 curl -X POST --data-binary @path/to/some.file http://<local ip address>/file/home/tmp/some.file
 \`\`\`
 
-\`HTTP1.1 DELETE /file/<path>\`
+\`HTTP1.1 DELETE /fs/<path>\`
 
-Deletes the file at \`path\`. Only files on the SD card (\`/home\`) can be deleted.
+Deletes the file at \`path\`. Only files on the SD card (\`/home\`) can be deleted. You
+cannot create or delete directories using the HTTP API.
 
 \`\`\`
 curl -X DELETE http://<local ip address>/file/home/tmp/some.file

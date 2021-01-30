@@ -5,12 +5,13 @@ import { Card, Form, Button, Container } from 'react-bootstrap'
 import Debug from '../components/settings/Debug'
 import Flash from '../components/settings/Flash'
 import Trace from '../components/settings/Trace'
+import AppContainer from '../components/AppContainer'
 
 
 const Settings = props => {
 
   return (
-    <Container>
+    <AppContainer>
       <h2>Debug Delegate</h2>
       <Container><Debug /></Container>
       <hr />
@@ -19,7 +20,7 @@ const Settings = props => {
       <hr />
       <h2>Trace Delegate</h2>
       <Container><Trace /></Container>
-    </Container>
+    </AppContainer>
   )
 }
 
