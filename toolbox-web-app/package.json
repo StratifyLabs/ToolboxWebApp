@@ -12,6 +12,7 @@
     "bootstrap": "^4.5.3",
     "c3": "^0.7.20",
     "chart.js": "^2.9.4",
+    "github-markdown-css": "^4.0.0",
     "gzipper": "^4.3.0",
     "mermaid": "^8.8.4",
     "node-sass": "^4.0.0",

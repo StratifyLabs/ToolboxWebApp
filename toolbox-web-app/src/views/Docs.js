@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Container, Col, Row, Button } from 'react-bootstrap'
+import Section from '../components/docs/Section'
 
 
 const Docs = props => {
@@ -229,27 +230,11 @@ curl -X DELETE http://<local ip address>/file/home/tmp/some.file
 
   return (
     <Container>
-      <Row>
-        <Col md={8}>
-          <ReactMarkdown>{overview}</ReactMarkdown>
-        </Col>
-        <Col md={4}>
-          More info
-        </Col>
-      </Row>
-
-      <Row>
-        <Col md={8}>
-          <ReactMarkdown>{flash}</ReactMarkdown>
-        </Col>
-        <Col md={4}>
-          More info
-        </Col>
-      </Row>
-      <ReactMarkdown>{trace}</ReactMarkdown>
-      <ReactMarkdown>{debug}</ReactMarkdown>
-      <ReactMarkdown>{fs}</ReactMarkdown>
-
+      <Section markdown={overview} >More Info</Section>
+      <Section markdown={flash} >More Info</Section>
+      <Section markdown={trace} >More Info</Section>
+      <Section markdown={debug} >More Info</Section>
+      <Section markdown={fs} >More Info</Section>
     </Container>
   )
 }
