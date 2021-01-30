@@ -5,26 +5,26 @@ const Delegate = props => {
 
   return (
     <Form.Group controlId="formBasicCheckbox">
-      <Form.Label>Delegate</Form.Label>
+      <Form.Label>interface/family</Form.Label>
       <Form.Check
         type="radio"
-        label="swd_stm32"
+        label="swd/stm32"
       />
       <Form.Check
         type="radio"
-        label="swd_lpc"
+        label="swd/lpc"
       />
       <Form.Check
         type="radio"
-        label="swd_atsam"
+        label="swd/atsam"
       />
       <Form.Check
         type="radio"
-        label="isp_avr"
+        label="isp/avr"
       />
       <Form.Check
         type="radio"
-        label="swd_tbox"
+        label="swd/tbox"
       />
       <Form.Text className="text-muted">
         Select the delegate (interface/family) to use.

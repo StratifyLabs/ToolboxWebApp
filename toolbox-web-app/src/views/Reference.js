@@ -1,14 +1,23 @@
 import React from 'react'
-import ReactMarkdown from 'react-markdown'
-import { Container, Col, Row, Button } from 'react-bootstrap'
+import { Container, Row, Button } from 'react-bootstrap'
+import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
+import {
+  faSlidersH,
+  faExternalLinkAlt,
+} from '@fortawesome/free-solid-svg-icons'
+
 import Section from '../components/docs/Section'
+import InternalJump from '../components/docs/InternalJump'
+import ExternalJump from '../components/docs/ExternalJump'
+import GetRequest from '../components/docs/GetRequest'
 
-
-const Docs = props => {
-
+const Reference = props => {
 
   const overview = `# Overview
   
+
+## HTTP API
+
 The Stratify Toolbox runs an HTTP server that listens for requests that allow you to access the flash, trace, and debug
 interfaces either using this web application or from the command line using a program like \`curl\`.
 
@@ -18,11 +27,56 @@ The HTTP API consists of 4 parts:
 - Debug
 - Trace
 - Filesystem
-  
-  
 `
 
-  const flash = `## Flash
+  const delegate = `## Delegates
+
+  A delegate is a program specifically designed for a specific *interface* and MCU *family*.
+It runs on the Toolbox and allows you to perform a *function* such as flash, debug, or trace an MCU *family* with a given *interface*.
+
+The Toolbox hardware supports interfaces such as:
+
+- SWD
+- JTAG
+- UART
+- SPI
+- I2C
+- Anything that can be bitbanged
+
+The Toolbox can be programmed to support any MCU *family* that can be either flashed, debugged, or traced
+using an *interface* above. Each *function* has an independent delegate.
+
+The built-in delegates are found at \`/bin/io[function]_[interface]_[family]\`. Delegates that
+are added to \`/home/bin/io[function]_[interface]_[family]\` are also recognized.
+`
+
+  const delegateExample = `
+For example, the Toolbox comes with several built-in delegates:
+- \`ioflash_swd_stm32\`: Flash any STM32 chip over SWD
+- \`iotrace_swo_tbox\`: Trace any MCU over SWO using the \`tbox\` trace library
+- \`iodebug_swd_stm32\`: Debug any STM32 chip over SWD
+- \`iotrace_uart_tbox\`: Trace any MCU over UART using the \`tbox\` trace library
+`
+
+ const sdk = `
+
+## SDK
+
+The Toolbox's SDK allows you to build, install, and share applications that run on the toolbox. This includes three
+basic kinds of applications
+
+- Delegates that implement an *interface* for an MCU *family*
+- System applications can be customized and replaced (don't worry you can always revert)
+- User applications that provide brand-new functionality on the Toolbox
+
+
+`
+
+  const flash = `## HTTP Flash API
+
+\`HTTP1.1 GET /flash/delegates\`
+
+Returns a JSON object with a list of the available flash delegates.
 
 The flash API allows you to get and set the current flash settings as well as flash the target.
 
@@ -79,13 +133,16 @@ path specified in the JSON post data. For example,
 \`\`\`
 curl -X POST -d @path/to/path.json http://<local ip address>/flash/program
 \`\`\`
-
-  
 `
 
-  const trace = `## Trace
+  const trace = `## HTTP Trace API
 
 The trace API allows you to get and set the current trace settings as well as reset the target and trace the output.
+
+`
+  const traceGet = `\`HTTP1.1 GET /trace/delegates\`
+
+Returns a JSON object with a list of the available trace delegates.
 
 \`HTTP1.1 GET /trace/settings\`
   
@@ -94,8 +151,15 @@ Returns the current trace settings as JSON.
 \`\`\`
 curl http://<local ip address>/trace/settings
 \`\`\` 
+
+\`HTTP1.1 GET /trace\`
+
+Starts streaming the trace data. If the HTTP request header specifies server-side
+events, the response will for formatted as server-side events and encapsulated as
+JSON. The stream will stay open until it is closed by the client.
   
-\`HTTP1.1 POST /trace/settings\`
+`
+  const tracePost = `\`HTTP1.1 POST /trace/settings\`
   
 Updates the current trace settings by sending a JSON file that matches the format of
 the file returned using \`HTTP1.1 GET /trace/settings\`.
@@ -104,24 +168,22 @@ the file returned using \`HTTP1.1 GET /trace/settings\`.
 curl -X POST -d @path/to/settings.json http://<local ip address>/trace/settings
 \`\`\`
 
-\`HTTP1.1 GET /trace\`
-
-Starts streaming the trace data. If the HTTP request header specifies server-side
-events, the response will for formatted as server-side events and encapsulated as
-JSON. The stream will stay open until it is closed by the client.
-
 \`HTTP1.1 POST /trace\`
 
 Starts streaming the trace data just like the \`GET\` request but allows you
 to reset the device before starting the trace.
-
-
-
 `
 
-  const debug = `## Debug
+  const debug = `## HTTP Debug API
 
 The debug API allows you to get and set the current debug settings as well as halt/run/step/resume and so on.
+
+`
+  const debugGet = `### Debug GET Requests
+  
+\`HTTP1.1 GET /debug/delegates\`
+
+Returns a JSON object with a list of the available debug delegates.
 
 \`HTTP1.1 GET /debug/settings\`
     
@@ -130,15 +192,6 @@ Returns the current trace settings as JSON.
 \`\`\`
 curl http://<local ip address>/debug/settings
 \`\`\` 
-    
-\`HTTP1.1 POST /debug/settings\`
-    
-Updates the current debug settings by sending a JSON file that matches the format of
-the file returned using \`HTTP1.1 GET /debug/settings\`.
-    
-\`\`\`
-curl -X POST -d @path/to/settings.json http://<local ip address>/debug/settings
-\`\`\`
 
 ### Core Dumps
 
@@ -155,6 +208,18 @@ than the full core dump.
 
 \`HTTP1.1 GET /debug/resume\`
 \`HTTP1.1 GET /debug/run\`
+    
+`
+  const debugPost = `### Debug POST Requests
+  
+\`HTTP1.1 POST /debug/settings\`
+    
+Updates the current debug settings by sending a JSON file that matches the format of
+the file returned using \`HTTP1.1 GET /debug/settings\`.
+    
+\`\`\`
+curl -X POST -d @path/to/settings.json http://<local ip address>/debug/settings
+\`\`\`
 
 
 ## Memory Access
@@ -167,7 +232,7 @@ TO DO
   
 `
 
-  const fs = `## Filesystem
+  const fs = `## Filesystem Overview
 
 The filesystem API allows you to access the filesystems on the Toolbox. The filesystems follow a
 convention which dictates how the device operates.
@@ -195,7 +260,26 @@ For example, the start screen is executed at \`/bin/Home\`. By creating an execu
 placing it at \`/home/bin/Home\`, the Toolbox will load the user version rather than the system version. If you
 get into trouble, you can always remove the SD card and delete the files to restore standard operation.
 
-### Filesystem API
+By convention the delegates are stored on the Toolbox's filesystem at \`/bin\` (read-only) or \`/home/bin\` (read-write). 
+The delegate naming convention is:
+
+\`\`\`
+io[function]_[interface]_[family]
+\`\`\`
+
+So the default STM32 SWD flash delegate is found at:
+
+\`\`\`
+/bin/ioflash_swd_stm32
+\`\`\`
+
+If you want to replace this delegate with a user version, you can place it at:
+
+\`\`\`
+/home/bin/ioflash_swd_stm32
+\`\`\`
+
+### HTTP Filesystem API
 
 
 \`HTTP1.1 GET /fs/<path>\`
@@ -224,19 +308,29 @@ Deletes the file at \`path\`. Only files on the SD card (\`/home\`) can be delet
 \`\`\`
 curl -X DELETE http://<local ip address>/file/home/tmp/some.file
 \`\`\`
-
-  
 `
 
   return (
-    <Container>
-      <Section markdown={overview} >More Info</Section>
-      <Section markdown={flash} >More Info</Section>
-      <Section markdown={trace} >More Info</Section>
-      <Section markdown={debug} >More Info</Section>
-      <Section markdown={fs} >More Info</Section>
+    <Container className="mb-3">
+      <Section markdown={overview} ></Section>
+      <Section markdown={delegate} />
+      <Section markdown={delegateExample}>
+        
+      <InternalJump page="Settings" setPage={props.setPage} message="Configure delegate in Settings" icon={faSlidersH} />
+      <ExternalJump link="http://github.com/StratifyLabs/tbox" message="tbox library on Github" icon={faExternalLinkAlt} />
+        
+
+      </Section>
+      <Section markdown={flash} ></Section>
+      <Section markdown={trace} ></Section>
+      <Section markdown={traceGet} ><GetRequest placeholder='/trace'/></Section>
+      <Section markdown={tracePost} >Execute POST Request</Section>
+      <Section markdown={debug} ></Section>
+      <Section markdown={debugGet} >Execute GET Request</Section>
+      <Section markdown={debugPost} >Execute POST Request</Section>
+      <Section markdown={fs} ></Section>
     </Container>
   )
 }
 
-export default Docs
+export default Reference

@@ -11,7 +11,8 @@ import {
   faBolt,
   faWaveSquare,
   faPlay,
-  faSlidersH
+  faSlidersH,
+  faTerminal
 } from '@fortawesome/free-solid-svg-icons'
 
 
@@ -27,21 +28,25 @@ const SideBar = props => {
 
   return (
     <div>
-      <h3 className="ml-2 mr-2">Target</h3>
+      <h5 className="ml-2 mr-2">TARGET</h5>
       <ListGroup variant="flush" className="mb-2">
-        <Item setPage={props.setPage} icon={faPlay} name="Quick Start" page={props.page} />
         <Item setPage={props.setPage} icon={faBug} name="Debug" page={props.page} />
         <Item setPage={props.setPage} icon={faBolt} name="Flash" page={props.page} />
         <Item setPage={props.setPage} icon={faWaveSquare} name="Trace" page={props.page} />
+        <Item setPage={props.setPage} icon={faTerminal} name="Terminal" page={props.page} />
         <Item setPage={props.setPage} icon={faChartArea} name="Insights" page={props.page} />
-      </ListGroup>
-      <h3 className="ml-2 mr-2">Extras</h3>
-      <ListGroup variant="flush" className="mb-2">
         <Item setPage={props.setPage} icon={faSlidersH} name="Settings" page={props.page} />
         <Item setPage={props.setPage} icon={faFolderOpen} name="Files" page={props.page} />
-        <Item setPage={props.setPage} icon={faBook} name="Docs" page={props.page} />
-        <Item setPage={props.setPage} icon={faNetworkWired} name="Network" page={props.page} />
+      </ListGroup>
+      <h5 className="ml-2 mr-2">DOCS</h5>
+      <ListGroup variant="flush" className="mb-2">
+        <Item setPage={props.setPage} icon={faPlay} name="Quick Start" page={props.page} />
+        <Item setPage={props.setPage} icon={faBook} name="Reference" page={props.page} />
         <Item setPage={props.setPage} icon={faInfoCircle} name="About" page={props.page} />
+      </ListGroup>
+      <h5 className="ml-2 mr-2">EXTRA</h5>
+      <ListGroup variant="flush" className="mb-2">
+        <Item setPage={props.setPage} icon={faNetworkWired} name="Network" page={props.page} />
       </ListGroup>
     </div>
   )

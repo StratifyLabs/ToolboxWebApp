@@ -11,13 +11,13 @@ const Settings = props => {
 
   return (
     <Container>
-      <h2>Debug Interface</h2>
+      <h2>Debug Delegate</h2>
       <Container><Debug /></Container>
       <hr />
-      <h2>Flash Interface</h2>
+      <h2>Flash Delegate</h2>
       <Container><Flash /></Container>
       <hr />
-      <h2>Trace Interface</h2>
+      <h2>Trace Delegate</h2>
       <Container><Trace /></Container>
     </Container>
   )

@@ -5,18 +5,9 @@ import { Card, Form, Button } from 'react-bootstrap'
 
 const Trace = props => {
 
-  const messagesEndRef = React.createRef();
-  const content = (props.configuration !== undefined && props.configuration.data !== undefined) ? String(props.configuration.data.text.join('')) : "";
-
-
-  React.useEffect(() => {
-    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-  },[content])
-
   return (
     <pre>
-      {content}
-      <div ref={messagesEndRef} />
+      Get the trace history and allow to view previous runs
     </pre>
   )
 }

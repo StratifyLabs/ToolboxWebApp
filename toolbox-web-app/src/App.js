@@ -10,14 +10,14 @@ import DebugClient from './DebugClient'
 import Network from './views/Network'
 import Insights from './views/Insights'
 import InsightDetail from './views/InsightDetail'
-import Terminal from './views/Terminal'
 import QuickStart from './views/QuickStart'
 import About from './views/About'
-import Docs from './views/Docs'
+import Reference from './views/Reference'
 import Debug from './views/Debug'
 import Flash from './views/Flash'
 import Files from './views/Files'
 import Trace from './views/Trace'
+import Terminal from './views/Terminal'
 import Settings from './views/Settings'
 import Sidebar from "react-sidebar";
 
@@ -102,8 +102,8 @@ function App() {
           configuration={configuration} 
           />}
           {page === "About" && <About />}
-          {page === "Quick Start" && <QuickStart />}
-          {page === "Docs" && <Docs />}
+          {page === "Quick Start" && <QuickStart page={page} setPage={setPage} />}
+          {page === "Reference" && <Reference page={page} setPage={setPage} />}
           {page === "Debug" && <Debug configuration={configuration["output"]}/>}
           {page === "Flash" && <Flash configuration={configuration["output"]}/>}
           {page === "Files" && <Files configuration={configuration["output"]}/>}
