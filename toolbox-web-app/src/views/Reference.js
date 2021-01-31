@@ -1,6 +1,5 @@
 import React from 'react'
-import { Container, Row, Button } from 'react-bootstrap'
-import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
+import { Container  } from 'react-bootstrap'
 import {
   faSlidersH,
   faExternalLinkAlt,

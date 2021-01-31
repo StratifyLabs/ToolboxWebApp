@@ -3,9 +3,9 @@ import { Form, Button, ButtonGroup, ToggleButton, Col, Row } from 'react-bootstr
 
 import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
-  faTerminal,
+  faFolderOpen,
   faHistory,
-  faChartArea
+  faUpload
 } from '@fortawesome/free-solid-svg-icons'
 
 import AppContainer from '../components/AppContainer'
@@ -25,10 +25,7 @@ const Flash = props => {
   function onUploadClicked() {
 
   }
-
-
-
-
+  
   return (
     <AppContainer>
       <Row className="mb-3">
@@ -39,7 +36,7 @@ const Flash = props => {
             <Form.Text className="text-muted">
               Firmware File on Local Filesystem.
             </Form.Text>
-            <Button className={buttonClass}><FA icon={faTerminal} onClick={onUploadClicked} /> Upload</Button>
+            <Button className={buttonClass} variant="success"><FA icon={faUpload} onClick={onUploadClicked} /> Upload</Button>
           </Form.Group>
 
         </Col>
@@ -68,7 +65,7 @@ const Flash = props => {
           <p>Details</p>
         </Col>
       </Row></div>}
-      { radioValue == "2" && <div><h4><FA icon={faHistory} /> User Files</h4>
+      { radioValue == "2" && <div><h4><FA icon={faFolderOpen} /> User Files</h4>
       <Row>
         <Col md={4}>
           <p>Files</p>
