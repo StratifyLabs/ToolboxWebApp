@@ -53,10 +53,14 @@ const DebugClient = props => {
     }
   }
 
+  /*
   React.useEffect(() => {
     console.log("create new event source");
+ 
+
     const source = new EventSource(`${props.server}/terminal`);
 
+ 
     source.onopen = function (event) {
       setNewMessage(`connected to ${props.server}`);
       setServerStatus("success");
@@ -70,6 +74,7 @@ const DebugClient = props => {
     source.onmessage = function (event) {
       setIncoming(String(event.data));
     }
+    
 
 
     return () => {
@@ -80,6 +85,7 @@ const DebugClient = props => {
     }
 
   }, [])
+  */
 
   React.useEffect(() => {
     const lines = String(incoming).split("\n");

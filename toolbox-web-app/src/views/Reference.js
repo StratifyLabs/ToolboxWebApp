@@ -13,6 +13,8 @@ import GetRequest from '../components/docs/GetRequest'
 
 const Reference = props => {
 
+  const ipAddress = "192.168.1.35"
+
   const overview = `# Overview
   
 
@@ -72,45 +74,45 @@ basic kinds of applications
 
 `
 
-  const flash = `## HTTP Flash API
-
-\`HTTP1.1 GET /flash/delegates\`
+  const flash = `## HTTP Flash API`
+  const flashGet = `### Flash GET Requests
+\`GET /flash/delegates\`
 
 Returns a JSON object with a list of the available flash delegates.
 
 The flash API allows you to get and set the current flash settings as well as flash the target.
 
-\`HTTP1.1 GET /flash/settings\`
+\`GET /flash/settings\`
 
 Returns the current flash settings as JSON.
 
 To see your current flash settings:
 
 \`\`\`
-curl http://<local ip address>/flash/settings
+curl http://${ipAddress}/flash/settings
 \`\`\`
 
 
-\`HTTP1.1 POST /flash/settings\`
+\`PUT /flash/settings\`
 
 Updates the current flash settings by sending a JSON file that matches the format of
-the file returned using \`HTTP1.1 GET /flash/settings\`.
+the file returned using \`GET /flash/settings\`.
 
 \`\`\`
-curl -X POST -d @path/to/settings.json http://<local ip address>/flash/settings
+curl -X POST -d @path/to/settings.json http://${ipAddress}/flash/settings
 \`\`\`
 
 
-\`HTTP1.1 POST /flash/program/[elf|bin]\`
+\`POST /flash/program/[elf|bin]\`
 
 Receives a firmware image (in \`elf\` or \`bin\` format) and programs it on the target and starts running and tracing
 the output.
 
 \`\`\`
 # ELF source file
-curl -X POST -d @path/to/firmware.elf http://<local ip address>/flash/program/elf
+curl -X POST -d @path/to/firmware.elf http://${ipAddress}/flash/program/elf
 # Bin source file (settings need to specify start address)
-curl -X POST -d @path/to/firmware.bin http://<local ip address>/flash/program/bin
+curl -X POST -d @path/to/firmware.bin http://${ipAddress}/flash/program/bin
 \`\`\`
 
 The image is stored on the SD card at \`/home/flash/image/latest.[elf|bin]\`. Rather
@@ -119,12 +121,12 @@ using a timestamp notation. Only the 100 most recent images are kept. You can us
 the filesystem API to see which files are available as well as save copies of
 older versions.
 
-\`HTTP1.1 POST /flash/program/fs/<path>\`
+\`POST /flash/program/fs/<path>\`
 
 Programs the target with a firmware binary stored on the Toolbox.
 
 \`\`\`
-curl -X POST -d @path/to/path.json http://<local ip address>/flash/program/fs/home/user/firmware.elf
+curl -X POST -d @path/to/path.json http://${ipAddress}/flash/program/fs/home/user/firmware.elf
 \`\`\`
 `
 
@@ -133,39 +135,37 @@ curl -X POST -d @path/to/path.json http://<local ip address>/flash/program/fs/ho
 The trace API allows you to get and set the current trace settings as well as reset the target and trace the output.
 
 `
-  const traceGet = `\`HTTP1.1 GET /trace/delegates\`
+  const traceGet = `\`GET /trace/delegates\`
 
 Returns a JSON object with a list of the available trace delegates.
 
-\`HTTP1.1 GET /trace/settings\`
+\`GET /trace/settings\`
   
 Returns the current trace settings as JSON.
     
 \`\`\`
-curl http://<local ip address>/trace/settings
+curl http://${ipAddress}/trace/settings
 \`\`\` 
 
-\`HTTP1.1 GET /trace\`
+\`GET /trace\`
 
 Starts streaming the trace data. If the HTTP request header specifies server-side
 events, the response will for formatted as server-side events and encapsulated as
 JSON. The stream will stay open until it is closed by the client.
 
-\`HTTP1.1 POST /trace/reset\`
+\`GET /trace/reset\`
 
-Same as \`HTTP1.1 GET /trace\` but will reset the device before tracing starts.
+Same as \`GET /trace\` but will reset the device before tracing starts.
   
 `
-  const tracePost = `\`HTTP1.1 POST /trace/settings\`
+  const tracePost = `\`PUT /trace/settings\`
   
 Updates the current trace settings by sending a JSON file that matches the format of
-the file returned using \`HTTP1.1 GET /trace/settings\`.
+the file returned using \`GET /trace/settings\`.
   
 \`\`\`
-curl -X POST -d @path/to/settings.json http://<local ip address>/trace/settings
+curl -X PUT -d @path/to/settings.json http://${ipAddress}/trace/settings
 \`\`\`
-
-
 
 Starts streaming the trace data just like the \`GET\` request but allows you
 to reset the device before starting the trace.
@@ -178,65 +178,65 @@ The debug API allows you to get and set the current debug settings as well as ha
 `
   const debugGet = `### Debug GET Requests
   
-\`HTTP1.1 GET /debug/delegates\`
+\`GET /debug/delegates\`
 
 Returns a JSON object with a list of the available debug delegates.
 
-\`HTTP1.1 GET /debug/settings\`
+\`GET /debug/settings\`
     
 Returns the current trace settings as JSON.
       
 \`\`\`
-curl http://<local ip address>/debug/settings
+curl http://${ipAddress}/debug/settings
 \`\`\` 
 
 The following HTTP GET requests perform various debugging functions. The response is a core dump in
 JSON format.
 
-- \`HTTP1.1 GET /debug/start\`
-- \`HTTP1.1 GET /debug/halt\`
-- \`HTTP1.1 GET /debug/step\`
-- \`HTTP1.1 GET /debug/reset\`
+- \`GET /debug/start\`
+- \`GET /debug/halt\`
+- \`GET /debug/step\`
+- \`GET /debug/reset\`
 
 These just do what you think they do, but respond with a simple \`{ "result" : "[success|failed]" }\` rather
 than the full core dump.
 
-- \`HTTP1.1 GET /debug/resume\`
-- \`HTTP1.1 GET /debug/run\`
+- \`GET /debug/resume\`
+- \`GET /debug/run\`
 
 
-\`HTTP1.1 GET /debug/read/<address>/<size>\`
+\`GET /debug/read/<address>/<size>\`
 
 Reads memory using the debug port. The \`<address>\` and \`<size>\`
 can be specified in hexidecimal or decimal. Use the \`0x\` prefix to
 specify a hex address.
 
 \`\`\`
-curl http://<local ip address>/debug/read/0x08000000/1024
+curl http://${ipAddress}/debug/read/0x08000000/1024
 \`\`\` 
 
     
 `
   const debugPost = `### Debug POST Requests
   
-\`HTTP1.1 POST /debug/settings\`
+\`POST /debug/settings\`
     
 Updates the current debug settings by sending a JSON file that matches the format of
-the file returned using \`HTTP1.1 GET /debug/settings\`.
+the file returned using \`GET /debug/settings\`.
     
 \`\`\`
-curl -X POST -d @path/to/settings.json http://<local ip address>/debug/settings
+curl -X POST -d @path/to/settings.json http://${ipAddress}/debug/settings
 \`\`\`
 
 
-\`HTTP1.1 POST /debug/write/<address>/\`
+\`POST /debug/write/<address>/\`
 
 Writes data to the memory address space on the target device. The size
 is determined by the content length of the request. The data is interpreted
 as raw binary data.
 
 \`\`\`
-curl -X POST -d @path/to/register/values.bin http://<local ip address>/debug/write/0x00000000
+curl -X POST -d @path/to/register/values.bin http://${ipAddress}/debug/write/0x00000000
 \`\`\`
   
 `
@@ -291,32 +291,32 @@ If you want to replace this delegate with a user version, you can place it at:
 ### HTTP Filesystem API
 
 
-\`HTTP1.1 GET /fs/<path>\`
+\`GET /fs/<path>\`
 
 Gets the file or directory contents. If \`path\` is a directory, the response will include a JSON
 object with the contents of the directory. If \`path\` is a file, the response will be the contents
 of the file.
 
 \`\`\`
-curl http://<local ip address>/fs/home/flash/image
+curl http://${ipAddress}/fs/home/flash/image
 \`\`\` 
 
 
-\`HTTP1.1 POST /fs/<path>\`
+\`POST /fs/<path>\`
 
 Sends a file to the device to be saved at \`path\`.
 
 \`\`\`
-curl -X POST --data-binary @path/to/some.file http://<local ip address>/file/home/tmp/some.file
+curl -X POST --data-binary @path/to/some.file http://${ipAddress}/file/home/tmp/some.file
 \`\`\`
 
-\`HTTP1.1 DELETE /fs/<path>\`
+\`DELETE /fs/<path>\`
 
 Deletes the file at \`path\`. Only files on the SD card (\`/home\`) can be deleted. You
 cannot create or delete directories using the HTTP API.
 
 \`\`\`
-curl -X DELETE http://<local ip address>/file/home/tmp/some.file
+curl -X DELETE http://${ipAddress}/file/home/tmp/some.file
 \`\`\`
 `
 
@@ -332,11 +332,12 @@ curl -X DELETE http://<local ip address>/file/home/tmp/some.file
 
       </Section>
       <Section markdown={flash} ></Section>
+      <Section markdown={flashGet} ><GetRequest placeholder='/flash'/></Section>
       <Section markdown={trace} ></Section>
       <Section markdown={traceGet} ><GetRequest placeholder='/trace'/></Section>
       <Section markdown={tracePost} >Execute POST Request</Section>
       <Section markdown={debug} ></Section>
-      <Section markdown={debugGet} >Execute GET Request</Section>
+      <Section markdown={debugGet} ><GetRequest placeholder='/debug'/></Section>
       <Section markdown={debugPost} >Execute POST Request</Section>
       <Section markdown={fs} ></Section>
     </Container>

@@ -27,8 +27,8 @@ const Trace = props => {
     <AppContainer>
     <Row className="mb-3">
       <Col>
-      <Button className={buttonClass}><FA icon={faTerminal} onClick={onTerminalClicked} /> Real-Time Trace Output</Button>
-      <Button className={buttonClass}><FA icon={faChartArea} onClick={onInsightsClicked} /> Real-Time Insights</Button>
+      <Button className={buttonClass} onClick={onTerminalClicked} ><FA icon={faTerminal} /> Real-Time Trace Output</Button>
+      <Button className={buttonClass} onClick={onInsightsClicked} ><FA icon={faChartArea} /> Real-Time Insights</Button>
       </Col>
       </Row>
       <h4><FA icon={faHistory} /> Trace History</h4>

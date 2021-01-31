@@ -5,7 +5,12 @@ const Bitrate = props => {
 
   return (
   <Form.Group controlId="formBasicCheckbox">
-    <Form.Check type="checkbox" label={props.name} />
+    <Form.Check 
+    type="checkbox" 
+    label={props.name} 
+    defaultChecked={props.value}
+    onChange={(e) => props.toggleValue()}
+     />
     <Form.Text className="text-muted">
       {props.children}
     </Form.Text>

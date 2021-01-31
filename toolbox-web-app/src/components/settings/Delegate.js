@@ -1,33 +1,26 @@
 import React from 'react'
-import { Card, Form, Button } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
+
+import LoadingSpinner from '../LoadingSpinner'
+
 
 const Delegate = props => {
 
+  console.log(`delegate options ${JSON.stringify(props.options)}`)
+
   return (
     <Form.Group controlId="formBasicCheckbox">
-      <Form.Label>interface/family</Form.Label>
-      <Form.Check
+      <Form.Label>Delegate (interface/family)</Form.Label>
+      { Object.keys(props.options).map((key, index) => {
+        return <Form.Check
         type="radio"
-        label="swd/stm32"
+        label={`${props.options[key].interface}/${props.options[key].family}`}
+        key={key}
       />
-      <Form.Check
-        type="radio"
-        label="swd/lpc"
-      />
-      <Form.Check
-        type="radio"
-        label="swd/atsam"
-      />
-      <Form.Check
-        type="radio"
-        label="isp/avr"
-      />
-      <Form.Check
-        type="radio"
-        label="swd/tbox"
-      />
+      })}
+
       <Form.Text className="text-muted">
-        Select the delegate (interface/family) to use.
+        Select the delegate to use.
     </Form.Text>
     </Form.Group>
   )

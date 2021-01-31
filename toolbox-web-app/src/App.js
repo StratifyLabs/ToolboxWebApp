@@ -1,8 +1,7 @@
-import logo from './logo.svg';
 import React from 'react'
 import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Button, Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import SideBar from './components/SideBar'
 import Top from './components/Top'
 import DebugClient from './DebugClient'
@@ -21,8 +20,9 @@ import Terminal from './views/Terminal'
 import Settings from './views/Settings'
 import Sidebar from "react-sidebar";
 
-const mql = window.matchMedia(`(min-width: 800px)`);
+import { NetworkContext, networks } from './contexts/NetworkContext'
 
+const mql = window.matchMedia(`(min-width: 800px)`);
 
 function App() {
 
@@ -83,6 +83,7 @@ function App() {
         serverStatus={serverStatus}
         server={server}
         />
+        <NetworkContext.Provider value={networks.development}>
         <Container fluid>
 
            <DebugClient 
@@ -112,6 +113,7 @@ function App() {
           {page === "Terminal" && <Terminal configuration={configuration["output"]}/>}
           {page === "InsightDetail" && <InsightDetail configuration={insightConfiguration} />}
         </Container>
+        </NetworkContext.Provider>
       </Sidebar>
 
     </div>

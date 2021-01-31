@@ -9,7 +9,7 @@ const InternalJump = props => {
   }
 
   return (
-    <Row>
+    <Row className="mt-3 mb-3">
       <Button className="mb-2 btn-block text-left" variant='primary' onClick={onButtonClick}>{props.message} <FA className="float-right" icon={props.icon} /></Button>
     </Row>
   )

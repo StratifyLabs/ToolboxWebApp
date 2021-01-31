@@ -1,17 +1,18 @@
 import React from 'react'
 import { Card, Form, Button } from 'react-bootstrap'
 
+import TextInput from './TextInput'
+
 const Bitrate = props => {
 
 
   return (
-    <Form.Group controlId="bitrate">
-    <Form.Label>Bitrate</Form.Label>
-      <Form.Control type="input" placeholder="2000000" />
-      <Form.Text className="text-muted">
-        Bitrate in bits/second.
-      </Form.Text>
-    </Form.Group>
+    <TextInput 
+    name="Bitrate" 
+    placeholder={props.placeholder !== undefined ? props.placeholder : "1000000"} 
+    description="Bitrate in bits/second" 
+    onChange={props.onChange}
+    value={props.value} />
   )
 }
 

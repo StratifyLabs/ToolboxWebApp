@@ -6,7 +6,7 @@ const ExternalJump = props => {
 
 
   return (
-    <Row>
+    <Row className="mt-3 mb-3">
       <a href={props.link} target="_blank" className="mb-2 btn btn-block text-left btn-link" >{props.message} <FA className="float-right" icon={props.icon} /></a>
     </Row>
   )
