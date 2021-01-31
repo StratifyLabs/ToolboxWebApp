@@ -15,6 +15,8 @@ const Trace = props => {
 
   const buttonClass ="mr-2 btn"
 
+  
+
   function onTerminalClicked(){
     props.setPage("Terminal")
   }
