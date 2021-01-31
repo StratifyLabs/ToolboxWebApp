@@ -1,26 +1,10 @@
 import React from 'react'
-import { Container, Card, Button, Row, Col } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faTerminal,
-  faNetworkWired,
-  faChartArea,
-  faChartLine,
-  faFolderOpen,
-  faInfoCircle,
-  faWaveSquare,
-  faStop,
-  faChartBar,
-  faList
-} from '@fortawesome/free-solid-svg-icons'
 
 import Plot from '../components/insights/Plot'
 import Logic from '../components/insights/Logic'
 import Histogram from '../components/insights/Histogram'
 import Log from '../components/insights/Log'
 import Terminal from './Terminal'
-
-
 
 const InsightDetail = props => {
 

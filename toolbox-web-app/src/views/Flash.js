@@ -1,5 +1,7 @@
 import React from 'react'
-import { Form, Button, ButtonGroup, ToggleButton, Col, Row } from 'react-bootstrap'
+import { Form, Button, ButtonGroup, ToggleButton, Col, Row, Card } from 'react-bootstrap'
+import { useDropzone } from 'react-dropzone'
+import Dropzone from 'react-dropzone'
 
 import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
@@ -9,36 +11,41 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import AppContainer from '../components/AppContainer'
+import UserFileUpload from '../components/UserFileUpload'
 
 
 const Flash = props => {
+
+  const [isOverwrite, setOverwrite] = React.useState(false);
+
+  const onDrop = React.useCallback(acceptedFiles => {
+    // Do something with the files
+
+    console.log(`${JSON.stringify(acceptedFiles)}`)
+
+
+
+  }, [])
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+
 
   const [radioValue, setRadioValue] = React.useState('1');
 
   const radios = [
     { name: 'Flash History', value: '1' },
     { name: 'User Files', value: '2' }
-    ];
+  ];
 
-  const buttonClass = "mt-2 mr-2 btn"
-
-  function onUploadClicked() {
-
+  function toggleOverwrite(){
+    setOverwrite(!isOverwrite);
+    console.log(`is overwrite ${!isOverwrite}`)
   }
-  
+
   return (
     <AppContainer>
       <Row className="mb-3">
-        <Col>
-          <Form.Group controlId="bitrate">
-            <Form.Label>Upload to User Files</Form.Label>
-            <Form.Control type="input" placeholder="/local/path" />
-            <Form.Text className="text-muted">
-              Firmware File on Local Filesystem.
-            </Form.Text>
-            <Button className={buttonClass} variant="success"><FA icon={faUpload} onClick={onUploadClicked} /> Upload</Button>
-          </Form.Group>
-
+        <Col md={8}>
+          <UserFileUpload />
         </Col>
       </Row>
       <ButtonGroup toggle className="mb-3" >
@@ -57,23 +64,23 @@ const Flash = props => {
         ))}
       </ButtonGroup>
       { radioValue == "1" && <div><h4><FA icon={faHistory} /> Flash History</h4>
-      <Row>
-        <Col md={4}>
-          <p>Firmware</p>
-        </Col>
-        <Col md={5}>
-          <p>Details</p>
-        </Col>
-      </Row></div>}
+        <Row>
+          <Col md={4}>
+            <p>Firmware</p>
+          </Col>
+          <Col md={5}>
+            <p>Details</p>
+          </Col>
+        </Row></div>}
       { radioValue == "2" && <div><h4><FA icon={faFolderOpen} /> User Files</h4>
-      <Row>
-        <Col md={4}>
-          <p>Files</p>
-        </Col>
-        <Col md={5}>
-          <p>Details</p>
-        </Col>
-      </Row></div>}
+        <Row>
+          <Col md={4}>
+            <p>Files</p>
+          </Col>
+          <Col md={5}>
+            <p>Details</p>
+          </Col>
+        </Row></div>}
 
     </AppContainer>
   )

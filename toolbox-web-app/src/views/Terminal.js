@@ -1,7 +1,4 @@
 import React from 'react'
-import { Card, Form, Button } from 'react-bootstrap'
-
-
 
 const Terminal = props => {
 

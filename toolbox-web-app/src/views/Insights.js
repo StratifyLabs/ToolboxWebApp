@@ -3,11 +3,7 @@ import { Container, Card, Button, Row, Col } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faTerminal,
-  faNetworkWired,
-  faChartArea,
   faChartLine,
-  faFolderOpen,
-  faInfoCircle,
   faWaveSquare,
   faStop,
   faChartBar,
