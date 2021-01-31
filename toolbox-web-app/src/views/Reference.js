@@ -9,14 +9,19 @@ import Section from '../components/docs/Section'
 import InternalJump from '../components/docs/InternalJump'
 import ExternalJump from '../components/docs/ExternalJump'
 import GetRequest from '../components/docs/GetRequest'
+import PostRequest from '../components/docs/PostRequest'
+import PutRequest from '../components/docs/PutRequest'
+import { NetworkContext } from '../contexts/NetworkContext'
+
 
 const Reference = props => {
 
-  const ipAddress = "192.168.1.35"
+  const network = React.useContext(NetworkContext);
+
+  const ipAddress = network.host;
 
   const overview = `# Overview
   
-
 ## HTTP API
 
 The Stratify Toolbox runs an HTTP server that listens for requests that allow you to access the flash, trace, and debug
@@ -88,9 +93,19 @@ Returns the current flash settings as JSON.
 To see your current flash settings:
 
 \`\`\`
-curl http://${ipAddress}/flash/settings
+curl ${network.host}/flash/settings
 \`\`\`
 
+\`GET /flash/program/fs/<path>\`
+
+Programs the target with a firmware binary stored on the Toolbox.
+
+\`\`\`
+curl -X GET -d @path/to/path.json ${network.host}/flash/program/fs/home/user/firmware.elf
+\`\`\`
+
+`
+const flashPut = `### Flash PUT Requests
 
 \`PUT /flash/settings\`
 
@@ -98,9 +113,11 @@ Updates the current flash settings by sending a JSON file that matches the forma
 the file returned using \`GET /flash/settings\`.
 
 \`\`\`
-curl -X POST -d @path/to/settings.json http://${ipAddress}/flash/settings
+curl -X PUT -d @path/to/settings.json ${network.host}/flash/settings
 \`\`\`
 
+`
+const flashPost = `### Flash POST Requests
 
 \`POST /flash/program/[elf|bin]\`
 
@@ -109,9 +126,9 @@ the output.
 
 \`\`\`
 # ELF source file
-curl -X POST -d @path/to/firmware.elf http://${ipAddress}/flash/program/elf
+curl -X POST -d @path/to/firmware.elf ${network.host}/flash/program/elf
 # Bin source file (settings need to specify start address)
-curl -X POST -d @path/to/firmware.bin http://${ipAddress}/flash/program/bin
+curl -X POST -d @path/to/firmware.bin ${network.host}/flash/program/bin
 \`\`\`
 
 The image is stored on the SD card at \`/home/flash/image/latest.[elf|bin]\`. Rather
@@ -120,13 +137,6 @@ using a timestamp notation. Only the 100 most recent images are kept. You can us
 the filesystem API to see which files are available as well as save copies of
 older versions.
 
-\`POST /flash/program/fs/<path>\`
-
-Programs the target with a firmware binary stored on the Toolbox.
-
-\`\`\`
-curl -X POST -d @path/to/path.json http://${ipAddress}/flash/program/fs/home/user/firmware.elf
-\`\`\`
 `
 
   const trace = `## HTTP Trace API
@@ -134,7 +144,9 @@ curl -X POST -d @path/to/path.json http://${ipAddress}/flash/program/fs/home/use
 The trace API allows you to get and set the current trace settings as well as reset the target and trace the output.
 
 `
-  const traceGet = `\`GET /trace/delegates\`
+  const traceGet = `### Trace GET Requests
+  
+\`GET /trace/delegates\`
 
 Returns a JSON object with a list of the available trace delegates.
 
@@ -143,7 +155,7 @@ Returns a JSON object with a list of the available trace delegates.
 Returns the current trace settings as JSON.
     
 \`\`\`
-curl http://${ipAddress}/trace/settings
+curl ${network.host}/trace/settings
 \`\`\` 
 
 \`GET /trace\`
@@ -157,13 +169,15 @@ JSON. The stream will stay open until it is closed by the client.
 Same as \`GET /trace\` but will reset the device before tracing starts.
   
 `
-  const tracePost = `\`PUT /trace/settings\`
+  const tracePut = `### Trace PUT Requests
+  
+  \`PUT /trace/settings\`
   
 Updates the current trace settings by sending a JSON file that matches the format of
 the file returned using \`GET /trace/settings\`.
   
 \`\`\`
-curl -X PUT -d @path/to/settings.json http://${ipAddress}/trace/settings
+curl -X PUT -d @path/to/settings.json ${network.host}/trace/settings
 \`\`\`
 
 Starts streaming the trace data just like the \`GET\` request but allows you
@@ -186,7 +200,7 @@ Returns a JSON object with a list of the available debug delegates.
 Returns the current trace settings as JSON.
       
 \`\`\`
-curl http://${ipAddress}/debug/settings
+curl ${network.host}/debug/settings
 \`\`\` 
 
 The following HTTP GET requests perform various debugging functions. The response is a core dump in
@@ -211,20 +225,23 @@ can be specified in hexidecimal or decimal. Use the \`0x\` prefix to
 specify a hex address.
 
 \`\`\`
-curl http://${ipAddress}/debug/read/0x08000000/1024
+curl ${network.host}/debug/read/0x08000000/1024
 \`\`\` 
 
     
 `
-  const debugPost = `### Debug POST Requests
+  const debugPut = `### Debug PUT Requests
   
-\`POST /debug/settings\`
+\`PUT /debug/settings\`
     
 Updates the current debug settings by sending a JSON file that matches the format of
 the file returned using \`GET /debug/settings\`.
+
+`
+  const debugPost = `### Debug POST Requests
     
 \`\`\`
-curl -X POST -d @path/to/settings.json http://${ipAddress}/debug/settings
+curl -X POST -d @path/to/settings.json ${network.host}/debug/settings
 \`\`\`
 
 
@@ -235,11 +252,10 @@ is determined by the content length of the request. The data is interpreted
 as raw binary data.
 
 \`\`\`
-curl -X POST -d @path/to/register/values.bin http://${ipAddress}/debug/write/0x00000000
+curl -X POST -d @path/to/register/values.bin ${network.host}/debug/write/0x00000000
 \`\`\`
   
 `
-
   const fs = `## Filesystem Overview
 
 The filesystem API allows you to access the filesystems on the Toolbox. The filesystems follow a
@@ -287,8 +303,9 @@ If you want to replace this delegate with a user version, you can place it at:
 /home/bin/ioflash_swd_stm32
 \`\`\`
 
-### HTTP Filesystem API
-
+## HTTP Filesystem API
+`
+  const fsGet = `### Filesystem GET Requests
 
 \`GET /fs/<path>\`
 
@@ -297,17 +314,36 @@ object with the contents of the directory. If \`path\` is a file, the response w
 of the file.
 
 \`\`\`
-curl http://${ipAddress}/fs/home/flash/image
+curl ${network.host}/fs/home/flash/image
 \`\`\` 
 
+`
+  const fsPost = `### Filesystem POST Requests
 
 \`POST /fs/<path>\`
 
-Sends a file to the device to be saved at \`path\`.
+Sends a file to the device to be saved at \`path\`. If the file
+already exists, the operation will fail. Use \`PUT\` to create with 
+overwrite capability.
 
 \`\`\`
-curl -X POST --data-binary @path/to/some.file http://${ipAddress}/file/home/tmp/some.file
+curl -X POST --data-binary @path/to/some.file ${network.host}/file/home/tmp/some.file
 \`\`\`
+
+`
+const fsPut = `### Filesystem PUT Requests
+
+\`PUT /fs/<path>\`
+
+Sends a file to the device to be saved at \`path\`. \`PUT\` will overwrite
+the file if it already exists.
+
+\`\`\`
+curl -X PUT --data-binary @path/to/some.file ${network.host}/file/home/tmp/some.file
+\`\`\`
+
+`
+  const fsDelete = `### Filesystem Delete Requests
 
 \`DELETE /fs/<path>\`
 
@@ -315,7 +351,7 @@ Deletes the file at \`path\`. Only files on the SD card (\`/home\`) can be delet
 cannot create or delete directories using the HTTP API.
 
 \`\`\`
-curl -X DELETE http://${ipAddress}/file/home/tmp/some.file
+curl -X DELETE ${network.host}/file/home/tmp/some.file
 \`\`\`
 `
 
@@ -332,13 +368,20 @@ curl -X DELETE http://${ipAddress}/file/home/tmp/some.file
       </Section>
       <Section markdown={flash} ></Section>
       <Section markdown={flashGet} ><GetRequest placeholder='/flash'/></Section>
+      <Section markdown={flashPut} ><PutRequest placeholder='/flash'/></Section>
+      <Section markdown={flashPost} ><PostRequest placeholder='/flash'/></Section>
       <Section markdown={trace} ></Section>
       <Section markdown={traceGet} ><GetRequest placeholder='/trace'/></Section>
-      <Section markdown={tracePost} >Execute POST Request</Section>
+      <Section markdown={tracePut} ><PutRequest placeholder='/trace'/></Section>
       <Section markdown={debug} ></Section>
       <Section markdown={debugGet} ><GetRequest placeholder='/debug'/></Section>
-      <Section markdown={debugPost} >Execute POST Request</Section>
+      <Section markdown={debugPut} ><PutRequest placeholder='/debug'/></Section>
+      <Section markdown={debugPost} ><PostRequest placeholder='/debug'/></Section>
       <Section markdown={fs} ></Section>
+      <Section markdown={fsGet} ><GetRequest placeholder='/fs'/></Section>
+      <Section markdown={fsPost} ><PostRequest placeholder='/fs'/></Section>
+      <Section markdown={fsPut} ><PutRequest placeholder='/fs'/></Section>
+      <Section markdown={fsDelete} ></Section>
     </Container>
   )
 }
