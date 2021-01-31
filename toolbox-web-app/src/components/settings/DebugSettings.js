@@ -1,5 +1,4 @@
 import React from 'react'
-import { Card, Form, Button } from 'react-bootstrap'
 
 import Delegate from './Delegate'
 import Bitrate from './Bitrate'

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
-import ReactMarkdown from 'react-markdown'
 
 import Section from '../components/docs/Section'
 

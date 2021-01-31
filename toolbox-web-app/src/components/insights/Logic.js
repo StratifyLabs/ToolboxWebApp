@@ -1,12 +1,8 @@
 import React from 'react'
-import { Card, Button } from 'react-bootstrap'
-import { Chart } from 'react-charts'
-import { Line, Scatter } from 'react-chartjs-2'
+
 import {
   createContainer,
   VictoryChart,
-  VictoryZoomContainer,
-  VictoryCursorContainer,
   VictoryLine,
   VictoryBrushContainer,
   VictoryAxis,

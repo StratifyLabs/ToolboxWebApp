@@ -1,9 +1,8 @@
 import React from 'react'
-import { Button, Card, Badge } from 'react-bootstrap'
+import { Badge } from 'react-bootstrap'
 
 const LogEntry = props => {
   var variant;
-  var label;
   if (props.type === "debug") {
     variant = "dark"
   } else if (props.type === "info") {

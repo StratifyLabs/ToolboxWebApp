@@ -27,8 +27,9 @@ const Summary = props => {
         return faWaveSquare;
       case "log":
         return faList;
+      default:
+        break;
     }
-
     return faStop;
   }
 

@@ -22,9 +22,9 @@ const Files = props => {
   const [isReadOnly, setReadOnly] = React.useState("");
   const network = React.useContext(NetworkContext);
 
-  function loadDirectory(path, readonly) {
+  function loadDirectory(path, isReadOnly) {
     setLocation(path);
-    setReadOnly(readonly);
+    setReadOnly(isReadOnly);
     setActiveFile("");
     console.log(`request ${path}`)
     fetch(`${network.host}/fs${path}`)
@@ -47,8 +47,9 @@ const Files = props => {
           <ListGroup.Item>Mode: {props.info.mode}</ListGroup.Item>
           <ListGroup.Item>type: {props.info.type}</ListGroup.Item>
           <ListGroup.Item>
-            <a href={`${network.host}/fs${location}/${props.name}`} target='_blank' className="btn btn-primary mr-2"><FA icon={faDownload} /></a>
-            <Button variant="danger"><FA icon={faTrash} /></Button></ListGroup.Item>
+            <a href={`${network.host}/fs${location}/${props.name}`} target='_blank' rel="noreferrer" className="btn btn-primary mr-2"><FA icon={faDownload} /></a>
+            {props.isReadOnly && <Button variant="danger"><FA icon={faTrash} /></Button>}
+          </ListGroup.Item>
           <ListGroup.Item action><small>curl {network.host}/fs{props.location}/{props.name} <FA icon={faCopy} /></small></ListGroup.Item>
           <hr />
         </ListGroup>
@@ -58,7 +59,7 @@ const Files = props => {
 
   const DirectoryItem = props => {
     return (
-      <ListGroup.Item action active={props.location == props.path} onClick={() => props.onClick(props.path, props.readonly)}>{props.path}
+      <ListGroup.Item action active={props.location === props.path} onClick={() => props.onClick(props.path, props.isReadOnly)}>{props.path}
         <span className="float-right">
           <FA icon={faChevronRight} />
         </span>
@@ -78,17 +79,17 @@ const Files = props => {
         <Col md={4}>
           <h4>Browse Files</h4>
           <ListGroup variant="flush">
-            <DirectoryItem location={location} onClick={loadDirectory} readonly={true} path="/bin" />
-            <DirectoryItem location={location} onClick={loadDirectory} readonly={true} path="/assets" />
-            <DirectoryItem location={location} onClick={loadDirectory} readonly={false} path="/home/bin" />
-            <DirectoryItem location={location} onClick={loadDirectory} readonly={false} path="/home/assets" />
-            <DirectoryItem location={location} onClick={loadDirectory} readonly={false} path="/home/debug" />
-            <DirectoryItem location={location} onClick={loadDirectory} readonly={false} path="/home/flash" />
-            <DirectoryItem location={location} onClick={loadDirectory} readonly={false} path="/home/settings" />
-            <DirectoryItem location={location} onClick={loadDirectory} readonly={false} path="/home/tmp" />
-            <DirectoryItem location={location} onClick={loadDirectory} readonly={false} path="/home/trace" />
-            <DirectoryItem location={location} onClick={loadDirectory} readonly={false} path="/home/user" />
-            <DirectoryItem location={location} onClick={loadDirectory} readonly={false} path="/home/web" />
+            <DirectoryItem location={location} onClick={loadDirectory} isReadOnly={true} path="/bin" />
+            <DirectoryItem location={location} onClick={loadDirectory} isReadOnly={true} path="/assets" />
+            <DirectoryItem location={location} onClick={loadDirectory} isReadOnly={false} path="/home/bin" />
+            <DirectoryItem location={location} onClick={loadDirectory} isReadOnly={false} path="/home/assets" />
+            <DirectoryItem location={location} onClick={loadDirectory} isReadOnly={false} path="/home/debug" />
+            <DirectoryItem location={location} onClick={loadDirectory} isReadOnly={false} path="/home/flash" />
+            <DirectoryItem location={location} onClick={loadDirectory} isReadOnly={false} path="/home/settings" />
+            <DirectoryItem location={location} onClick={loadDirectory} isReadOnly={false} path="/home/tmp" />
+            <DirectoryItem location={location} onClick={loadDirectory} isReadOnly={false} path="/home/trace" />
+            <DirectoryItem location={location} onClick={loadDirectory} isReadOnly={false} path="/home/user" />
+            <DirectoryItem location={location} onClick={loadDirectory} isReadOnly={false} path="/home/web" />
             <hr />
           </ListGroup>
         </Col>
@@ -99,7 +100,7 @@ const Files = props => {
               return <ListGroup.Item
                 key={key}
                 action={true}
-                active={key == activeFile}
+                active={key === activeFile}
                 onClick={() => setActiveFile(key)}
               > {key}
                 <span className="float-right">
@@ -112,7 +113,7 @@ const Files = props => {
           </ListGroup>
         </Col>
         <Col md={4}>
-          {activeFile !== "" && <Details location={location} name={activeFile} info={list[activeFile]} />}
+          {activeFile !== "" && <Details isReadOnly={isReadOnly} location={location} name={activeFile} info={list[activeFile]} />}
         </Col>
       </Row>
     </AppContainer>

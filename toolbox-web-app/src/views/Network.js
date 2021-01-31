@@ -1,11 +1,9 @@
 import React from 'react'
-import { Card, Form, Button } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 
 
 
 const Network = props => {
-
-  const [input, setInput] = React.useState(props.server)
 
   return (
     <div>

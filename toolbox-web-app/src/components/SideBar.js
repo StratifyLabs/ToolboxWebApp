@@ -18,7 +18,7 @@ import {
 
 const Item = props => {
   return (
-    <ListGroup.Item action onClick={() => props.setPage(props.name)} active={props.page == props.name}>
+    <ListGroup.Item action onClick={() => props.setPage(props.name)} active={props.page === props.name}>
       <FontAwesomeIcon icon={props.icon} /> {props.name}
     </ListGroup.Item>
   )

@@ -1,11 +1,10 @@
 import React from 'react'
-import { Container, Alert, Row, Button } from 'react-bootstrap'
+import { Container, Row, Button } from 'react-bootstrap'
 
 import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
   faSlidersH,
-  faCopy,
-  faExternalLinkAlt
+  faCopy
 } from '@fortawesome/free-solid-svg-icons'
 
 import Section from '../components/docs/Section'

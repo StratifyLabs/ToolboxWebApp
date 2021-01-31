@@ -1,9 +1,6 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
-import LoadingSpinner from '../LoadingSpinner'
-
-
 const Delegate = props => {
 
   console.log(`delegate options ${JSON.stringify(props.options)}`)

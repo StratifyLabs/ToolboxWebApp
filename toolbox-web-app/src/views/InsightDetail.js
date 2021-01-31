@@ -22,6 +22,8 @@ const InsightDetail = props => {
         return <Logic configuration={configuration} />
       case "log":
         return <Log configuration={configuration} />
+      default:
+        break;
     }
 
     return null;

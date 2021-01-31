@@ -17,9 +17,6 @@ import { NetworkContext } from '../contexts/NetworkContext'
 const Reference = props => {
 
   const network = React.useContext(NetworkContext);
-
-  const ipAddress = network.host;
-
   const overview = `# Overview
   
 ## HTTP API
@@ -358,6 +355,7 @@ curl -X DELETE ${network.host}/file/home/tmp/some.file
   return (
     <Container className="mb-3">
       <Section markdown={overview} ></Section>
+      <Section markdown={sdk} />
       <Section markdown={delegate} />
       <Section markdown={delegateExample}>
         
@@ -366,6 +364,7 @@ curl -X DELETE ${network.host}/file/home/tmp/some.file
         
 
       </Section>
+
       <Section markdown={flash} ></Section>
       <Section markdown={flashGet} ><GetRequest placeholder='/flash'/></Section>
       <Section markdown={flashPut} ><PutRequest placeholder='/flash'/></Section>

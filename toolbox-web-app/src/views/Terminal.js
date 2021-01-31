@@ -8,7 +8,7 @@ const Terminal = props => {
 
   React.useEffect(() => {
     messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-  },[content])
+  },[content, messagesEndRef])
 
   return (
     <pre>

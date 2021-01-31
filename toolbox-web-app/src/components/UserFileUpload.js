@@ -6,7 +6,7 @@ import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
   faBoxOpen,
   faBullseye,
-  faUpload
+  faFolderOpen
 } from '@fortawesome/free-solid-svg-icons'
 
 import AppContainer from './AppContainer'
@@ -38,12 +38,12 @@ const UserFileUpload = props => {
       <Card className="text-center" style={{cursor: "pointer"}}>
         <Card.Body {...getRootProps()}>
           <input {...getInputProps()} />
-          <p>Drop files here</p>
+          <p>Drop file here</p>
           {
             isDragActive ?
               <p><FA icon={faBullseye} size="2x" /></p> : <p><FA icon={faBoxOpen} size="2x" /></p>
           }
-          <p><Button variant="light"><FA icon={faUpload} /> Upload</Button></p>
+          <p><Button variant="light"><FA icon={faFolderOpen} /> Select File</Button></p>
         </Card.Body>
       </Card>
     </AppContainer>

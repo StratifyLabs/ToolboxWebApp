@@ -45,7 +45,7 @@ const SettingsObject = props => {
       console.log("Need to put settings for " + props.type);
     }
 
-  }, [count])
+  }, [count, network.host, props.type])
 
 
   return (

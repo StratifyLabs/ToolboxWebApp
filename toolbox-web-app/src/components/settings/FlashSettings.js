@@ -1,13 +1,9 @@
 import React from 'react'
-import { Card, Form, Button } from 'react-bootstrap'
 
-import SettingsObject from './SettingsObject'
 import Delegate from './Delegate'
 import Bitrate from './Bitrate'
 import TextInput from './TextInput'
 import Boolean from './Boolean'
-
-import LoadingSpinner from '../LoadingSpinner'
 
 
 const FlashSettings = props => {

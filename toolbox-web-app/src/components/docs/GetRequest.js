@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, Card, Row, Col, Form, Button, Container, InputGroup, FormControl } from 'react-bootstrap'
+import { Alert, Row, Col, Form, Button, Container, InputGroup, FormControl } from 'react-bootstrap'
 import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
   faCheck,

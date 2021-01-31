@@ -1,8 +1,5 @@
 import React from 'react'
-import { Card, Button } from 'react-bootstrap'
-import { Chart } from 'react-charts'
-import { Line, Scatter } from 'react-chartjs-2'
-import { VictoryChart, VictoryZoomContainer, VictoryLine, VictoryScatter } from "victory";
+import { VictoryChart, VictoryLine } from "victory";
 import Theme from './Theme'
 
 const Plot = props => {

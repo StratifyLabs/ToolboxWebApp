@@ -1,10 +1,9 @@
 import React from 'react'
-import { Button, Col, ListGroup, Row, Badge } from 'react-bootstrap'
+import { Button, Col, ListGroup, Row } from 'react-bootstrap'
 
 import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
   faTerminal,
-  faHistory,
   faChartArea,
   faMicrochip,
   faHandPaper,
