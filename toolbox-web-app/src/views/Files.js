@@ -15,29 +15,42 @@ import { NetworkContext } from '../contexts/NetworkContext'
 
 const Files = props => {
 
-
   const [list, setList] = React.useState();
   const [location, setLocation] = React.useState("");
   const [activeFile, setActiveFile] = React.useState("");
   const [isReadOnly, setReadOnly] = React.useState("");
   const network = React.useContext(NetworkContext);
 
-  function loadDirectory(path, isReadOnly) {
-    setLocation(path);
-    setReadOnly(isReadOnly);
+  async function loadDirectory(path, isReadOnlyValue) {
+    if( path !== location ){
+      setLocation(path);
+    }
+    if( isReadOnlyValue !== isReadOnly ){
+      setReadOnly(isReadOnlyValue);
+    }
     setActiveFile("");
     console.log(`request ${path}`)
-    fetch(`${network.host}/fs${path}`)
+    if( path !== "" ){
+    await fetch(`${network.host}/fs${path}`)
       .then(response => response.json())
       .catch(e => setList({}))
       .then(result => {
         setList(result)
       })
+    }
   }
 
   const Details = props => {
 
     const network = React.useContext(NetworkContext)
+
+    async function deleteFile() {
+      console.log(`DELETE ${network.host}/fs${props.location}/${props.name}`)
+      await fetch(`${network.host}/fs${props.location}/${props.name}`, {
+        method: 'DELETE'
+      })
+      loadDirectory(props.location, isReadOnly);
+    }
 
     return (
       <div>
@@ -47,8 +60,8 @@ const Files = props => {
           <ListGroup.Item>Mode: {props.info.mode}</ListGroup.Item>
           <ListGroup.Item>type: {props.info.type}</ListGroup.Item>
           <ListGroup.Item>
-            <a href={`${network.host}/fs${location}/${props.name}`} target='_blank' rel="noreferrer" className="btn btn-primary mr-2"><FA icon={faDownload} /></a>
-            {props.isReadOnly && <Button variant="danger"><FA icon={faTrash} /></Button>}
+            <a href={`${network.host}/fs${props.location}/${props.name}`} target='_blank' rel="noreferrer" className="btn btn-primary mr-2"><FA icon={faDownload} /></a>
+            {!props.isReadOnly && <Button variant="danger" onClick={deleteFile}><FA icon={faTrash} /></Button>}
           </ListGroup.Item>
           <ListGroup.Item action><small>curl {network.host}/fs{props.location}/{props.name} <FA icon={faCopy} /></small></ListGroup.Item>
           <hr />
@@ -67,12 +80,18 @@ const Files = props => {
     )
   }
 
+
+  function handleFileUploadComplete(name){
+    loadDirectory(location, isReadOnly);
+  }
+
+
   return (
     <AppContainer>
       <Row>
         <Col md={8}>
           <h4>Upload User Files</h4>
-          <UserFileUpload />
+          <UserFileUpload onFileComplete={handleFileUploadComplete} />
         </Col>
       </Row>
       <Row>
