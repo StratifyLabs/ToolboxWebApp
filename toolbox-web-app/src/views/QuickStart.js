@@ -1,14 +1,13 @@
 import React from 'react'
-import { Container, Row, Button } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 
-import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
-  faSlidersH,
-  faCopy
+  faSlidersH
 } from '@fortawesome/free-solid-svg-icons'
 
 import Section from '../components/docs/Section'
 import InternalJump from '../components/docs/InternalJump'
+import CopyCommand from '../components/docs/CopyCommand'
 
 const QuickStart = props => {
 
@@ -63,9 +62,7 @@ curl http://<local ip address>/trace
       </Section>
       <Section markdown={flashIntro} />
       <Section markdown={flashCurlCommand}>
-        <Row>
-        <Button className="mb-2 btn-block text-left" variant='success'>Copy curl command with IP address <FA className="float-right" icon={faCopy} /></Button>
-        </Row>
+      <CopyCommand message="Copy curl command" />
       </Section>
     </Container>
   )
