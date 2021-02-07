@@ -1,25 +1,34 @@
 import React from 'react'
-import { Form } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
 const Delegate = props => {
 
-  console.log(`delegate options ${JSON.stringify(props.options)}`)
+  const [delegate, setDelegate] = React.useState(props.delegate);
+
+  function updateDelegate(key){
+    setDelegate(props.options[key]);
+    props.setDelegate(props.options[key]);
+  }
+
+  function getVariant(key){
+    return getDelegateString(delegate) === getDelegateString(props.options[key]) ? 'secondary' : 'outline-secondary'
+  }
+
+  function getDelegateString(delegate){
+    return `${delegate["interface"]}/${delegate.family}`
+  }
 
   return (
-    <Form.Group controlId="formBasicCheckbox">
-      <Form.Label>Delegate (interface/family)</Form.Label>
+    <div>
+      <h5>Delegate (interface/family)</h5>
       { Object.keys(props.options).map((key, index) => {
-        return <Form.Check
-        type="radio"
-        label={`${props.options[key].interface}/${props.options[key].family}`}
-        key={key}
-      />
+        return <Button key={key} className="mr-2" variant={getVariant(key)} onClick={() => updateDelegate(key) }
+      >{getDelegateString(props.options[key])}</Button>
       })}
-
-      <Form.Text className="text-muted">
+      <p className="text-muted">
         Select the delegate to use.
-    </Form.Text>
-    </Form.Group>
+    </p>
+    </div>
   )
 }
 

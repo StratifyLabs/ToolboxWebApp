@@ -24,6 +24,7 @@ const Flash = props => {
     <AppContainer>
       <Row className="mb-3">
         <Col md={8}>
+          <h4>Upload User Files</h4>
           <UserFileUpload />
         </Col>
       </Row>

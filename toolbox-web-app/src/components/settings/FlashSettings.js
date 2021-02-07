@@ -8,29 +8,44 @@ import Boolean from './Boolean'
 
 const FlashSettings = props => {
 
+  console.log(`flash settings ${JSON.stringify(props.settings)}`)
+
+  const [settings, setSettings] = React.useState(props.settings);
+
 
   function handleVerifyChanged() {
-    let settings = props.settings;
-    settings.verify = !props.settings.verify;
-    props.updateSettings(settings);
-  }
+    let next_settings = settings;
+    next_settings.verify = !settings.verify;
+    setSettings(next_settings);
+    props.setSettingsChanged();
+    }
 
   function handleForceChanged() {
-    let settings = props.settings;
-    settings.force = !props.settings.force;
-    props.updateSettings(settings);
+    let next_settings = settings;
+    next_settings.force = !settings.force;
+    setSettings(next_settings);
+    props.setSettingsChanged();
   }
 
   function handleStartChanged(value) {
-    let settings = props.settings;
-    settings.start = value;
-    props.updateSettings(settings);
+    let next_settings = settings;
+    next_settings.start = value;
+    setSettings(next_settings);
+    props.setSettingsChanged();
   }
 
   function handleBitrateChanged(value) {
-    let settings = props.settings;
-    settings.bitrate = value;
-    props.updateSettings(settings);
+    let next_settings = settings;
+    next_settings.bitrate = value;
+    setSettings(next_settings);
+    props.setSettingsChanged();
+  }
+
+  function handleDelegateChanged(value){
+    let next_settings = settings;
+    next_settings.delegate = value;
+    setSettings(next_settings);
+    props.setSettingsChanged();
   }
 
   //request current settings from the device -- update the settings on the device
@@ -38,25 +53,26 @@ const FlashSettings = props => {
 
   return (
     <div>
-      <Delegate options={props.delegateOptions} />
+      <h3>Flash Settings</h3>
+      <Delegate delegate={settings.delegate} options={props.delegateOptions} setDelegate={handleDelegateChanged} />
       <Bitrate
-        value={props.settings.bitrate}
+        value={settings.bitrate}
         placeholder="1000000"
         onChange={(value) => handleBitrateChanged(value)} />
       <TextInput
         name="Start"
         placeholder="0x00000000"
-        value={props.settings.start}
+        value={settings.start}
         onChange={(value) => handleStartChanged(value)}
         description="Start address for .bin files" />
       <Boolean
         name="Verify"
         toggleValue={() => handleVerifyChanged()}
-        value={props.settings.verify}>Verify the image was installed correctly</Boolean>
+        value={settings.verify}>Verify the image was installed correctly</Boolean>
       <Boolean
         name="Force"
         toggleValue={() => handleForceChanged()}
-        value={props.settings.force}>Force install even if the image is already installed</Boolean>
+        value={settings.force}>Force install even if the image is already installed</Boolean>
     </div>
   )
 }
