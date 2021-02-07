@@ -20,6 +20,7 @@ const Settings = props => {
 
   const network = React.useContext(NetworkContext);
   const [settings, setSettings] = React.useState();
+  const [latestSettings, setLatestSettings] = React.useState();
   const [delegateOptions, setDelegateOptions] = React.useState();
   const [count, setCount] = React.useState();
   const [radioValue, setRadioValue] = React.useState('debug');
@@ -48,14 +49,8 @@ const Settings = props => {
 
   console.log(`settings are ${JSON.stringify(settings)}`)
 
-  function handleSaveSettingClicked(){
-    setSettingsChanged(false);
-
-  }
-
   async function putSettings() {
-    console.log(`put body ${JSON.stringify(settings)}`)
-    /*
+    console.log(`put body ${JSON.stringify(latestSettings)}`)
     const response = await fetch(`${network.host}/${type}/settings`, {
       method: 'PUT',
       body: JSON.stringify(settings)
@@ -64,11 +59,17 @@ const Settings = props => {
     const responseJson = await response.json();
 
     console.log(`setting put complete ${JSON.stringify(responseJson)}`)
-    */
+    setSettingsChanged(false);
+
+  }
+
+  function handleSaveSettingClicked() {
+    putSettings();
   }
 
   function handleSettingsChanged(value) {
     //setSettings(value);
+    setLatestSettings(value);
     setSettingsChanged(true);
   }
 
@@ -132,11 +133,11 @@ const Settings = props => {
         {isReady && radioValue === 'trace' && <TraceSettings settings={settings} setSettingsChanged={handleSettingsChanged} delegateOptions={delegateOptions} />}
       </Row>
       <Row className="mb-3">
-        <Button 
-        disabled={!isSettingsChanged} 
-        variant={isSettingsChanged ? `warning` : `success`}
-        onClick={handleSaveSettingClicked} 
-        >{isSettingsChanged ? `Save Settings` : `Settings Saved` } <FA icon={isSettingsChanged ? faQuestion: faCheck}/></Button>
+        <Button
+          disabled={!isSettingsChanged}
+          variant={isSettingsChanged ? `warning` : `success`}
+          onClick={handleSaveSettingClicked}
+        >{isSettingsChanged ? `Save Settings` : `Settings Saved`} <FA icon={isSettingsChanged ? faQuestion : faCheck} /></Button>
       </Row>
     </AppContainer>
   )

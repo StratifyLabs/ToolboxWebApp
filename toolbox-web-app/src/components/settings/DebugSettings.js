@@ -14,21 +14,21 @@ const DebugSettings = props => {
     let next_settings = settings;
     next_settings.hardwareReset = !settings.hardwareReset;
     setSettings(next_settings);
-    props.setSettingsChanged();
+    props.setSettingsChanged(next_settings);
   }
 
   function handleConnectUnderResetChanged() {
     let next_settings = settings;
     next_settings.connectUnderReset = !settings.connectUnderReset;
     setSettings(next_settings);
-    props.setSettingsChanged();
+    props.setSettingsChanged(next_settings);
   }
 
   function handleBitrateChanged(value) {
     let next_settings = props.settings;
     next_settings.bitrate = value;
     setSettings(next_settings);
-    props.setSettingsChanged();
+    props.setSettingsChanged(next_settings);
   }
 
 
@@ -36,7 +36,7 @@ const DebugSettings = props => {
     let next_settings = settings;
     next_settings.delegate = value;
     setSettings(next_settings);
-    props.setSettingsChanged();
+    props.setSettingsChanged(next_settings);
   }
 
   return (

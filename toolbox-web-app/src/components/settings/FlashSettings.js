@@ -17,35 +17,35 @@ const FlashSettings = props => {
     let next_settings = settings;
     next_settings.verify = !settings.verify;
     setSettings(next_settings);
-    props.setSettingsChanged();
+    props.setSettingsChanged(next_settings);
     }
 
   function handleForceChanged() {
     let next_settings = settings;
     next_settings.force = !settings.force;
     setSettings(next_settings);
-    props.setSettingsChanged();
+    props.setSettingsChanged(next_settings);
   }
 
   function handleStartChanged(value) {
     let next_settings = settings;
     next_settings.start = value;
     setSettings(next_settings);
-    props.setSettingsChanged();
+    props.setSettingsChanged(next_settings);
   }
 
   function handleBitrateChanged(value) {
     let next_settings = settings;
     next_settings.bitrate = value;
     setSettings(next_settings);
-    props.setSettingsChanged();
+    props.setSettingsChanged(next_settings);
   }
 
   function handleDelegateChanged(value){
     let next_settings = settings;
     next_settings.delegate = value;
     setSettings(next_settings);
-    props.setSettingsChanged();
+    props.setSettingsChanged(next_settings);
   }
 
   //request current settings from the device -- update the settings on the device
