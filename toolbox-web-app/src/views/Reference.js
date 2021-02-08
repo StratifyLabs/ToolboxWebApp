@@ -18,8 +18,18 @@ const Reference = props => {
 
   const network = React.useContext(NetworkContext);
   const overview = `# Overview
-  
-## HTTP API
+
+With the the Stratify Toolbox, you can **debug**, **flash** and **trace** supported microcontroller targets using a *delegate*.
+
+There are three ways to access these *functions*:
+
+- Web Application: see the Quick Start guide
+- HTTP API: see below
+- Local Display: see the Quick Start guide
+
+`
+
+  const httpApi = `## HTTP API
 
 The Stratify Toolbox runs an HTTP server that listens for requests that allow you to access the flash, trace, and debug
 interfaces either using this web application or from the command line using a program like \`curl\`.
@@ -34,10 +44,13 @@ The HTTP API consists of 4 parts:
 
   const delegate = `## Delegates
 
-  A delegate is a program specifically designed for a specific *interface* and MCU *family*.
-It runs on the Toolbox and allows you to perform a *function* such as flash, debug, or trace an MCU *family* with a given *interface*.
+A *delegate* is a Toolbox background application designed for a specific *function* operating over an *interface* for an MCU *family*. A *function* can be:
 
-The Toolbox hardware supports interfaces such as:
+- Debug
+- Flash
+- Trace
+
+The Toolbox hardware supports the following *interfaces*:
 
 - SWD
 - JTAG
@@ -46,18 +59,16 @@ The Toolbox hardware supports interfaces such as:
 - I2C
 - Anything that can be bitbanged
 
-The Toolbox can be programmed to support any MCU *family* that can be either flashed, debugged, or traced
-using an *interface* above. Each *function* has an independent delegate.
-
-The built-in delegates are found at \`/bin/io[function]_[interface]_[family]\`. Delegates that
-are added to \`/home/bin/io[function]_[interface]_[family]\` are also recognized.
+A *delegate* can be designed for any MCU *family* using the SDK. There is built-in support for
+all *stm32* Cortex M *families*. Additionally, you can quickly add support for almost any ARM Cortex M
+chip using the *tbox* delegate.
 `
 
   const delegateExample = `
 For example, the Toolbox comes with several built-in delegates:
 - \`ioflash_swd_stm32\`: Flash any STM32 chip over SWD
-- \`iotrace_swo_tbox\`: Trace any MCU over SWO using the \`tbox\` trace library
 - \`iodebug_swd_stm32\`: Debug any STM32 chip over SWD
+- \`iotrace_swo_tbox\`: Trace any MCU over SWO using the \`tbox\` trace library
 - \`iotrace_uart_tbox\`: Trace any MCU over UART using the \`tbox\` trace library
 `
 
@@ -68,10 +79,9 @@ For example, the Toolbox comes with several built-in delegates:
 The Toolbox's SDK allows you to build, install, and share applications that run on the toolbox. This includes three
 basic kinds of applications
 
-- Delegates that implement an *interface* for an MCU *family*
+- Delegates that implement a *funcion* over an *interface* for an MCU *family*
 - System applications can be customized and replaced (don't worry you can always revert)
 - User applications that provide brand-new functionality on the Toolbox
-
 
 `
 
@@ -355,8 +365,9 @@ curl -X DELETE ${network.host}/file/home/tmp/some.file
   return (
     <Container className="mb-3">
       <Section markdown={overview} ></Section>
-      <Section markdown={sdk} />
       <Section markdown={delegate} />
+      <Section markdown={sdk} />
+      <Section markdown={httpApi} />
       <Section markdown={delegateExample}>
         
       <InternalJump page="Settings" setPage={props.setPage} message="Configure delegate in Settings" icon={faSlidersH} />

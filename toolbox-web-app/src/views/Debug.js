@@ -65,7 +65,7 @@ const Debug = props => {
       <Col md={8}>
       <ListGroup>
         {Object.keys(state).map((key, index) => {
-            return <ListGroup.Item><strong>{key}:</strong> {`${pad(state[key],8,16)}h / ${state[key]}d` }</ListGroup.Item>
+            return <ListGroup.Item key={key}><strong>{key}:</strong> {`${pad(state[key],8,16)}h / ${state[key]}d` }</ListGroup.Item>
           })}
       </ListGroup>
       </Col>

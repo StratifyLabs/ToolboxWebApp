@@ -13,7 +13,7 @@ import AppContainer from '../components/AppContainer'
 
 const Trace = props => {
 
-  const buttonClass ="mr-2 btn"
+  const buttonClass ="mr-2 mb-2 btn"
 
   
 
@@ -29,8 +29,8 @@ const Trace = props => {
     <AppContainer>
     <Row className="mb-3">
       <Col>
-      <Button className={buttonClass} onClick={onTerminalClicked} ><FA icon={faTerminal} /> Real-Time Trace Output</Button>
-      <Button className={buttonClass} onClick={onInsightsClicked} ><FA icon={faChartArea} /> Real-Time Insights</Button>
+      <Button className={buttonClass} onClick={onTerminalClicked} ><FA icon={faTerminal} /> <span className="d-none d-md-block">Real-Time Trace Output</span></Button>
+      <Button className={buttonClass} onClick={onInsightsClicked} ><FA icon={faChartArea} /> <span className="d-none d-md-block">Real-Time Insights</span></Button>
       </Col>
       </Row>
       <h4><FA icon={faHistory} /> Trace History</h4>

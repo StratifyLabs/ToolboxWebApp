@@ -6,7 +6,8 @@ import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
   faBoxOpen,
   faBullseye,
-  faFolderOpen
+  faFolderOpen,
+  faSpinner
 } from '@fortawesome/free-solid-svg-icons'
 
 import AppContainer from './AppContainer'
@@ -16,6 +17,7 @@ const UserFileUpload = props => {
 
   let count = 0;
   const [isOverwrite, setOverwrite] = React.useState(false);
+  const [isUploadBusy, setUploadBusy] = React.useState(false);
   const network = React.useContext(NetworkContext);
 
   async function uploadFile(url, data) {
@@ -36,13 +38,14 @@ const UserFileUpload = props => {
     });
     console.log("call file complete" + props.onFileComplete);
     count = count - 1;
-    if( count === 0 ){
+    if (count === 0) {
       props.onFileComplete !== undefined && props.onFileComplete(url)
     }
+    setUploadBusy(false);
     return response !== undefined ? response.json() : null; // parses JSON response into native JavaScript objects
   }
 
-  async function readAndUploadFile(file){
+  async function readAndUploadFile(file) {
     const reader = new FileReader()
     reader.onabort = () => console.log('file reading was aborted')
     reader.onerror = () => console.log('file reading has failed')
@@ -54,7 +57,8 @@ const UserFileUpload = props => {
     await reader.readAsArrayBuffer(file)
   }
 
-  async function uploadFileList(list){
+  async function uploadFileList(list) {
+    setUploadBusy(true);
     count = list.length;
     props.onStart !== undefined && props.onStart(list)
     await list.forEach((file) => {
@@ -63,7 +67,7 @@ const UserFileUpload = props => {
   }
 
 
-  const onDrop = React.useCallback( acceptedFiles => {
+  const onDrop = React.useCallback(acceptedFiles => {
     // Do something with the files
     uploadFileList(acceptedFiles);
 
@@ -90,12 +94,17 @@ const UserFileUpload = props => {
       <Card className="text-center" style={{ cursor: "pointer" }}>
         <Card.Body {...getRootProps()}>
           <input {...getInputProps()} />
-          <p>Drop file here</p>
-          {
-            isDragActive ?
-              <p><FA icon={faBullseye} size="2x" /></p> : <p><FA icon={faBoxOpen} size="2x" /></p>
-          }
-          <p><Button variant="light"><FA icon={faFolderOpen} /> Select File</Button></p>
+          {isUploadBusy === false && <div><p>Drop file here</p>
+            {
+              isDragActive ?
+                <p><FA icon={faBullseye} size="2x" /></p> : <p><FA icon={faBoxOpen} size="2x" /></p>
+            }
+            <p><Button variant="light"><FA icon={faFolderOpen} /> Select File</Button></p>
+          </div>}
+          {isUploadBusy === true && <div>
+            <p><FA icon={faSpinner} spin size="2x" /></p>
+            <p>Uploading Files...</p>
+          </div>}
         </Card.Body>
       </Card>
     </AppContainer>

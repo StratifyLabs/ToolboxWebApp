@@ -22,7 +22,7 @@ const Delegate = props => {
     <div>
       <h5>Delegate (interface/family)</h5>
       { Object.keys(props.options).map((key, index) => {
-        return <Button key={key} className="mr-2" variant={getVariant(key)} onClick={() => updateDelegate(key) }
+        return <Button key={key} className="mr-2 mb-2" variant={getVariant(key)} onClick={() => updateDelegate(key) }
       >{getDelegateString(props.options[key])}</Button>
       })}
       <p className="text-muted">

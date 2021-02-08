@@ -42,8 +42,6 @@ const Files = props => {
 
   const Details = props => {
 
-    const network = React.useContext(NetworkContext)
-
     async function deleteFile() {
       console.log(`DELETE ${network.host}/fs${props.location}/${props.name}`)
       await fetch(`${network.host}/fs${props.location}/${props.name}`, {
