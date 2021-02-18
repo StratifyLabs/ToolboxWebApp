@@ -28,8 +28,8 @@ function App() {
 
   const [server, setServer] = React.useState("http://localhost:3002");
   const [serverStatus, setServerStatus] = React.useState(false);
-  const [page, setPageState] = React.useState("Network");
-  const [pageName, setPageName] = React.useState("Network");
+  const [page, setPageState] = React.useState("Quick Start");
+  const [pageName, setPageName] = React.useState("Quick Start");
   const [isSidebarOpen, setSidebarOpen] = React.useState(true);
   const [isSidebarDocked, setSidebarDocked] = React.useState(true);
 

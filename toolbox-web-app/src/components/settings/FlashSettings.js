@@ -12,38 +12,23 @@ const FlashSettings = props => {
 
   const [settings, setSettings] = React.useState(props.settings);
 
-
-  function handleVerifyChanged() {
-    let next_settings = settings;
-    next_settings.verify = !settings.verify;
-    setSettings(next_settings);
-    props.setSettingsChanged(next_settings);
-    }
-
-  function handleForceChanged() {
-    let next_settings = settings;
-    next_settings.force = !settings.force;
-    setSettings(next_settings);
-    props.setSettingsChanged(next_settings);
-  }
-
-  function handleStartChanged(value) {
-    let next_settings = settings;
-    next_settings.start = value;
-    setSettings(next_settings);
-    props.setSettingsChanged(next_settings);
-  }
-
-  function handleBitrateChanged(value) {
-    let next_settings = settings;
-    next_settings.bitrate = value;
-    setSettings(next_settings);
-    props.setSettingsChanged(next_settings);
-  }
-
   function handleDelegateChanged(value){
     let next_settings = settings;
     next_settings.delegate = value;
+    setSettings(next_settings);
+    props.setSettingsChanged(next_settings);
+  }
+
+  function handleBoolChanged(name){
+    let next_settings = settings;
+    next_settings[name] = !settings[name];
+    setSettings(next_settings);
+    props.setSettingsChanged(next_settings);
+  }
+
+  function handleValueChanged(name, value){
+    let next_settings = settings;
+    next_settings[name] = value;
     setSettings(next_settings);
     props.setSettingsChanged(next_settings);
   }
@@ -58,21 +43,39 @@ const FlashSettings = props => {
       <Bitrate
         value={settings.bitrate}
         placeholder="1000000"
-        onChange={(value) => handleBitrateChanged(value)} />
+        onChange={(value) => handleValueChanged("bitrate", value)} />
       <TextInput
-        name="Start"
+        name="Start (0x)"
         placeholder="0x00000000"
         value={settings.start}
-        onChange={(value) => handleStartChanged(value)}
-        description="Start address for .bin files" />
+        onChange={(value) => handleValueChanged("start", value)}
+        description="Start address (in hex) for .bin files" />
+      <TextInput
+        name="Size"
+        placeholder="0"
+        value={settings.size}
+        onChange={(value) => handleValueChanged("size", value)}
+        description="Read page size" />
+      <TextInput
+        name="Path"
+        placeholder="/home/flash/latest.elf"
+        value={settings.path}
+        onChange={(value) => handleValueChanged("path", value)}
+        description="Local path to .bin or .elf file" />
       <Boolean
         name="Verify"
-        toggleValue={() => handleVerifyChanged()}
+        toggleValue={() => handleBoolChanged("verify")}
         value={settings.verify}>Verify the image was installed correctly</Boolean>
       <Boolean
         name="Force"
-        toggleValue={() => handleForceChanged()}
+        toggleValue={() => handleBoolChanged("force")}
         value={settings.force}>Force install even if the image is already installed</Boolean>
+      <TextInput
+        name="Reset Pulse (ms)"
+        placeholder="10"
+        value={settings.resetPulse}
+        onChange={(value) => handleValueChanged("resetPulse", value)}
+        description="Hardware reset pulse duration in milliseconds" />
     </div>
   )
 }

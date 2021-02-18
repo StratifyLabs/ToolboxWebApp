@@ -1,21 +1,26 @@
 import React from 'react'
-import { ButtonGroup, ToggleButton, Col, Row, ListGroup } from 'react-bootstrap'
+import { Button, ButtonGroup, ToggleButton, Col, Row, ListGroup } from 'react-bootstrap'
 
 import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
+  faBolt,
+  faInfo,
+  faEraser,
+  faEye,
+  faRedo,
+  faSlidersH,
   faFolderOpen,
   faHistory,
   faChevronRight
 } from '@fortawesome/free-solid-svg-icons'
 
 import AppContainer from '../components/AppContainer'
-import UserFileUpload from '../components/UserFileUpload'
+import FlashFileUpload from '../components/FlashFileUpload'
 import { NetworkContext } from '../contexts/NetworkContext'
 
 
 const Flash = props => {
 
-  const [radioValue, setRadioValue] = React.useState('flash');
   const [activeFile, setActiveFile] = React.useState("");
   const [list, setList] = React.useState({});
   const network = React.useContext(NetworkContext);
@@ -31,56 +36,60 @@ const Flash = props => {
       })
   }
 
-  function handleUploadChanged(){
-    if( radioValue !==  `user` ){
-      console.log("set radio to user");
-      setRadioValue(`user`);
-      loadDirectory(`user`);
-    } else {
-      console.log("load directory");
-      loadDirectory(`user`);
-    }
-  }
-
   React.useEffect(() => {
-    loadDirectory(radioValue)
-  }, [radioValue, network.host])
+    loadDirectory("flash")
+  }, [network.host])
 
   function handleDiretoryChanged(value) {
-    setRadioValue(value);
     loadDirectory(value);
   }
 
-  const radios = [
-    { name: 'Flash History', value: 'flash' },
-    { name: 'User Files', value: 'user' }
-  ];
+  function onButtonClicked(){
+
+  }
+
+  function onProgramClicked(){
+
+  }
+
+  function onEraseClicked(){
+
+  }
+
+  function onReadClicked(){
+
+  }
+
+  function onResetClicked(){
+
+  }
+
+  function onPingClicked(){
+
+  }
+
+
+  const buttonClass ="mr-2 mb-2 btn"
 
   return (
     <AppContainer>
-      <Row className="mb-3">
-        <Col md={8}>
-          <h4>Upload User Files</h4>
-          <UserFileUpload onFileComplete={handleUploadChanged} />
+        <Row className="mb-3">
+        <Col>
+          <Button className={buttonClass} ><FA icon={faSlidersH} onClick={onButtonClicked} /> Flash Settings</Button>
         </Col>
       </Row>
-      <ButtonGroup toggle className="mb-3" >
-        {radios.map((radio, idx) => (
-          <ToggleButton
-            key={idx}
-            type="radio"
-            variant="primary"
-            name="radio"
-            value={radio.value}
-            checked={radioValue === radio.value}
-            onChange={(e) => handleDiretoryChanged(e.currentTarget.value)}
-          >
-            {radio.name}
-          </ToggleButton>
-        ))}
-      </ButtonGroup>
-      { radioValue === "flash" && <h4><FA icon={faHistory} /> Flash History</h4>}
-      { radioValue === "user" && <h4><FA icon={faFolderOpen} /> User Files</h4>}
+
+      <Row className="mb-3">
+        <Col>
+          <Button className={buttonClass} variant="success" ><FA icon={faBolt} onClick={onProgramClicked} /> Program</Button>
+          <Button className={buttonClass} variant="danger" ><FA icon={faEraser} onClick={onEraseClicked} /> Erase</Button>
+          <Button className={buttonClass}><FA icon={faEye} onClick={onReadClicked} /> Read</Button>
+          <Button className={buttonClass}><FA icon={faRedo} onClick={onResetClicked} /> Reset</Button>
+          <Button className={buttonClass}><FA icon={faInfo} onClick={onPingClicked} /> Ping</Button>
+        </Col>
+      </Row>
+      <FlashFileUpload />
+      <h4><FA icon={faHistory} /> Flash History</h4>
       <Row>
         <Col md={8} >
           <ListGroup variant="flush">
@@ -96,7 +105,7 @@ const Flash = props => {
                 </span>
               </ListGroup.Item>
             })}
-            {list === {} && <ListGroup.Item>No Files Here</ListGroup.Item>}
+            {(list === {} || list === undefined) && <ListGroup.Item>No Files Here</ListGroup.Item>}
             <hr />
           </ListGroup>
         </Col>

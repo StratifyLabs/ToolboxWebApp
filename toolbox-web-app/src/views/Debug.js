@@ -17,7 +17,7 @@ import AppContainer from '../components/AppContainer'
 
 const Debug = props => {
 
-  const buttonClass ="mr-2 btn"
+  const buttonClass ="mr-2 mb-2 btn"
 
   function onTerminalClicked(){
     props.setPage("Terminal")

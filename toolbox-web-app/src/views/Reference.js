@@ -111,6 +111,8 @@ Programs the target with a firmware binary stored on the Toolbox.
 curl -X GET -d @path/to/path.json ${network.host}/flash/program/fs/home/user/firmware.elf
 \`\`\`
 
+The response is the flash delegate terminal output.
+
 `
 const flashPut = `### Flash PUT Requests
 
