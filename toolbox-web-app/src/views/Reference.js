@@ -108,10 +108,42 @@ curl ${network.host}/flash/settings
 Programs the target with a firmware binary stored on the Toolbox.
 
 \`\`\`
-curl -X GET -d @path/to/path.json ${network.host}/flash/program/fs/home/user/firmware.elf
+curl ${network.host}/flash/program/fs/home/user/firmware.elf
 \`\`\`
 
 The response is the flash delegate terminal output.
+
+\`GET /flash/erase\`
+
+Erases the target device.
+
+\`\`\`
+curl ${network.host}/flash/erase
+\`\`\`
+
+The response if the flash delegate terminal output.
+
+\`GET /flash/read/<start (hexidecimal)>/<size (decimal)>\`
+
+Reads the memory of the connected device. Start should be a hex
+value and can optionally be prefixed with \`0x\`. Size is number of bytes to read.
+
+\`\`\`
+curl ${network.host}/flash/read/0x08000000/1024
+\`\`\`
+
+The response if the flash delegate terminal output.
+
+\`GET /flash/ping\`
+
+Pings the connected device.
+
+\`\`\`
+curl ${network.host}/flash/ping
+\`\`\`
+
+The response if the flash delegate terminal output.
+
 
 `
 const flashPut = `### Flash PUT Requests

@@ -65,7 +65,7 @@ const Flash = props => {
   }
 
   function onPingClicked(){
-
+    
   }
 
 
