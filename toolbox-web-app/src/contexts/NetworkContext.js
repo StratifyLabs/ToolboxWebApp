@@ -5,7 +5,7 @@ export const networks = {
     host: ""
   },
   development: {
-    host: "http://192.168.1.28"
+    host: "http://192.168.1.25"
   },
 };
 

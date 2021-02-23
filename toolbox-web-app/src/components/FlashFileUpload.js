@@ -22,7 +22,7 @@ const FlashFileUpload = props => {
   const network = React.useContext(NetworkContext);
 
   async function uploadFile(url, data) {
-    let method = isOverwrite ? 'PUT' : 'POST';
+    let method = 'PUT';
 
     console.log(`attempt to upload to ${url} using ${method}`);
     const response = await fetch(url, {
@@ -37,25 +37,35 @@ const FlashFileUpload = props => {
     }).catch((e) => {
       console.log(`failed to upload ${e}`)
     });
-    console.log("call file complete" + props.onFileComplete);
+    console.log("call file complete" + props.onProgramComplete);
     count = count - 1;
+    const result = response !== undefined ? await response.json() : null;
     if (count === 0) {
-      props.onFileComplete !== undefined && props.onFileComplete(url)
+      props.onProgramComplete !== undefined && props.onProgramComplete(JSON.stringify(result))
     }
     setUploadBusy(false);
-    return response !== undefined ? response.json() : null; // parses JSON response into native JavaScript objects
+    return result; // parses JSON response into native JavaScript objects
   }
 
   async function readAndUploadFile(file) {
+    
+    var suffix = file.name.substr(file.name.lastIndexOf('.') + 1);
+    const type = suffix === 'elf' ? 'elf' : 'bin';
+
+    console.log(file);
+    console.log(`type is ${type}`);
+    
+    
     const reader = new FileReader()
     reader.onabort = () => console.log('file reading was aborted')
     reader.onerror = () => console.log('file reading has failed')
     reader.onload = () => {
       // Do whatever you want with the file contents
-      uploadFile(`${network.host}/fs/home/user/${file.path}`, reader.result)
+      uploadFile(`${network.host}/flash/program.json/${type}`, reader.result)
     }
 
     await reader.readAsArrayBuffer(file)
+    
   }
 
   async function uploadFileList(list) {
@@ -78,12 +88,6 @@ const FlashFileUpload = props => {
 
   }, [])
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
-
-
-  function toggleOverwrite() {
-    setOverwrite(!isOverwrite);
-    console.log(`is overwrite ${!isOverwrite}`)
-  }
 
   return (
     <Card className="text-center mb-2" style={{ cursor: "pointer" }}>

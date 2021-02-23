@@ -17,12 +17,19 @@ import {
 import AppContainer from '../components/AppContainer'
 import FlashFileUpload from '../components/FlashFileUpload'
 import { NetworkContext } from '../contexts/NetworkContext'
+import ApiRequest from '../components/ApiRequest'
+import TextInput from '../components/settings/TextInput'
 
 
 const Flash = props => {
 
   const [activeFile, setActiveFile] = React.useState("");
   const [list, setList] = React.useState({});
+  const [requestPath, setRequestPath] = React.useState("");
+  const [readSize, setReadSize] = React.useState("256");
+  const [flashPath, setFlashPath] = React.useState("/home/flash/latest.elf");
+  const [readStart, setReadStart] = React.useState("0x08000000");
+  const [flashResult, setFlashResult] = React.useState(null);
   const network = React.useContext(NetworkContext);
 
   async function loadDirectory(directory) {
@@ -44,28 +51,51 @@ const Flash = props => {
     loadDirectory(value);
   }
 
+  function onSettingsClicked(){
+    console.log("Clicked Settings")
+    props.setPage("Settings");
+  }
+
   function onButtonClicked(){
 
   }
 
   function onProgramClicked(){
-
+    setRequestPath(`/flash/program.json/fs${flashPath}/`)
   }
 
   function onEraseClicked(){
-
+    setRequestPath("/flash/erase.json")
   }
 
   function onReadClicked(){
-
+    setRequestPath(`/flash/read.json/${readStart}/${readSize}`)
   }
 
   function onResetClicked(){
-
+    setRequestPath("/flash/reset.json")
   }
 
   function onPingClicked(){
-    
+    setRequestPath("/flash/ping.json")
+  }
+
+  function readSizeChanged(value){
+    setReadSize(value);
+  }
+
+  function readStartChanged(value){
+    setReadStart(value);
+  }
+
+
+  function flashPathChanged(value){
+    setFlashPath(value);
+  }
+
+  function flashProgramComplete(result){
+    console.log(`set flash result ${result}`)
+    setFlashResult(result);
   }
 
 
@@ -75,20 +105,39 @@ const Flash = props => {
     <AppContainer>
         <Row className="mb-3">
         <Col>
-          <Button className={buttonClass} ><FA icon={faSlidersH} onClick={onButtonClicked} /> Flash Settings</Button>
+          <Button className={buttonClass} onClick={onSettingsClicked} ><FA icon={faSlidersH} /> Flash Settings</Button>
         </Col>
       </Row>
+      <FlashFileUpload onProgramComplete={flashProgramComplete}/>
+      <TextInput
+        name="Read Start (0x)"
+        placeholder="0x00000000"
+        value={readStart}
+        onChange={(value) => readStartChanged(value)}
+        description="Start address (in hex) for read operations" />
+      <TextInput
+        name="Read Size"
+        placeholder="0"
+        value={readSize}
+        onChange={(value) => readSizeChanged(value)}
+        description="Read page size" />
+      <TextInput
+        name="Flash Path"
+        placeholder="/home/flash/latest.elf"
+        value={flashPath}
+        onChange={(value) => setFlashPath(value)}
+        description="Toolbox path to flash image" />
 
       <Row className="mb-3">
         <Col>
-          <Button className={buttonClass} variant="success" ><FA icon={faBolt} onClick={onProgramClicked} /> Program</Button>
-          <Button className={buttonClass} variant="danger" ><FA icon={faEraser} onClick={onEraseClicked} /> Erase</Button>
-          <Button className={buttonClass}><FA icon={faEye} onClick={onReadClicked} /> Read</Button>
-          <Button className={buttonClass}><FA icon={faRedo} onClick={onResetClicked} /> Reset</Button>
-          <Button className={buttonClass}><FA icon={faInfo} onClick={onPingClicked} /> Ping</Button>
+          <Button className={buttonClass} variant="success" onClick={onProgramClicked} ><FA icon={faBolt} /> Program</Button>
+          <Button className={buttonClass} variant="danger" onClick={onEraseClicked} ><FA icon={faEraser} /> Erase</Button>
+          <Button className={buttonClass} onClick={onReadClicked}><FA icon={faEye}  /> Read</Button>
+          <Button className={buttonClass} onClick={onResetClicked}><FA icon={faRedo} /> Reset</Button>
+          <Button className={buttonClass} onClick={onPingClicked}><FA icon={faInfo} /> Ping</Button>
         </Col>
       </Row>
-      <FlashFileUpload />
+      <ApiRequest path={requestPath} response={flashResult} />
       <h4><FA icon={faHistory} /> Flash History</h4>
       <Row>
         <Col md={8} >

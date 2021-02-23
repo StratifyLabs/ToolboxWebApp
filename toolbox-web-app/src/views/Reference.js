@@ -157,23 +157,20 @@ the file returned using \`GET /flash/settings\`.
 curl -X PUT -d @path/to/settings.json ${network.host}/flash/settings
 \`\`\`
 
-`
-const flashPost = `### Flash POST Requests
+\`PUT /flash/program/[elf|bin]\`
 
-\`POST /flash/program/[elf|bin]\`
-
-Receives a firmware image (in \`elf\` or \`bin\` format) and programs it on the target and starts running and tracing
-the output.
+Saves a firmware image to \`/home/flash/latest.[elf|bin]\` and programs it on the target. The target flash blocks will be erased
+if they are not already blank.
 
 \`\`\`
 # ELF source file
-curl -X POST -d @path/to/firmware.elf ${network.host}/flash/program/elf
+curl -X PUT --data-binary @path/to/firmware.elf ${network.host}/flash/program/elf
 # Bin source file (settings need to specify start address)
-curl -X POST -d @path/to/firmware.bin ${network.host}/flash/program/bin
+curl -X PUT --data-binary @path/to/firmware.bin ${network.host}/flash/program/bin
 \`\`\`
 
-The image is stored on the SD card at \`/home/flash/image/latest.[elf|bin]\`. Rather
-than overwrite the previous firmware, the Toolbox renames the previous firmware file
+The image is stored on the SD card at \`/home/flash/latest.[elf|bin]\`. Rather
+than overwrite the previous latest file, the Toolbox renames the previous firmware file
 using a timestamp notation. Only the 100 most recent images are kept. You can use
 the filesystem API to see which files are available as well as save copies of
 older versions.
@@ -413,7 +410,6 @@ curl -X DELETE ${network.host}/file/home/tmp/some.file
       <Section markdown={flash} ></Section>
       <Section markdown={flashGet} ><GetRequest placeholder='/flash'/></Section>
       <Section markdown={flashPut} ><PutRequest placeholder='/flash'/></Section>
-      <Section markdown={flashPost} ><PostRequest placeholder='/flash'/></Section>
       <Section markdown={trace} ></Section>
       <Section markdown={traceGet} ><GetRequest placeholder='/trace'/></Section>
       <Section markdown={tracePut} ><PutRequest placeholder='/trace'/></Section>
