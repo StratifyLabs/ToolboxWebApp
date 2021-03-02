@@ -51,96 +51,88 @@ const Flash = props => {
     loadDirectory(value);
   }
 
-  function onSettingsClicked(){
+  function onSettingsClicked() {
     console.log("Clicked Settings")
     props.setPage("Settings");
   }
 
-  function onButtonClicked(){
-
-  }
-
-  function onProgramClicked(){
+  function onProgramClicked() {
     setRequestPath(`/flash/program.json/fs${flashPath}/`)
   }
 
-  function onEraseClicked(){
+  function onEraseClicked() {
     setRequestPath("/flash/erase.json")
   }
 
-  function onReadClicked(){
+  function onReadClicked() {
     setRequestPath(`/flash/read.json/${readStart}/${readSize}`)
   }
 
-  function onResetClicked(){
+  function onResetClicked() {
     setRequestPath("/flash/reset.json")
   }
 
-  function onPingClicked(){
+  function onPingClicked() {
     setRequestPath("/flash/ping.json")
   }
 
-  function readSizeChanged(value){
+  function readSizeChanged(value) {
     setReadSize(value);
   }
 
-  function readStartChanged(value){
+  function readStartChanged(value) {
     setReadStart(value);
   }
 
-
-  function flashPathChanged(value){
+  function flashPathChanged(value) {
     setFlashPath(value);
   }
 
-  function flashProgramComplete(result){
+  function flashProgramComplete(result) {
     console.log(`set flash result ${result}`)
     setFlashResult(result);
   }
 
-
-  const buttonClass ="mr-2 mb-2 btn"
+  const buttonClass = "mr-2 mb-2 btn"
 
   return (
     <AppContainer>
-        <Row className="mb-3">
-        <Col>
-          <Button className={buttonClass} onClick={onSettingsClicked} ><FA icon={faSlidersH} /> Flash Settings</Button>
-        </Col>
-      </Row>
-      <FlashFileUpload onProgramComplete={flashProgramComplete}/>
-      <TextInput
-        name="Read Start (0x)"
-        placeholder="0x00000000"
-        value={readStart}
-        onChange={(value) => readStartChanged(value)}
-        description="Start address (in hex) for read operations" />
-      <TextInput
-        name="Read Size"
-        placeholder="0"
-        value={readSize}
-        onChange={(value) => readSizeChanged(value)}
-        description="Read page size" />
-      <TextInput
-        name="Flash Path"
-        placeholder="/home/flash/latest.elf"
-        value={flashPath}
-        onChange={(value) => setFlashPath(value)}
-        description="Toolbox path to flash image" />
-
       <Row className="mb-3">
-        <Col>
-          <Button className={buttonClass} variant="success" onClick={onProgramClicked} ><FA icon={faBolt} /> Program</Button>
-          <Button className={buttonClass} variant="danger" onClick={onEraseClicked} ><FA icon={faEraser} /> Erase</Button>
-          <Button className={buttonClass} onClick={onReadClicked}><FA icon={faEye}  /> Read</Button>
-          <Button className={buttonClass} onClick={onResetClicked}><FA icon={faRedo} /> Reset</Button>
-          <Button className={buttonClass} onClick={onPingClicked}><FA icon={faInfo} /> Ping</Button>
-        </Col>
-      </Row>
-      <ApiRequest path={requestPath} response={flashResult} />
-      <h4><FA icon={faHistory} /> Flash History</h4>
-      <Row>
-        <Col md={8} >
+        <Col md={8}>
+          <Button className={buttonClass} onClick={onSettingsClicked} ><FA icon={faSlidersH} /> Flash Settings</Button>
+
+          <FlashFileUpload onProgramComplete={flashProgramComplete} />
+          <TextInput
+            name="Read Start (0x)"
+            placeholder="0x00000000"
+            value={readStart}
+            onChange={(value) => readStartChanged(value)}
+            description="Start address (in hex) for read operations" />
+          <TextInput
+            name="Read Size"
+            placeholder="256"
+            value={readSize}
+            onChange={(value) => readSizeChanged(value)}
+            description="Read page size" />
+          <TextInput
+            name="Flash Path"
+            placeholder="/home/flash/latest.elf"
+            value={flashPath}
+            onChange={(value) => setFlashPath(value)}
+            description="Toolbox path to flash image" />
+
+          <Row className="mb-3">
+            <Col>
+              <Button className={buttonClass} variant="success" onClick={onProgramClicked} ><FA icon={faBolt} /> Program</Button>
+              <Button className={buttonClass} variant="danger" onClick={onEraseClicked} ><FA icon={faEraser} /> Erase</Button>
+              <Button className={buttonClass} onClick={onReadClicked}><FA icon={faEye} /> Read</Button>
+              <Button className={buttonClass} onClick={onResetClicked}><FA icon={faRedo} /> Reset</Button>
+              <Button className={buttonClass} onClick={onPingClicked}><FA icon={faInfo} /> Ping</Button>
+            </Col>
+          </Row>
+          <ApiRequest path={requestPath} response={flashResult} />
+          <h4><FA icon={faHistory} /> Flash History</h4>
+
           <ListGroup variant="flush">
             {list !== undefined && Object.keys(list).map((key, index) => {
               return <ListGroup.Item

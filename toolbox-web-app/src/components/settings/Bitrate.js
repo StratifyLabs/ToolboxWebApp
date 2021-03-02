@@ -7,9 +7,9 @@ const Bitrate = props => {
 
   return (
     <TextInput 
-    name="Bitrate" 
-    placeholder={props.placeholder !== undefined ? props.placeholder : "1000000"} 
-    description="Bitrate in Kbits/second" 
+    name={props.label !== undefined ? props.label : "Bitrate"}
+    placeholder={props.placeholder !== undefined ? props.placeholder : "1000"} 
+    description={props.description !== undefined ? props.description : "Bitrate in Kbits/second" } 
     onChange={props.onChange}
     value={props.value} />
   )
