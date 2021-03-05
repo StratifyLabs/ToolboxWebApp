@@ -25,9 +25,9 @@ const Trace = props => {
   //use state to save the result
   React.useEffect(() => {
     console.log("create new event source");
- 
+
     const source = new EventSource(`${network.host}/trace.sse/reset`);
- 
+
     source.onopen = function (event) {
       console.log(`connected to ${network.host}`);
     }
@@ -38,11 +38,11 @@ const Trace = props => {
 
     source.onmessage = function (event) {
       const incoming = atob(String(event.data));
-      console.log(incoming);      
+      console.log(incoming);
       incomingContent.current += incoming;
       setTerminalContent(incomingContent.current);
     }
-    
+
     return () => {
       console.log("cleanup event source");
       source.close();
@@ -67,24 +67,24 @@ const Trace = props => {
     <AppContainer>
       <Row className="mb-3">
         <Col>
-          <Button className={buttonClass} onClick={onTerminalClicked} ><FA icon={faTerminal} /> <span className="d-none d-md-block">Real-Time Trace Output</span></Button>
-          <Button className={buttonClass} onClick={onInsightsClicked} ><FA icon={faChartArea} /> <span className="d-none d-md-block">Real-Time Insights</span></Button>
-          <Button className={buttonClass} onClick={onHistoryClicked} ><FA icon={faHistory} /> <span className="d-none d-md-block">Trace History</span></Button>
+          <Button className={buttonClass} onClick={onHistoryClicked} ><FA icon={faHistory} /> History</Button>
+          <Button className={buttonClass} onClick={onTerminalClicked} ><FA icon={faTerminal} /> Output</Button>
+          <Button className={buttonClass} onClick={onInsightsClicked} ><FA icon={faChartArea} /> Insights</Button>
         </Col>
       </Row>
-      { view === "history" && <div> 
-      <h4><FA icon={faHistory} /> Trace History</h4>
-      <Row>
-        <Col md={4}>
-          <p>Trace</p>
-        </Col>
-        <Col md={5}>
-          <p>Details</p>
-        </Col>
-      </Row>
+      { view === "history" && <div>
+        <h4><FA icon={faHistory} /> Trace History</h4>
+        <Row>
+          <Col md={4}>
+            <p>Trace</p>
+          </Col>
+          <Col md={5}>
+            <p>Details</p>
+          </Col>
+        </Row>
       </div>}
 
-      { view === "terminal" && <Terminal content={terminalContent} /> }
+      { view === "terminal" && <Terminal content={terminalContent} />}
 
     </AppContainer>
   )
