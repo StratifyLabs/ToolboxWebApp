@@ -7,8 +7,6 @@ import Top from './components/Top'
 import DebugClient from './DebugClient'
 
 import Network from './views/Network'
-import Insights from './views/Insights'
-import InsightDetail from './views/InsightDetail'
 import QuickStart from './views/QuickStart'
 import About from './views/About'
 import Reference from './views/Reference'
@@ -16,7 +14,6 @@ import Debug from './views/Debug'
 import Flash from './views/Flash'
 import Files from './views/Files'
 import Trace from './views/Trace'
-import Terminal from './views/Terminal'
 import Settings from './views/Settings'
 import Sidebar from "react-sidebar";
 
@@ -97,11 +94,6 @@ function App() {
            
            />
           {page === "Network" && <Network server={server} setServer={setServer} />}
-          {page === "Insights" && 
-          <Insights 
-          setInsightDetail={setInsightDetail} 
-          configuration={configuration} 
-          />}
           {page === "About" && <About />}
           {page === "Quick Start" && <QuickStart page={page} setPage={setPage} />}
           {page === "Reference" && <Reference page={page} setPage={setPage} />}
@@ -110,8 +102,6 @@ function App() {
           {page === "Files" && <Files setPage={setPage} />}
           {page === "Trace" && <Trace setPage={setPage} />}
           {page === "Settings" && <Settings />}
-          {page === "Terminal" && <Terminal configuration={configuration["output"]}/>}
-          {page === "InsightDetail" && <InsightDetail configuration={insightConfiguration} />}
         </Container>
         </NetworkContext.Provider>
       </Sidebar>

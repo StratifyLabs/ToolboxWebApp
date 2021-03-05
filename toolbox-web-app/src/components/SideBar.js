@@ -33,8 +33,6 @@ const SideBar = props => {
         <Item setPage={props.setPage} icon={faBug} name="Debug" page={props.page} />
         <Item setPage={props.setPage} icon={faBolt} name="Flash" page={props.page} />
         <Item setPage={props.setPage} icon={faWaveSquare} name="Trace" page={props.page} />
-        <Item setPage={props.setPage} icon={faTerminal} name="Terminal" page={props.page} />
-        <Item setPage={props.setPage} icon={faChartArea} name="Insights" page={props.page} />
       </ListGroup>
       <h5 className="ml-2 mr-2">TOOLBOX</h5>
       <ListGroup variant="flush" className="mb-2">

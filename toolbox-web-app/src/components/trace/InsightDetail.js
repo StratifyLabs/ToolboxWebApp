@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Plot from '../components/insights/Plot'
-import Logic from '../components/insights/Logic'
-import Histogram from '../components/insights/Histogram'
-import Log from '../components/insights/Log'
+import Plot from '../insights/Plot'
+import Logic from '../insights/Logic'
+import Histogram from '../insights/Histogram'
+import Log from '../insights/Log'
 import Terminal from './Terminal'
 
 const InsightDetail = props => {

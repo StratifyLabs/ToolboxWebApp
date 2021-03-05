@@ -40,12 +40,6 @@ const Settings = props => {
 
   const isReady = (settings !== undefined && delegateOptions !== undefined)
 
-  function updateDelegate(value) {
-    let next_settings = settings;
-    next_settings.delegate = value;
-    console.log(`updated delegate to ${JSON.stringify(value)}`)
-    setSettings(next_settings);
-  }
 
   console.log(`settings are ${JSON.stringify(settings)}`)
 

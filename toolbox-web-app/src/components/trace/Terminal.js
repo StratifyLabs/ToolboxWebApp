@@ -3,16 +3,18 @@ import React from 'react'
 const Terminal = props => {
 
   const messagesEndRef = React.createRef();
-  const content = (props.configuration !== undefined && props.configuration.data !== undefined) ? String(props.configuration.data.text.join('')) : "";
 
+  console.log("redraw terminal");
 
   React.useEffect(() => {
     messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-  },[content, messagesEndRef])
+  },[messagesEndRef])
+
+
 
   return (
     <pre>
-      {content}
+      {props.content}
       <div ref={messagesEndRef} />
     </pre>
   )
