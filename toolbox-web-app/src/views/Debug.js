@@ -3,13 +3,10 @@ import { Button, Col, ListGroup, Row } from 'react-bootstrap'
 
 import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
-  faTerminal,
-  faChartArea,
+  faBug,
   faMicrochip,
-  faHandPaper,
-  faShoePrints,
-  faTimes,
-  faRunning
+  faTableTennis,
+  faLayerGroup
 } from '@fortawesome/free-solid-svg-icons'
 
 import AppContainer from '../components/AppContainer'
@@ -19,12 +16,16 @@ const Debug = props => {
 
   const buttonClass ="mr-2 mb-2 btn"
 
-  function onTerminalClicked(){
-    props.setPage("Terminal")
+  function onPingClicked(){
+
   }
 
-  function onInsightsClicked(){
-    props.setPage("Insights")
+  function onCoreDumpClicked(){
+
+  }
+
+  function onBackTraceClicked(){
+
   }
 
   const state  = {
@@ -52,12 +53,9 @@ const Debug = props => {
     <AppContainer>
     <Row className="mb-3">
       <Col>
-      <Button className={buttonClass} variant="success" ><FA icon={faTerminal} onClick={onTerminalClicked} /> Connect</Button>
-      <Button className={buttonClass}><FA icon={faRunning} onClick={onInsightsClicked} /> Run</Button>
-      <Button className={buttonClass}><FA icon={faHandPaper} onClick={onInsightsClicked} /> Halt</Button>
-      <Button className={buttonClass}><FA icon={faShoePrints} onClick={onInsightsClicked} /> Step</Button>
-      <Button className={buttonClass}><FA icon={faChartArea} onClick={onInsightsClicked} /> Resume</Button>
-      <Button className={buttonClass} variant="danger"><FA icon={faTimes} onClick={onInsightsClicked} /> Abort</Button>
+      <Button className={buttonClass} onClick={onPingClicked}  ><FA icon={faTableTennis} /> Ping</Button>
+      <Button className={buttonClass} onClick={onCoreDumpClicked}  ><FA icon={faBug} /> Core Dump</Button>
+      <Button className={buttonClass} onClick={onBackTraceClicked} ><FA icon={faLayerGroup} /> Back Trace</Button>
       </Col>
       </Row>
       <h4><FA icon={faMicrochip} /> Core State</h4>

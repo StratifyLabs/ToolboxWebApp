@@ -22,7 +22,6 @@ const Settings = props => {
   const [settings, setSettings] = React.useState();
   const [latestSettings, setLatestSettings] = React.useState();
   const [delegateOptions, setDelegateOptions] = React.useState();
-  const [count, setCount] = React.useState();
   const [radioValue, setRadioValue] = React.useState('debug');
   const [isSettingsChanged, setSettingsChanged] = React.useState(false);
 
@@ -93,7 +92,7 @@ const Settings = props => {
 
 
 
-  }, [count, network.host, type])
+  }, [network.host, type])
 
   function handleRadioValueChanged(value) {
     setSettings(undefined);

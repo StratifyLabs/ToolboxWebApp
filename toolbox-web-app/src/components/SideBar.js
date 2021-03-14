@@ -3,16 +3,13 @@ import { ListGroup  } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faBook,
-  faNetworkWired,
-  faChartArea,
   faFolderOpen,
   faInfoCircle,
   faBug,
   faBolt,
   faWaveSquare,
   faPlay,
-  faSlidersH,
-  faTerminal
+  faSlidersH
 } from '@fortawesome/free-solid-svg-icons'
 
 

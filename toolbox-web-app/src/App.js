@@ -33,7 +33,6 @@ function App() {
   const [configuration, setConfiguration] = React.useState({});
   const [data, setData] = React.useState({});
 
-  const [insightConfiguration, setInsightConfiguration] = React.useState({});
 
   function mediaQueryChanged() {
     setSidebarDocked(mql.matches);
@@ -47,13 +46,6 @@ function App() {
   function onMenuClicked(){
     setSidebarOpen(!isSidebarOpen);
     setSidebarDocked(!isSidebarOpen);
-  }
-
-  function setInsightDetail(name, config){
-    setInsightConfiguration(config)
-    setPageState("InsightDetail")
-    setPageName(`${name} ${config.type}`)
-
   }
 
   function setPage(value){

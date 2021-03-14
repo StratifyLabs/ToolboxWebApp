@@ -1,23 +1,20 @@
 import React from 'react'
-import { Form, Card, Button } from 'react-bootstrap'
+import { Card, Button } from 'react-bootstrap'
 import { useDropzone } from 'react-dropzone'
 
 import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
-  faBoxOpen,
   faBullseye,
   faFolderOpen,
   faSpinner,
   faBolt
 } from '@fortawesome/free-solid-svg-icons'
 
-import AppContainer from './AppContainer'
 import { NetworkContext } from '../contexts/NetworkContext'
 
 const FlashFileUpload = props => {
 
   let count = 0;
-  const [isOverwrite, setOverwrite] = React.useState(false);
   const [isUploadBusy, setUploadBusy] = React.useState(false);
   const network = React.useContext(NetworkContext);
 

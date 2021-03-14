@@ -57,18 +57,17 @@ const UserFileUpload = props => {
     await reader.readAsArrayBuffer(file)
   }
 
-  async function uploadFileList(list) {
-    setUploadBusy(true);
-    count = list.length;
-    props.onStart !== undefined && props.onStart(list)
-    await list.forEach((file) => {
-      readAndUploadFile(file)
-    })
-  }
-
 
   const onDrop = React.useCallback(acceptedFiles => {
-    // Do something with the files
+    async function uploadFileList(list) {
+      setUploadBusy(true);
+      count = list.length;
+      props.onStart !== undefined && props.onStart(list)
+      await list.forEach((file) => {
+        readAndUploadFile(file)
+      })
+    }
+
     uploadFileList(acceptedFiles);
 
     //ensure length does not exceed PATH_MAX

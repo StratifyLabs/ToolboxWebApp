@@ -1,11 +1,9 @@
 import React from 'react'
 import { Navbar, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronRight, faSync, faStop } from '@fortawesome/free-solid-svg-icons'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
 const Top = props => {
-
-  const serverStatus = props.serverStatus;
 
   return (
     <Navbar bg="light" expand="sm" className="mb-2 border-bottom navbar-expand-lg">

@@ -14,9 +14,6 @@ const Delegate = props => {
     return delegate === key ? 'secondary' : 'outline-secondary'
   }
 
-  function getDelegateString(delegate){
-    return `${delegate}`
-  }
 
   return (
     <div>

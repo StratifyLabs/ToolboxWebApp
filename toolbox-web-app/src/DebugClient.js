@@ -6,16 +6,9 @@ import { faInfo } from '@fortawesome/free-solid-svg-icons'
 
 const DebugClient = props => {
 
-  const [incoming, setIncoming] = React.useState("");
   const [newMessage, setNewMessage] = React.useState("");
 
-  const configuration = props.configuration;
-  const setConfiguration = props.setConfiguration;
-  const dataList = props.data;
-  const setDataList = props.setData;
-  const serverStatus = props.serverStatus;
-  const setServerStatus = props.setServerStatus;
-
+  /*
   function processData(dataName, value, configurationNext) {
     const dataItem = dataList[dataName];
     if (dataItem !== undefined && dataItem.configurations !== undefined) {
@@ -52,6 +45,7 @@ const DebugClient = props => {
       });
     }
   }
+  */
 
   /*
   React.useEffect(() => {
@@ -87,6 +81,7 @@ const DebugClient = props => {
   }, [])
   */
 
+  /*
   React.useEffect(() => {
     const lines = String(incoming).split("\n");
 
@@ -128,6 +123,7 @@ const DebugClient = props => {
     setConfiguration(configurationNext);
 
   }, [incoming])
+  */
 
   return (
     <div>

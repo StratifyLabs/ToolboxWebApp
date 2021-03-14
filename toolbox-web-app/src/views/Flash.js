@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonGroup, ToggleButton, Col, Row, ListGroup } from 'react-bootstrap'
+import { Button, Col, Row, ListGroup } from 'react-bootstrap'
 
 import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
@@ -9,7 +9,6 @@ import {
   faEye,
   faRedo,
   faSlidersH,
-  faFolderOpen,
   faHistory,
   faChevronRight
 } from '@fortawesome/free-solid-svg-icons'
@@ -47,21 +46,17 @@ const Flash = props => {
     loadDirectory("flash")
   }, [network.host])
 
-  function handleDiretoryChanged(value) {
-    loadDirectory(value);
-  }
-
   function onSettingsClicked() {
     console.log("Clicked Settings")
     props.setPage("Settings");
   }
 
   function onProgramClicked() {
-    setRequestPath(`/flash/program.json/fs${flashPath}/`)
+    setRequestPath(`/flash/program/fs${flashPath}/`)
   }
 
   function onEraseClicked() {
-    setRequestPath("/flash/erase.json")
+    setRequestPath("/flash/erase")
   }
 
   function onReadClicked() {
@@ -69,11 +64,11 @@ const Flash = props => {
   }
 
   function onResetClicked() {
-    setRequestPath("/flash/reset.json")
+    setRequestPath("/flash/reset")
   }
 
   function onPingClicked() {
-    setRequestPath("/flash/ping.json")
+    setRequestPath("/flash/ping")
   }
 
   function readSizeChanged(value) {
@@ -82,10 +77,6 @@ const Flash = props => {
 
   function readStartChanged(value) {
     setReadStart(value);
-  }
-
-  function flashPathChanged(value) {
-    setFlashPath(value);
   }
 
   function flashProgramComplete(result) {
