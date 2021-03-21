@@ -72,7 +72,7 @@ function App() {
         serverStatus={serverStatus}
         server={server}
         />
-        <NetworkContext.Provider value={networks.development}>
+        <NetworkContext.Provider value={networks.production}>
         <Container fluid>
 
            <DebugClient 
