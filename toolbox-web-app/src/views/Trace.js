@@ -26,7 +26,7 @@ const Trace = props => {
   React.useEffect(() => {
     console.log("create new event source");
 
-    const source = new EventSource(`${network.host}/trace.sse/reset`);
+    const source = new EventSource(`${network.host}/trace.sse/stream/reset/true`);
 
     source.onopen = function (event) {
       console.log(`connected to ${network.host}`);

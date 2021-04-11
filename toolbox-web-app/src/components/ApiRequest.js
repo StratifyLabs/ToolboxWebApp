@@ -29,7 +29,7 @@ const ApiRequest = props => {
 
   return (
     <Card className="mt-3 mb-3">
-      <Card.Header>{props.path ? props.path : "<request>"}{isBusy && <span class="float-right"><FA icon={faSpinner} spin={true} /></span>}</Card.Header>
+      <Card.Header>{props.path ? props.path : "<request>"}{isBusy && <span className="float-right"><FA icon={faSpinner} spin={true} /></span>}</Card.Header>
       <Card.Body>
         <pre>{response}</pre>
       </Card.Body>

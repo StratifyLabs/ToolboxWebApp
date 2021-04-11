@@ -33,8 +33,8 @@ const Flash = props => {
 
   async function loadDirectory(directory) {
     setActiveFile("");
-    console.log(`request /fs/home/${directory}`)
-    await fetch(`${network.host}/fs/home/${directory}`)
+    console.log(`request /fs.json/home/${directory}`)
+    await fetch(`${network.host}/fs.json/home/${directory}`)
       .then(response => response.json())
       .catch(e => setList({}))
       .then(result => {
@@ -56,18 +56,18 @@ const Flash = props => {
   }
 
   function onEraseClicked() {
-    setRequestPath("/flash/erase")
+    setRequestPath(`/flash/erase/start/${readStart}/size/${readSize}`)
   }
 
   function onReadClicked() {
-    setRequestPath(`/flash/read.json/${readStart}/${readSize}`)
+    setRequestPath(`/flash/read/start/${readStart}/size/${readSize}`)
   }
 
   function onResetClicked() {
     setRequestPath("/flash/reset")
   }
 
-  function onPingClicked() {
+  function onPingClicked() { 
     setRequestPath("/flash/ping")
   }
 
@@ -92,22 +92,22 @@ const Flash = props => {
         <Col md={8}>
           <Button className={buttonClass} onClick={onSettingsClicked} ><FA icon={faSlidersH} /> Flash Settings</Button>
 
-          <FlashFileUpload onProgramComplete={flashProgramComplete} />
+          <FlashFileUpload onProgramComplete={flashProgramComplete} start={readStart}/>
           <TextInput
-            name="Read Start (0x)"
+            name="Program/Read/Erase Start (0x)"
             placeholder="0x00000000"
             value={readStart}
             onChange={(value) => readStartChanged(value)}
             description="Start address (in hex) for read operations" />
           <TextInput
-            name="Read Size"
+            name="Erase/Read Size"
             placeholder="256"
             value={readSize}
             onChange={(value) => readSizeChanged(value)}
             description="Read page size" />
           <TextInput
             name="Flash Path"
-            placeholder="/home/flash/latest.elf"
+            placeholder="/home/flash/latest.bin"
             value={flashPath}
             onChange={(value) => setFlashPath(value)}
             description="Toolbox path to flash image" />

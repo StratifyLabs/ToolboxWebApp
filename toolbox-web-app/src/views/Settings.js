@@ -44,7 +44,7 @@ const Settings = props => {
 
   async function putSettings() {
     console.log(`put body ${JSON.stringify(latestSettings)}`)
-    const response = await fetch(`${network.host}/${type}/settings`, {
+    const response = await fetch(`${network.host}/${type}.json/settings`, {
       method: 'PUT',
       body: JSON.stringify(settings)
     });
@@ -71,13 +71,13 @@ const Settings = props => {
     console.log("Try to fetch " + type);
 
     async function fetchSettings() {
-      const settingsResponse = await fetch(`${network.host}/${type}/settings`);
+      const settingsResponse = await fetch(`${network.host}/${type}.json/settings`);
       if (settingsResponse.ok) {
 
       }
       const settingsResponseJson = await settingsResponse.json();
 
-      const delegatesResponse = await fetch(`${network.host}/${type}/delegates`);
+      const delegatesResponse = await fetch(`${network.host}/${type}.json/delegates`);
       if (delegatesResponse.ok) {
 
       }

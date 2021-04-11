@@ -8,15 +8,9 @@ import {
 import Section from '../components/docs/Section'
 import InternalJump from '../components/docs/InternalJump'
 import ExternalJump from '../components/docs/ExternalJump'
-import GetRequest from '../components/docs/GetRequest'
-import PostRequest from '../components/docs/PostRequest'
-import PutRequest from '../components/docs/PutRequest'
-import { NetworkContext } from '../contexts/NetworkContext'
-
 
 const Reference = props => {
 
-  const network = React.useContext(NetworkContext);
   const overview = `# Overview
 
 With the the Stratify Toolbox, you can **debug**, **flash** and **trace** supported microcontroller targets using a *delegate*.
@@ -34,12 +28,8 @@ There are three ways to access these *functions*:
 The Stratify Toolbox runs an HTTP server that listens for requests that allow you to access the flash, trace, and debug
 interfaces either using this web application or from the command line using a program like \`curl\`.
 
-The HTTP API consists of 4 parts:
+The HTTP API consists of 3 parts:
 
-- Flash
-- Debug
-- Trace
-- Filesystem
 `
 
   const delegate = `## Delegates
@@ -85,215 +75,6 @@ basic kinds of applications
 
 `
 
-  const flash = `## HTTP Flash API`
-  const flashGet = `### Flash GET Requests
-\`GET /flash/delegates\`
-
-Returns a JSON object with a list of the available flash delegates.
-
-The flash API allows you to get and set the current flash settings as well as flash the target.
-
-\`GET /flash/settings\`
-
-Returns the current flash settings as JSON.
-
-To see your current flash settings:
-
-\`\`\`
-curl ${network.host}/flash/settings
-\`\`\`
-
-\`GET /flash/program/fs/<path>\`
-
-Programs the target with a firmware binary stored on the Toolbox.
-
-\`\`\`
-curl ${network.host}/flash/program/fs/home/user/firmware.elf
-\`\`\`
-
-The response is the flash delegate terminal output.
-
-\`GET /flash/erase\`
-
-Erases the target device.
-
-\`\`\`
-curl ${network.host}/flash/erase
-\`\`\`
-
-The response if the flash delegate terminal output.
-
-\`GET /flash/read/<start (hexidecimal)>/<size (decimal)>\`
-
-Reads the memory of the connected device. Start should be a hex
-value and can optionally be prefixed with \`0x\`. Size is number of bytes to read.
-
-\`\`\`
-curl ${network.host}/flash/read/0x08000000/1024
-\`\`\`
-
-The response if the flash delegate terminal output.
-
-\`GET /flash/ping\`
-
-Pings the connected device.
-
-\`\`\`
-curl ${network.host}/flash/ping
-\`\`\`
-
-The response if the flash delegate terminal output.
-
-
-`
-const flashPut = `### Flash PUT Requests
-
-\`PUT /flash/settings\`
-
-Updates the current flash settings by sending a JSON file that matches the format of
-the file returned using \`GET /flash/settings\`.
-
-\`\`\`
-curl -X PUT -d @path/to/settings.json ${network.host}/flash/settings
-\`\`\`
-
-\`PUT /flash/program/[elf|bin]\`
-
-Saves a firmware image to \`/home/flash/latest.[elf|bin]\` and programs it on the target. The target flash blocks will be erased
-if they are not already blank.
-
-\`\`\`
-# ELF source file
-curl -X PUT --data-binary @path/to/firmware.elf ${network.host}/flash/program/elf
-# Bin source file (settings need to specify start address)
-curl -X PUT --data-binary @path/to/firmware.bin ${network.host}/flash/program/bin
-\`\`\`
-
-The image is stored on the SD card at \`/home/flash/latest.[elf|bin]\`. Rather
-than overwrite the previous latest file, the Toolbox renames the previous firmware file
-using a timestamp notation. Only the 100 most recent images are kept. You can use
-the filesystem API to see which files are available as well as save copies of
-older versions.
-
-`
-
-  const trace = `## HTTP Trace API
-
-The trace API allows you to get and set the current trace settings as well as reset the target and trace the output.
-
-`
-  const traceGet = `### Trace GET Requests
-  
-\`GET /trace/delegates\`
-
-Returns a JSON object with a list of the available trace delegates.
-
-\`GET /trace/settings\`
-  
-Returns the current trace settings as JSON.
-    
-\`\`\`
-curl ${network.host}/trace/settings
-\`\`\` 
-
-\`GET /trace\`
-
-Starts streaming the trace data. If the HTTP request header specifies server-side
-events, the response will for formatted as server-side events and encapsulated as
-JSON. The stream will stay open until it is closed by the client.
-
-\`GET /trace/reset\`
-
-Same as \`GET /trace\` but will reset the device before tracing starts.
-  
-`
-  const tracePut = `### Trace PUT Requests
-  
-  \`PUT /trace/settings\`
-  
-Updates the current trace settings by sending a JSON file that matches the format of
-the file returned using \`GET /trace/settings\`.
-  
-\`\`\`
-curl -X PUT -d @path/to/settings.json ${network.host}/trace/settings
-\`\`\`
-
-Starts streaming the trace data just like the \`GET\` request but allows you
-to reset the device before starting the trace.
-`
-
-  const debug = `## HTTP Debug API
-
-The debug API allows you to get and set the current debug settings as well as halt/run/step/resume and so on.
-
-`
-  const debugGet = `### Debug GET Requests
-  
-\`GET /debug/delegates\`
-
-Returns a JSON object with a list of the available debug delegates.
-
-\`GET /debug/settings\`
-    
-Returns the current trace settings as JSON.
-      
-\`\`\`
-curl ${network.host}/debug/settings
-\`\`\` 
-
-The following HTTP GET requests perform various debugging functions. The response is a core dump in
-JSON format.
-
-- \`GET /debug/start\`
-- \`GET /debug/halt\`
-- \`GET /debug/step\`
-- \`GET /debug/reset\`
-
-These just do what you think they do, but respond with a simple \`{ "result" : "[success|failed]" }\` rather
-than the full core dump.
-
-- \`GET /debug/resume\`
-- \`GET /debug/run\`
-
-
-\`GET /debug/read/<address>/<size>\`
-
-Reads memory using the debug port. The \`<address>\` and \`<size>\`
-can be specified in hexidecimal or decimal. Use the \`0x\` prefix to
-specify a hex address.
-
-\`\`\`
-curl ${network.host}/debug/read/0x08000000/1024
-\`\`\` 
-
-    
-`
-  const debugPut = `### Debug PUT Requests
-  
-\`PUT /debug/settings\`
-    
-Updates the current debug settings by sending a JSON file that matches the format of
-the file returned using \`GET /debug/settings\`.
-
-`
-  const debugPost = `### Debug POST Requests
-    
-\`\`\`
-curl -X POST -d @path/to/settings.json ${network.host}/debug/settings
-\`\`\`
-
-
-\`POST /debug/write/<address>/\`
-
-Writes data to the memory address space on the target device. The size
-is determined by the content length of the request. The data is interpreted
-as raw binary data.
-
-\`\`\`
-curl -X POST -d @path/to/register/values.bin ${network.host}/debug/write/0x00000000
-\`\`\`
-  
-`
   const fs = `## Filesystem Overview
 
 The filesystem API allows you to access the filesystems on the Toolbox. The filesystems follow a
@@ -341,56 +122,6 @@ If you want to replace this delegate with a user version, you can place it at:
 /home/bin/ioflash_swd_stm32
 \`\`\`
 
-## HTTP Filesystem API
-`
-  const fsGet = `### Filesystem GET Requests
-
-\`GET /fs/<path>\`
-
-Gets the file or directory contents. If \`path\` is a directory, the response will include a JSON
-object with the contents of the directory. If \`path\` is a file, the response will be the contents
-of the file.
-
-\`\`\`
-curl ${network.host}/fs/home/flash/image
-\`\`\` 
-
-`
-  const fsPost = `### Filesystem POST Requests
-
-\`POST /fs/<path>\`
-
-Sends a file to the device to be saved at \`path\`. If the file
-already exists, the operation will fail. Use \`PUT\` to create with 
-overwrite capability.
-
-\`\`\`
-curl -X POST --data-binary @path/to/some.file ${network.host}/file/home/tmp/some.file
-\`\`\`
-
-`
-const fsPut = `### Filesystem PUT Requests
-
-\`PUT /fs/<path>\`
-
-Sends a file to the device to be saved at \`path\`. \`PUT\` will overwrite
-the file if it already exists.
-
-\`\`\`
-curl -X PUT --data-binary @path/to/some.file ${network.host}/file/home/tmp/some.file
-\`\`\`
-
-`
-  const fsDelete = `### Filesystem Delete Requests
-
-\`DELETE /fs/<path>\`
-
-Deletes the file at \`path\`. Only files on the SD card (\`/home\`) can be deleted. You
-cannot create or delete directories using the HTTP API.
-
-\`\`\`
-curl -X DELETE ${network.host}/file/home/tmp/some.file
-\`\`\`
 `
 
   return (
@@ -399,6 +130,11 @@ curl -X DELETE ${network.host}/file/home/tmp/some.file
       <Section markdown={delegate} />
       <Section markdown={sdk} />
       <Section markdown={httpApi} />
+      <ul>
+      <li><a href='/flash/help' target='_blank'>Flash API Help</a></li>
+      <li><a href='/trace/help' target='_blank'>Trace API Help</a></li>
+      <li><a href='/fs/help' target='_blank'>Filesystem API Help</a></li>
+      </ul>
       <Section markdown={delegateExample}>
         
       <InternalJump page="Settings" setPage={props.setPage} message="Configure delegate in Settings" icon={faSlidersH} />
@@ -407,21 +143,8 @@ curl -X DELETE ${network.host}/file/home/tmp/some.file
 
       </Section>
 
-      <Section markdown={flash} ></Section>
-      <Section markdown={flashGet} ><GetRequest placeholder='/flash'/></Section>
-      <Section markdown={flashPut} ><PutRequest placeholder='/flash'/></Section>
-      <Section markdown={trace} ></Section>
-      <Section markdown={traceGet} ><GetRequest placeholder='/trace'/></Section>
-      <Section markdown={tracePut} ><PutRequest placeholder='/trace'/></Section>
-      <Section markdown={debug} ></Section>
-      <Section markdown={debugGet} ><GetRequest placeholder='/debug'/></Section>
-      <Section markdown={debugPut} ><PutRequest placeholder='/debug'/></Section>
-      <Section markdown={debugPost} ><PostRequest placeholder='/debug'/></Section>
       <Section markdown={fs} ></Section>
-      <Section markdown={fsGet} ><GetRequest placeholder='/fs'/></Section>
-      <Section markdown={fsPost} ><PostRequest placeholder='/fs'/></Section>
-      <Section markdown={fsPut} ><PutRequest placeholder='/fs'/></Section>
-      <Section markdown={fsDelete} ></Section>
+
     </Container>
   )
 }

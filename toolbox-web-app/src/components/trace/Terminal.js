@@ -10,8 +10,6 @@ const Terminal = props => {
     messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
   },[messagesEndRef])
 
-
-
   return (
     <pre>
       {props.content}

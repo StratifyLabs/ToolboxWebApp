@@ -31,7 +31,7 @@ const Files = props => {
     setActiveFile("");
     console.log(`request ${path}`)
     if( path !== "" ){
-    await fetch(`${network.host}/fs${path}`)
+    await fetch(`${network.host}/fs.json${path}`)
       .then(response => response.json())
       .catch(e => setList({}))
       .then(result => {
@@ -43,8 +43,8 @@ const Files = props => {
   const Details = props => {
 
     async function deleteFile() {
-      console.log(`DELETE ${network.host}/fs${props.location}/${props.name}`)
-      await fetch(`${network.host}/fs${props.location}/${props.name}`, {
+      console.log(`DELETE ${network.host}/fs.json${props.location}/${props.name}`)
+      await fetch(`${network.host}/fs.json${props.location}/${props.name}`, {
         method: 'DELETE'
       })
       loadDirectory(props.location, isReadOnly);

@@ -51,7 +51,7 @@ const UserFileUpload = props => {
     reader.onerror = () => console.log('file reading has failed')
     reader.onload = () => {
       // Do whatever you want with the file contents
-      uploadFile(`${network.host}/fs/home/user/${file.path}`, reader.result)
+      uploadFile(`${network.host}/fs.json/home/user/${file.path}`, reader.result)
     }
 
     await reader.readAsArrayBuffer(file)
@@ -69,9 +69,6 @@ const UserFileUpload = props => {
     }
 
     uploadFileList(acceptedFiles);
-
-    //ensure length does not exceed PATH_MAX
-    //uploadFile(`${network.host}/fs/home/user/${acceptedFiles[0].path}`)
 
 
   }, [])
