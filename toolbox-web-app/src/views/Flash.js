@@ -25,6 +25,7 @@ const Flash = props => {
   const [activeFile, setActiveFile] = React.useState("");
   const [list, setList] = React.useState({});
   const [requestPath, setRequestPath] = React.useState("");
+  const [count, setCount] = React.useState(0);
   const [readSize, setReadSize] = React.useState("256");
   const [flashPath, setFlashPath] = React.useState("/home/flash/latest.elf");
   const [readStart, setReadStart] = React.useState("0x08000000");
@@ -51,24 +52,29 @@ const Flash = props => {
     props.setPage("Settings");
   }
 
+  function updateRequestPath(path){
+    setCount(count+1)
+    setRequestPath(path)
+  }
+
   function onProgramClicked() {
-    setRequestPath(`/flash/program/fs${flashPath}/`)
+    updateRequestPath(`/flash/program/fs${flashPath}/`)
   }
 
   function onEraseClicked() {
-    setRequestPath(`/flash/erase/start/${readStart}/size/${readSize}`)
+    updateRequestPath(`/flash/erase/start/${readStart}/size/${readSize}`)
   }
 
   function onReadClicked() {
-    setRequestPath(`/flash/read/start/${readStart}/size/${readSize}`)
+    updateRequestPath(`/flash/read/start/${readStart}/size/${readSize}`)
   }
 
   function onResetClicked() {
-    setRequestPath("/flash/reset")
+    updateRequestPath("/flash/reset")
   }
 
   function onPingClicked() { 
-    setRequestPath("/flash/ping")
+    updateRequestPath("/flash/ping")
   }
 
   function readSizeChanged(value) {
@@ -121,7 +127,7 @@ const Flash = props => {
               <Button className={buttonClass} onClick={onPingClicked}><FA icon={faInfo} /> Ping</Button>
             </Col>
           </Row>
-          <ApiRequest path={requestPath} response={flashResult} />
+          <ApiRequest count={count} path={requestPath} response={flashResult} />
           <h4><FA icon={faHistory} /> Flash History</h4>
 
           <ListGroup variant="flush">

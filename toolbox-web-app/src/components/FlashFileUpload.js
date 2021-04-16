@@ -58,7 +58,7 @@ const FlashFileUpload = props => {
     reader.onerror = () => console.log('file reading has failed')
     reader.onload = () => {
       // Do whatever you want with the file contents
-      uploadFile(`${network.host}/flash/program/type/${type}/start/${props.start}`, reader.result)
+      uploadFile(`${network.host}/flash.json/program/type/${type}/start/${props.start}`, reader.result)
     }
 
     await reader.readAsArrayBuffer(file)

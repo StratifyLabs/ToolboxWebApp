@@ -25,7 +25,7 @@ const ApiRequest = props => {
           setResponse(result)
         })
     }
-  }, [props.path, network.host])
+  }, [props.path, props.count, network.host])
 
   return (
     <Card className="mt-3 mb-3">
