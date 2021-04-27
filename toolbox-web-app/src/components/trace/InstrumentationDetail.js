@@ -5,6 +5,7 @@ import {
   faTimes,
 } from '@fortawesome/free-solid-svg-icons'
 
+import Heap from '../instrumentation/Heap'
 import Plot from '../instrumentation/Plot'
 import Logic from '../instrumentation/Logic'
 import Histogram from '../instrumentation/Histogram'
@@ -18,7 +19,8 @@ const InstrumentationDetail = props => {
   function getComponent() {
     switch (directive.type) {
       case "plot":
-        return <Plot directive={props.directive} data={props.data} />
+        return <Heap directive={props.directive} data={props.data} />
+        //return <Plot directive={props.directive} data={props.data} />
       case "histogram":
       case "hist":
         return <Histogram directive={props.directive} data={props.data} />
