@@ -11,8 +11,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 
-
-
 const Summary = props => {
 
   function getIcon(type) {
