@@ -18,7 +18,7 @@ const Viewer = props => {
 
   const buttonClass = "mr-2 mb-2 btn btn-secondary"
   const network = React.useContext(NetworkContext);
-  const [view, setView] = React.useState("terminal");
+  const [view, setView] = React.useState("instrumentation");
   const [isBusy, setBusy] = React.useState(false);
 
   console.log("redraw terminal");
@@ -115,7 +115,7 @@ const Viewer = props => {
         </Col>
       </Row>
       <Row>
-      {view === "terminal" && <Terminal content={terminalContent} />}
+      {view === "terminal" && <Terminal content={terminalContent} isFilterDirective={false} isFilterData={true} />}
       {view === "instrumentation" && <Instrumentation model={model.current} />}
       </Row>
     </div>

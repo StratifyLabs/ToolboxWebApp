@@ -37,7 +37,7 @@ const Summary = props => {
   return (
     <Card className="text-center">
       <Card.Header>
-        <h5>{props.name} {props.type}</h5>
+        <h5>{props.name}</h5>
       </Card.Header>
       <Card.Body>
         <Button variant="outline-primary" onClick={() => { props.setView(props.directiveIndex) }}><FontAwesomeIcon icon={getIcon(props.type)} size="4x" /></Button>

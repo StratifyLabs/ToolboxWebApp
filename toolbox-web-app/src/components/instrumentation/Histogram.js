@@ -10,11 +10,13 @@ const Histogram = props => {
   const source = props.directive.sources;
 
   for (let i in props.data) {
-    console.log(`check source ${props.data[i].name}`)
     if (props.data[i].name == source) {
-      data.push(props.data[i].value);
+      console.log(`add data ${props.data[i].value}`)
+      data.push({x: parseFloat(props.data[i].value)});
     }
   }
+
+  console.log(data);
 
   return (
     <VictoryChart
@@ -23,7 +25,6 @@ const Histogram = props => {
     >
       <VictoryHistogram
         data={data}
-        x={1}
       />
 
     </VictoryChart>
