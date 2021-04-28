@@ -1,102 +1,109 @@
 import React from 'react'
-import { VictoryChart, VictoryStack, VictoryArea, VictoryBar } from "victory";
+import { VictoryChart, VictoryStack, VictoryArea, VictoryBar, VictoryZoomContainer } from "victory";
 import Theme from './Theme'
+
+
+
+
 
 const Heap = props => {
 
-  // DIR:heap:Heap 0:heap0:Heap for Process 0
-  // DAT:heap0:sbrk,0x08000000,16384
-  // DAT:heap0:alloc,0x08000000,256
-  // DAT:heap0:alloc,0x08001000,512
-  // DAT:heap0:alloc,0x08002000,32
-  // DAT:heap0:free,0x08001000
+  let snapshots = [];
+  let allocatedBlocks = [];
+  let heap = { address: 0, size: 0 };
+  const source = props.directive.sources;
 
-  // total heap size: sbrk
-  // sort allocated heap
-  // free -- remove allocated sections
+  function freeBlock(address) {
+    const index = allocatedBlocks.findIndex(element => element.address === address);
+    if (index !== -1) {
+      allocatedBlocks[index].size = 0;
+    }
+  }
 
+  function allocateBlock(address, size) {
+    const item = { address: address, size: size };
+    const index = allocatedBlocks.findIndex(element => element.size === 0);
+    if (index !== -1) {
+      allocatedBlocks[index] = item;
+    } else {
+      allocatedBlocks.push(item);
+    }
+  }
+
+  let stateCount = 0;
+  for (let i in props.data) {
+    if (props.data[i].name == source) {
+      const values = props.data[i].value.split(",");
+      if (values.length) {
+        if (values[0] === "alloc") {
+          //alloc,address,size
+          allocateBlock(values[1], values[2]);
+        } else if (values[0] == "free") {
+          //free,address
+          freeBlock(values[1]);
+        } else if (values[0] == "resize") {
+          //resize,base address, size
+          heap = { address: values[1], size: values[2] };
+        }
+        snapshots.push({ state: stateCount, heap: { ...heap }, allocatedBlocks: [...allocatedBlocks] });
+        stateCount++;
+        if( stateCount == 50 ){
+          break;
+        }
+      }
+    }
+  }
 
   return (
     <VictoryChart domainPadding={{ y: 5 }}
+      style={{padding: { right: 25 }}}
       theme={Theme}
       height={250}
+      containerComponent={
+        <VictoryZoomContainer
+        zoomDimension={"x"}
+        allowZoom={false}
+        allowPan={true}
+        />
+      }
     >
-      <VictoryBar
-        style={{
-          data: {
-            fill: "#333",
-            width: 25
-          }
-        }}
-        data={[
-          { x: 1, y: 0, y0: 20 },
-        ]}
-      />
+      { snapshots.map((element, index) => {
+        return (<VictoryBar
+          style={{
+            data: {
+              fill: "#111",
+              width: 8
+            }
+          }}
+          key={`heap${index}`}
+          data={[
+            {
+              x: element.state+1,
+              y: parseInt(element.heap.address),
+              y0: parseInt(element.heap.address) + parseInt(element.heap.size)
+            }
+          ]}
+        />)
+      })}
 
-      <VictoryBar
-        style={{
-          data: {
-            fill: Theme.colors[0],
-            width: 20
-          }
-        }}
-        data={[
-          { x: 1, y: 2.1, y0: 3 }
-        ]}
-      />
-
-      <VictoryBar
-        style={{
-          data: {
-            fill: Theme.colors[1],
-            width: 20
-          }
-        }}
-        data={[
-          { x: 1, y: 3, y0: 4 },
-        ]}
-      />
-
-      <VictoryBar
-        style={{
-          data: {
-            fill: Theme.colors[2],
-            width: 20
-          }
-        }}
-        data={[
-          { x: 1, y: 6, y0: 10 }
-        ]}
-      />
-
-
-      <VictoryBar
-        style={{
-          data: {
-            fill: Theme.colors[3],
-            width: 20
-          }
-        }}
-        data={[
-          { x: 1, y: 12, y0: 18 }
-        ]}
-      />
-
-      <VictoryBar
-        style={{
-          data: {
-            fill: "#fff",
-            width: 20
-          }
-        }}
-        data={[
-          { x: 3, y: 2, y0: 10 },
-          { x: 3, y: 12, y0: 15 },
-          { x: 3, y: 12, y0: 15 },
-          { x: 4, y: 4, y0: 3 },
-          { x: 5, y: 6, y0: 3 }
-        ]}
-      />
+      { snapshots.map((elementOuter, indexOuter) => elementOuter.allocatedBlocks.map((element, index) => {
+        return (<VictoryBar
+          style={{
+            data: {
+              fill: Theme.colors[index % Theme.colors.length],
+              width: 4
+            }
+          }}
+          key={`heap${index}`}
+          data={[
+            {
+              x: elementOuter.state+1,
+              y: parseInt(element.address),
+              y0: parseInt(element.address) + parseInt(element.size)
+            }
+          ]}
+        />)
+      }))}
 
     </VictoryChart>
   )

@@ -9,6 +9,7 @@ import Heap from '../instrumentation/Heap'
 import Plot from '../instrumentation/Plot'
 import Logic from '../instrumentation/Logic'
 import Histogram from '../instrumentation/Histogram'
+import SequenceDiagram from '../instrumentation/SequenceDiagram'
 
 const InstrumentationDetail = props => {
 
@@ -18,9 +19,11 @@ const InstrumentationDetail = props => {
 
   function getComponent() {
     switch (directive.type) {
+      case "heap":
+        return <SequenceDiagram directive={props.directive} data={props.data} />
+        //return <Heap directive={props.directive} data={props.data} />
       case "plot":
-        return <Heap directive={props.directive} data={props.data} />
-        //return <Plot directive={props.directive} data={props.data} />
+        return <Plot directive={props.directive} data={props.data} />
       case "histogram":
       case "hist":
         return <Histogram directive={props.directive} data={props.data} />

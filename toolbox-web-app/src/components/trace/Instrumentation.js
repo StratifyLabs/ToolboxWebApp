@@ -7,7 +7,9 @@ import {
   faWaveSquare,
   faStop,
   faChartBar,
-  faList
+  faList,
+  faExchangeAlt,
+  faMap
 } from '@fortawesome/free-solid-svg-icons'
 
 import InstrumentationDetail from './InstrumentationDetail'
@@ -23,6 +25,10 @@ const Summary = props => {
         return faChartBar;
       case "terminal":
         return faTerminal;
+      case "sequenceDiagram":
+        return faExchangeAlt;
+      case "heap":
+        return faMap;
       case "logic":
         return faWaveSquare;
       case "log":
@@ -48,18 +54,18 @@ const Summary = props => {
 
 
 const Grid = props => {
-    return (<Row className="mt-2">
-      {
-        props.model !== undefined && props.model.directiveList.map((directive, index) => {
-          return (
-            <Col md={4} className="mb-3">
-              <Summary name={directive.name} type={directive.type} directiveIndex={index} key={index} setView={props.setView}/>
-            </Col>
-          )
-        })
-      }
-    </Row>
-    )
+  return (<Row className="mt-2">
+    {
+      props.model !== undefined && props.model.directiveList.map((directive, index) => {
+        return (
+          <Col md={4} className="mb-3">
+            <Summary name={directive.name} type={directive.type} directiveIndex={index} key={index} setView={props.setView} />
+          </Col>
+        )
+      })
+    }
+  </Row>
+  )
 }
 
 
@@ -69,14 +75,14 @@ const Instrumentation = props => {
 
   const [view, setView] = React.useState("overview");
 
-  function onBackClicked(){
+  function onBackClicked() {
     setView("overview");
   }
 
   return (
     <Container fluid>
-        { view === "overview" && <Grid model={props.model} setView={setView}/> }
-        { view !== "overview" && <InstrumentationDetail directive={model.directiveList[view]} data={model.data} backClicked={onBackClicked}/> }
+      { view === "overview" && <Grid model={props.model} setView={setView} />}
+      { view !== "overview" && <InstrumentationDetail directive={model.directiveList[view]} data={model.data} backClicked={onBackClicked} />}
 
     </Container >
   )
