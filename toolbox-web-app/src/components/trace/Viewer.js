@@ -44,9 +44,8 @@ const Viewer = props => {
       } else if ( first === 'DAT' || first === 'DATA' || first === 'D' ){
         if( elementList.length > 2){
           const name = elementList[1];
-          const value = elementList[2];
-          const timestamp = elementList.length > 3 ? elementList[3] : 0;
-          const entry = { name: name, value: value, timestamp: timestamp };
+          const value = elementList.splice(2).join(":");
+          const entry = { name: name, value: value };
           model.current.data.push(entry);
         }
       }

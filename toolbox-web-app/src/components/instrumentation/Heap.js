@@ -3,9 +3,6 @@ import { VictoryChart, VictoryStack, VictoryArea, VictoryBar, VictoryZoomContain
 import Theme from './Theme'
 
 
-
-
-
 const Heap = props => {
 
   let snapshots = [];

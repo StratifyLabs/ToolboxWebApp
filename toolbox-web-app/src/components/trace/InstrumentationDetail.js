@@ -19,9 +19,10 @@ const InstrumentationDetail = props => {
 
   function getComponent() {
     switch (directive.type) {
-      case "heap":
+      case "sequenceDiagram":
         return <SequenceDiagram directive={props.directive} data={props.data} />
-        //return <Heap directive={props.directive} data={props.data} />
+      case "heap":
+        return <Heap directive={props.directive} data={props.data} />
       case "plot":
         return <Plot directive={props.directive} data={props.data} />
       case "histogram":
