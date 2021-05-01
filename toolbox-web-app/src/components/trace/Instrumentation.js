@@ -59,7 +59,7 @@ const Grid = props => {
       props.model !== undefined && props.model.directiveList.map((directive, index) => {
         return (
           <Col md={4} className="mb-3">
-            <Summary name={directive.name} type={directive.type} directiveIndex={index} key={index} setView={props.setView} />
+            <Summary name={directive.name} type={directive.type} directiveIndex={index} key={`${directive}${index}`} setView={props.setView} />
           </Col>
         )
       })
@@ -82,7 +82,7 @@ const Instrumentation = props => {
   return (
     <Container fluid>
       { view === "overview" && <Grid model={props.model} setView={setView} />}
-      { view !== "overview" && <InstrumentationDetail directive={model.directiveList[view]} data={model.data} backClicked={onBackClicked} />}
+      { view !== "overview" && <InstrumentationDetail directive={model.directiveList[view]} data={model.data} log={model.log} backClicked={onBackClicked} />}
 
     </Container >
   )

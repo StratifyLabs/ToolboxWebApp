@@ -32,6 +32,7 @@ const Heap = props => {
     if (props.data[i].name == source) {
       const values = props.data[i].value.split(",");
       if (values.length) {
+        
         if (values[0] === "alloc") {
           //alloc,address,size
           allocateBlock(values[1], values[2]);
@@ -42,9 +43,10 @@ const Heap = props => {
           //resize,base address, size
           heap = { address: values[1], size: values[2] };
         }
-        snapshots.push({ state: stateCount, heap: { ...heap }, allocatedBlocks: [...allocatedBlocks] });
+        
+        snapshots.push({ state: stateCount, heap: { ...heap }, allocatedBlocks: JSON.parse(JSON.stringify(allocatedBlocks)) });
         stateCount++;
-        if( stateCount == 50 ){
+        if (stateCount == 50) {
           break;
         }
       }
@@ -53,14 +55,14 @@ const Heap = props => {
 
   return (
     <VictoryChart domainPadding={{ y: 5 }}
-      style={{padding: { right: 25 }}}
+      style={{ padding: { right: 50 } }}
       theme={Theme}
       height={250}
       containerComponent={
         <VictoryZoomContainer
-        zoomDimension={"x"}
-        allowZoom={false}
-        allowPan={true}
+          zoomDimension={"x"}
+          allowZoom={false}
+          allowPan={true}
         />
       }
     >
@@ -75,7 +77,7 @@ const Heap = props => {
           key={`heap${index}`}
           data={[
             {
-              x: element.state+1,
+              x: element.state + 1,
               y: parseInt(element.heap.address),
               y0: parseInt(element.heap.address) + parseInt(element.heap.size)
             }
@@ -83,23 +85,28 @@ const Heap = props => {
         />)
       })}
 
+
       { snapshots.map((elementOuter, indexOuter) => elementOuter.allocatedBlocks.map((element, index) => {
-        return (<VictoryBar
-          style={{
-            data: {
-              fill: Theme.colors[index % Theme.colors.length],
-              width: 4
-            }
-          }}
-          key={`heap${index}`}
-          data={[
-            {
-              x: elementOuter.state+1,
-              y: parseInt(element.address),
-              y0: parseInt(element.address) + parseInt(element.size)
-            }
-          ]}
-        />)
+        if (parseInt(element.size) > 0) {
+          return (<VictoryBar
+            style={{
+              data: {
+                fill: Theme.colors[index % Theme.colors.length],
+                width: 4
+              }
+            }}
+            key={`heap${index}`}
+            data={[
+              {
+                x: elementOuter.state + 1,
+                y: parseInt(element.address),
+                y0: parseInt(element.address) + parseInt(element.size)
+              }
+            ]}
+          />)
+        } else {
+          return null;
+        }
       }))}
 
     </VictoryChart>

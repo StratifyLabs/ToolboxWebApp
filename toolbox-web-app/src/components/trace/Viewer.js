@@ -24,12 +24,22 @@ const Viewer = props => {
   console.log("redraw terminal");
   const [terminalContent, setTerminalContent] = React.useState("Hello");
   const incomingContent = React.useRef("");
-  const model = React.useRef({ directiveList: [], data: []});
+  const model = React.useRef({ directiveList: [], data: [], log: []});
 
 
   function parseLine(line){
-    const elementList = line.split(':');
+    const lineElementList = line.split(':');
+
+    //is the first item the timestamp
+    let timestamp = 0.0;
+    let elementList = lineElementList;
+    if( String(line).startsWith("t") && lineElementList.length > 1 ){
+      timestamp = parseFloat(lineElementList[0].slice(1));
+      elementList = lineElementList.slice(1);
+    }
+
     if( elementList.length > 1 ){
+
       const first = String(elementList[0]).toUpperCase() ;
       if( first === 'DIRECTIVE' || first === 'DIR' ){
         if( elementList.length > 3 ){
@@ -37,7 +47,7 @@ const Viewer = props => {
           const name = elementList[2];
           const sources = elementList[3];
           const description = elementList.length > 4 ? elementList[4] : "";
-          const entry = {type: type, name: name, sources: sources, description: description};
+          const entry = {ts: timestamp, type: type, name: name, sources: sources, description: description};
           model.current.directiveList.push(entry);
         }
         // DIR:<type>:<name>
@@ -45,8 +55,17 @@ const Viewer = props => {
         if( elementList.length > 2){
           const name = elementList[1];
           const value = elementList.splice(2).join(":");
-          const entry = { name: name, value: value };
+          const entry = {ts: timestamp,  name: name, value: value };
           model.current.data.push(entry);
+        }
+      } else {
+        if( elementList.length > 1){
+          const name = elementList[0];
+          const value = elementList.splice(1).join(":");
+          const entry = {ts: timestamp,  name: name, value: value };
+          model.current.log.push(entry)
+        } else {
+          model.current.log.push({name: "<raw>", value: line});
         }
       }
     }

@@ -7,6 +7,7 @@ import {
 
 import Heap from '../instrumentation/Heap'
 import Plot from '../instrumentation/Plot'
+import Log from '../instrumentation/Log'
 import Logic from '../instrumentation/Logic'
 import Histogram from '../instrumentation/Histogram'
 import SequenceDiagram from '../instrumentation/SequenceDiagram'
@@ -24,6 +25,7 @@ const InstrumentationDetail = props => {
       case "heap":
         return <Heap directive={props.directive} data={props.data} />
       case "plot":
+        return <Log directive={props.directive} log={props.log} />
         return <Plot directive={props.directive} data={props.data} />
       case "histogram":
       case "hist":

@@ -27,7 +27,7 @@ const padding = 8;
 const baseProps = {
   width: 500,
   height: 100,
-  padding: { top: 5, bottom: 25, left: 50, right: 10}
+  padding: { top: 5, bottom: 25, left: 80, right: 10}
 };
 // *
 // * Labels
