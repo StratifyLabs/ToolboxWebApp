@@ -13,12 +13,9 @@ const Histogram = props => {
 
   for (let i in props.data) {
     if (props.data[i].name == source) {
-      console.log(`add data ${props.data[i].value}`)
       data.push({ x: parseFloat(props.data[i].value) });
     }
   }
-
-  console.log(data);
 
   return (
     <AppContainer fluid className="mr-0 ml-0 pr-0 pl-0">

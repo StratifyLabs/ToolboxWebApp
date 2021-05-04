@@ -11,7 +11,6 @@ const TraceLineParser = (model, line) => {
     elementList = lineElementList.slice(1);
   }
 
-  console.log(`parse line ${line}`)
   if( elementList.length > 1 ){
 
     const first = String(elementList[0]).toUpperCase() ;

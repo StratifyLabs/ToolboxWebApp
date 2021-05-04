@@ -4,7 +4,7 @@ import Theme from './Theme'
 import AppContainer from '../AppContainer';
 import { Row, Col } from 'react-bootstrap'
 
-const Plot = props => {
+const TimePlot = props => {
 
   let data = [];
   const source = props.directive.sources;
@@ -26,7 +26,7 @@ const Plot = props => {
         height={250}
       >
         {series.length && series.map((value, index) => {
-          return index ? <VictoryLine data={data} x={0} y={index} key={"series" + index} /> : null;
+          return <VictoryLine data={data} x={`ts`} y={index} key={"series" + index} />;
         })}
       </VictoryChart>
       <Row>
@@ -38,4 +38,4 @@ const Plot = props => {
   )
 }
 
-export default Plot
+export default TimePlot
