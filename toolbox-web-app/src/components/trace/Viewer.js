@@ -10,8 +10,10 @@ import {
   faSpinner
 } from '@fortawesome/free-solid-svg-icons'
 
+
 import Terminal from './Terminal'
 import Instrumentation from './Instrumentation'
+import TraceLineParser from '../../parser/TraceLineParser'
 
 
 const Viewer = props => {
@@ -106,7 +108,8 @@ const Viewer = props => {
         .then(result => {
           const lines = result.split('\n');
           for(let i in lines){
-            parseLine(lines[i]);
+            TraceLineParser(model.current, lines[i]);
+            //parseLine(lines[i]);
           }
           setBusy(false);
           setTerminalContent(result)

@@ -5,9 +5,12 @@ import {
   faExternalLinkAlt,
 } from '@fortawesome/free-solid-svg-icons'
 
+import AppContainer from '../components/AppContainer'
 import Section from '../components/docs/Section'
 import InternalJump from '../components/docs/InternalJump'
 import ExternalJump from '../components/docs/ExternalJump'
+
+import TraceSpecification from '../components/docs/TraceSpecification'
 
 const Reference = props => {
 
@@ -22,7 +25,6 @@ There are three ways to access these *functions*:
 - Local Display: see the Quick Start guide
 
 `
-
   const httpApi = `## HTTP API
 
 The Stratify Toolbox runs an HTTP server that listens for requests that allow you to access the flash, trace, and debug
@@ -125,7 +127,7 @@ If you want to replace this delegate with a user version, you can place it at:
 `
 
   return (
-    <Container className="mb-3">
+    <AppContainer className="mb-3">
       <Section markdown={overview} ></Section>
       <Section markdown={delegate} />
       <Section markdown={sdk} />
@@ -144,8 +146,9 @@ If you want to replace this delegate with a user version, you can place it at:
       </Section>
 
       <Section markdown={fs} ></Section>
+      <TraceSpecification />
 
-    </Container>
+    </AppContainer>
   )
 }
 
