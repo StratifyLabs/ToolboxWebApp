@@ -11,7 +11,7 @@ const TimePlot = props => {
 
   for (let i in props.data) {
     if (props.data[i].name == source) {
-      let values = props.data[i].value.split(",").map(Number);
+      let values = [props.data[i].ts, ...props.data[i].value.split(",").map(Number)];
       data.push(values);
     }
   }
@@ -26,7 +26,7 @@ const TimePlot = props => {
         height={250}
       >
         {series.length && series.map((value, index) => {
-          return <VictoryLine data={data} x={`ts`} y={index} key={"series" + index} />;
+          return index ? <VictoryLine data={data} x={0} y={index} key={"series" + index} /> : null;
         })}
       </VictoryChart>
       <Row>

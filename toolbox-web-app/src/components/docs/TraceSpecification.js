@@ -90,8 +90,6 @@ D:malloc:130
     TraceLineParser(histogramModel0.current, histoOutputLines[i]);
   }
 
-  console.log(`${JSON.stringify(histogramModel0.current)}`);
-
   const histogramText = `#### Histograms
 
 You can generate histograms by writing a directive following by data points to be included in the histogram.
