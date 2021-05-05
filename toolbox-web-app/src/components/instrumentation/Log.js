@@ -12,26 +12,29 @@ import Theme from './Theme'
 import AppContainer from '../AppContainer'
 
 
+function getVariant(v) {
+  switch (v) {
+    case "DEBUG":
+      return "secondary";
+    case "INFO":
+      return "secondary";
+    case "WARNING":
+      return "warning";
+    case "ERROR":
+      return "danger";
+    case "FATAL":
+      return "danger";
+  }
+}
+
+
 const Entry = props => {
 
   const name = props.item.name;
   const data = props.item.data;
   const message = props.item.message;
 
-  function badgeVariant(v) {
-    switch (v) {
-      case "DEBUG":
-        return "secondary";
-      case "INFO":
-        return "secondary";
-      case "WARNING":
-        return "warning";
-      case "ERROR":
-        return "danger";
-      case "FATAL":
-        return "danger";
-    }
-  }
+
 
 
 
@@ -41,7 +44,7 @@ const Entry = props => {
       <Badge variant="primary" className="mr-2">{props.count + 1}</Badge>
       {` ${message}`}
       <span className="float-right">
-        <Badge variant={badgeVariant(name)} className="ml-2 mr-2">{name}</Badge>
+        <Badge variant={getVariant(name)} className="ml-2 mr-2">{name}</Badge>
         <Badge variant="info" className="mr-2">{data}</Badge></span>
     </Row>
   )
@@ -60,19 +63,13 @@ const Log = props => {
   function normalizeName(v) {
     switch (v) {
       case "DG":
-      case "DEBUG":
         return "DEBUG";
-      case "INFO":
       case "I":
         return "INFO";
       case "WARN":
-      case "WARNING":
         return "WARNING";
-      case "ERROR":
-        return "ERROR";
-      case "FATAL":
-        return "FATAL";
     }
+    return v;
   }
 
   for (let i in props.log) {
@@ -81,7 +78,7 @@ const Log = props => {
       const tokenList = props.log[i].value.split(":");
       const data = tokenList[0];
       const message = tokenList.splice(1).join(":");
-      entryList.push({ name: name, data: data, message: message })
+      entryList.push({ ts: props.log[i].ts, name: name, data: data, message: message })
       if (nameFilterList.includes(name) == false) {
         nameFilterList.push(name);
       }
@@ -98,7 +95,7 @@ const Log = props => {
       <Row className="mb-2">
         {nameFilterList.map((element, index) => {
           return (
-            <Button className="mr-2" variant="secondary" key={index}><FA icon={faFilter} /> {element} </Button>
+            <Button className="mr-2 btn-sm" variant={getVariant(element)} key={index}><FA icon={faFilter} /> {element} </Button>
           )
         })}
         {dataFilterList.map((element, index) => {

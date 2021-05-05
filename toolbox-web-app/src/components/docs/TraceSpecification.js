@@ -4,6 +4,7 @@ import {
   faSlidersH,
   faExternalLinkAlt,
 } from '@fortawesome/free-solid-svg-icons'
+import { VictoryChart, VictoryHistogram } from "victory";
 
 import Section from './Section'
 import InternalJump from './InternalJump'
@@ -15,10 +16,8 @@ import Plot from '../instrumentation/Plot'
 import TimePlot from '../instrumentation/TimePlot'
 import Log from '../instrumentation/Log'
 
-import { VictoryChart, VictoryHistogram } from "victory";
-
-import Theme from '../instrumentation/Theme'
 import TraceLineParser from '../../parser/TraceLineParser'
+import SequenceDiagram from '../instrumentation/SequenceDiagram'
 
 const TraceSpecification = props => {
 
@@ -191,7 +190,7 @@ t2.300000:D:y:30,200
 You can generate an timeseries plot by writing a directive followed by data points to be included in the plot. The \`x\` data
 will be taken from the timestamp. The Stratify Toolbox can insert these timestamps if they are not provided by the application.
 
-The histogram directive and data take the form:
+The time plot directive and data take the form:
 
 \`\`\`
 [t<timestamp>:]DIR|DIRECTIVE:timeplot:<title>:<data y0 name>[<data y1 name>...]:<description>
@@ -238,17 +237,52 @@ ${logOutput}
 This produces:
 `
 
+  const sequenceOutput = `DIR:sequenceDiagram:Host <-> Device:sd:This is an example message sequence diagram
+t0.100000:D:sd:participant H as Host
+t0.101000:D:sd:participant D as Device
+t0.102000:D:sd:H->>D: solid line with arrowhead
+t0.103000:D:sd:D-->>H: dotted line with arrowhead
+t0.104000:D:sd:H->D: solid line without arrow
+t0.105000:D:sd:H-->D: dotted line without arrow
+t0.106000:D:sd:D-xH: solid line with a cross at the end
+t0.107000:D:sd:D--xH: dotted line with a cross at the end
+`
+
+  const sequenceModel0 = React.useRef({ directiveList: [], data: [], log: []});
+  TraceLineParser(sequenceModel0.current, sequenceOutput);
+
+  const sequenceText = `### Message Sequence Diagram
+
+To generate a message sequence diagram, you use a directive and then output data. The message
+sequence diagram is built on mermaid.js. The data values are entries in a mermaid message sequence diagram.
+
+\`\`\`
+[t<timestamp>:]DIR|DIRECTIVE:sequenceDiagram:<title>:<data name>:<description>
+[t<timestamp>:]D|DATA:<data name>:<message sequence entry>
+\`\`\`
+
+For example:
+
+\`\`\`
+${sequenceOutput}
+\`\`\`
+
+This produces:
+`
+
   return (
     <div className="mb-3">
-      <Section markdown={intro} ></Section>
-      <Section markdown={histogramText} ></Section>
+      <Section markdown={intro} />
+      <Section markdown={histogramText} />
       <Histogram directive={histogramModel0.current.directiveList[0]} data={histogramModel0.current.data} />
-      <Section markdown={plotText} ></Section>
+      <Section markdown={plotText} />
       <Plot directive={plotModel0.current.directiveList[0]} data={plotModel0.current.data} />
-      <Section markdown={timePlotText} ></Section>
+      <Section markdown={timePlotText} />
       <TimePlot directive={timePlotModel0.current.directiveList[0]} data={timePlotModel0.current.data} />
-      <Section markdown={logText} ></Section>
+      <Section markdown={logText} />
       <Log log={logModel0.current.log} />
+      <Section markdown={sequenceText} />
+      <SequenceDiagram directive={sequenceModel0.current.directiveList[0]} data={sequenceModel0.current.data} />
     </div>
   )
 }
