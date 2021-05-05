@@ -34,11 +34,6 @@ const Entry = props => {
   const data = props.item.data;
   const message = props.item.message;
 
-
-
-
-
-  console.log(`message: ${props.value}`)
   return (
     <Row className="mb-1">
       <Badge variant="primary" className="mr-2">{props.count + 1}</Badge>

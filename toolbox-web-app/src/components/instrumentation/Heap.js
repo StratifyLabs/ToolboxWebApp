@@ -1,5 +1,7 @@
 import React from 'react'
 import { VictoryChart, VictoryStack, VictoryArea, VictoryBar, VictoryZoomContainer } from "victory";
+import { Col, Row } from 'react-bootstrap'
+import AppContainer from '../AppContainer';
 import Theme from './Theme'
 
 
@@ -32,7 +34,7 @@ const Heap = props => {
     if (props.data[i].name == source) {
       const values = props.data[i].value.split(",");
       if (values.length) {
-        
+
         if (values[0] === "alloc") {
           //alloc,address,size
           allocateBlock(values[1], values[2]);
@@ -43,7 +45,7 @@ const Heap = props => {
           //resize,base address, size
           heap = { address: values[1], size: values[2] };
         }
-        
+
         snapshots.push({ state: stateCount, heap: { ...heap }, allocatedBlocks: JSON.parse(JSON.stringify(allocatedBlocks)) });
         stateCount++;
         if (stateCount == 50) {
@@ -54,62 +56,72 @@ const Heap = props => {
   }
 
   return (
-    <VictoryChart domainPadding={{ y: 5 }}
-      style={{ padding: { right: 50 } }}
-      theme={Theme}
-      height={250}
-      containerComponent={
-        <VictoryZoomContainer
-          zoomDimension={"x"}
-          allowZoom={false}
-          allowPan={true}
-        />
-      }
-    >
-      { snapshots.map((element, index) => {
-        return (<VictoryBar
-          style={{
-            data: {
-              fill: "#111",
-              width: 8
-            }
-          }}
-          key={`heap${index}`}
-          data={[
-            {
-              x: element.state + 1,
-              y: parseInt(element.heap.address),
-              y0: parseInt(element.heap.address) + parseInt(element.heap.size)
-            }
-          ]}
-        />)
-      })}
-
-
-      { snapshots.map((elementOuter, indexOuter) => elementOuter.allocatedBlocks.map((element, index) => {
-        if (parseInt(element.size) > 0) {
+    <AppContainer>
+      <Row>
+        <h3>{props.directive.name}</h3>
+      </Row>
+      <VictoryChart domainPadding={{ y: 5 }}
+        style={{ padding: { right: 50 } }}
+        theme={Theme}
+        height={250}
+        containerComponent={
+          <VictoryZoomContainer
+            zoomDimension={"x"}
+            allowZoom={false}
+            allowPan={true}
+          />
+        }
+      >
+        {snapshots.map((element, index) => {
           return (<VictoryBar
             style={{
               data: {
-                fill: Theme.colors[index % Theme.colors.length],
-                width: 4
+                fill: "#111",
+                width: 8
               }
             }}
             key={`heap${index}`}
             data={[
               {
-                x: elementOuter.state + 1,
-                y: parseInt(element.address),
-                y0: parseInt(element.address) + parseInt(element.size)
+                x: element.state + 1,
+                y: parseInt(element.heap.address),
+                y0: parseInt(element.heap.address) + parseInt(element.heap.size)
               }
             ]}
           />)
-        } else {
-          return null;
-        }
-      }))}
+        })}
 
-    </VictoryChart>
+
+        {snapshots.map((elementOuter, indexOuter) => elementOuter.allocatedBlocks.map((element, index) => {
+          if (parseInt(element.size) > 0) {
+            return (<VictoryBar
+              style={{
+                data: {
+                  fill: Theme.colors[index % Theme.colors.length],
+                  width: 4
+                }
+              }}
+              key={`heap${index}`}
+              data={[
+                {
+                  x: elementOuter.state + 1,
+                  y: parseInt(element.address),
+                  y0: parseInt(element.address) + parseInt(element.size)
+                }
+              ]}
+            />)
+          } else {
+            return null;
+          }
+        }))}
+
+      </VictoryChart>
+      <Row>
+        <Col md={12} className="text-center">
+          <span>{props.directive.description}</span>
+        </Col>
+      </Row>
+    </AppContainer>
   )
 }
 

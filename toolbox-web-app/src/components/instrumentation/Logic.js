@@ -11,7 +11,6 @@ import {
 
 import Theme from './Theme'
 
-
 const Logic = props => {
 
   const [zoomDomain, setZoomDomain] = React.useState({ zoomDomain: { x: [] } });

@@ -15,6 +15,7 @@ import Histogram from '../instrumentation/Histogram'
 import Plot from '../instrumentation/Plot'
 import TimePlot from '../instrumentation/TimePlot'
 import Log from '../instrumentation/Log'
+import Heap from '../instrumentation/Heap'
 
 import TraceLineParser from '../../parser/TraceLineParser'
 import SequenceDiagram from '../instrumentation/SequenceDiagram'
@@ -99,13 +100,13 @@ The histogram directive and data take the form:
 [t<timestamp>:]D|DATA:<data name>:<value>
 \`\`\`
 
-For example:
+**Example**
 
 \`\`\`
 ${histoOutput}
 \`\`\`
 
-This produces:
+**Output**
 `
 
 const plotOutput = `DIR:plot:XY Plot Demo:xy:Plotting y0 and y1 vs x
@@ -119,18 +120,6 @@ D:xy:6,110,190
 D:xy:7,200,250
 D:xy:8,110,290
 D:xy:9,130,270
-D:xy:10,120,200
-D:xy:11,130,200
-D:xy:12,120,260
-D:xy:13,110,210
-D:xy:14,180,270
-D:xy:15,190,280
-D:xy:16,150,210
-D:xy:17,160,230
-D:xy:18,110,240
-D:xy:19,200,290
-D:xy:20,110,210
-D:xy:21,130,200
 `
 
   const plotModel0 = React.useRef({ directiveList: [], data: [], log: []});
@@ -148,13 +137,13 @@ The histogram directive and data take the form:
 [t<timestamp>:]D|DATA:<data name>:<value>
 \`\`\`
 
-For example:
+**Example**
 
 \`\`\`
 ${plotOutput}
 \`\`\`
 
-This produces:
+**Output**
 `
 
 const timePlotOutput = `DIR:timeplot:Time Series Plot Demo:y:Plotting y0 and y1 vs timestamp
@@ -169,17 +158,6 @@ t0.800000:D:y:00,250
 t0.900000:D:y:10,290
 t1.000000:D:y:30,270
 t1.200000:D:y:20,200
-t1.300000:D:y:30,200
-t1.400000:D:y:20,260
-t1.500000:D:y:10,210
-t1.600000:D:y:80,270
-t1.700000:D:y:90,280
-t1.800000:D:y:50,210
-t1.900000:D:y:60,230
-t2.000000:D:y:10,240
-t2.100000:D:y:00,290
-t2.200000:D:y:10,210
-t2.300000:D:y:30,200
 `
 
   const timePlotModel0 = React.useRef({ directiveList: [], data: [], log: []});
@@ -197,13 +175,13 @@ The time plot directive and data take the form:
 [t<timestamp>:]D|DATA:<data name>:<value>
 \`\`\`
 
-For example:
+**Example**
 
 \`\`\`
 ${timePlotOutput}
 \`\`\`
 
-This produces:
+**Output**
 `
 
 const logOutput = `t0.100000:INFO:USER:Hello
@@ -228,13 +206,13 @@ you just need to print log output in the following form:
 [t<timestamp>:]DEBUG|DG|I|INFO|WARN|WARNING|ERROR|FATAL:<name>:<message>
 \`\`\`
 
-For example:
+**Example**
 
 \`\`\`
 ${logOutput}
 \`\`\`
 
-This produces:
+**Output**
 `
 
   const sequenceOutput = `DIR:sequenceDiagram:Host <-> Device:sd:This is an example message sequence diagram
@@ -261,13 +239,49 @@ sequence diagram is built on mermaid.js. The data values are entries in a mermai
 [t<timestamp>:]D|DATA:<data name>:<message sequence entry>
 \`\`\`
 
-For example:
+**Example**
 
 \`\`\`
 ${sequenceOutput}
 \`\`\`
 
-This produces:
+**Output**
+`
+
+  const heapOutput = `DIR:heap:Heap History:h:
+t0.100000:D:h:resize,0,1000
+t0.101000:D:h:alloc,0,500
+t0.102000:D:h:alloc,500,250
+t0.103000:D:h:alloc,750,250
+t0.103500:D:h:resize,0,2000
+t0.104000:D:h:alloc,1000,250
+t0.105000:D:h:alloc,1250,500
+t0.106000:D:h:free,1000
+t0.107000:D:h:free,500
+t0.107500:D:h:resize,0,3000
+t0.108000:D:h:alloc,2000,750
+t0.109000:D:h:alloc,2750,250
+`
+
+  const heapModel0 = React.useRef({ directiveList: [], data: [], log: []});
+  TraceLineParser(heapModel0.current, heapOutput);
+
+  const heapText = `### Heap History
+
+You can visualize the heap (or other memory pool) by tracing your malloc and free (or equivalent) functions.
+
+\`\`\`
+[t<timestamp>:]DIR|DIRECTIVE:heap:<title>:<data name>:<description>
+[t<timestamp>:]D|DATA:<data name>:[alloc|free],<address>[,<size>]
+\`\`\`
+
+**Example**
+
+\`\`\`
+${heapOutput}
+\`\`\`
+
+**Output**
 `
 
   return (
@@ -283,6 +297,8 @@ This produces:
       <Log log={logModel0.current.log} />
       <Section markdown={sequenceText} />
       <SequenceDiagram directive={sequenceModel0.current.directiveList[0]} data={sequenceModel0.current.data} />
+      <Section markdown={heapText} />
+      <Heap directive={heapModel0.current.directiveList[0]} data={heapModel0.current.data} />
     </div>
   )
 }
