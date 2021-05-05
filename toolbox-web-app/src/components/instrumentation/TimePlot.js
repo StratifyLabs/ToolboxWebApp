@@ -15,7 +15,6 @@ const TimePlot = props => {
       data.push(values);
     }
   }
-  console.log("values parsed");
   const series = data[0];
 
   return (

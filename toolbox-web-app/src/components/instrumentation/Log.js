@@ -18,25 +18,31 @@ const Entry = props => {
   const data = props.item.data;
   const message = props.item.message;
 
-  function badgeVariant(v){
-    switch(v){
-      case "INFO":
-      case "I":
+  function badgeVariant(v) {
+    switch (v) {
+      case "DEBUG":
         return "secondary";
-      case "WARN":
+      case "INFO":
+        return "secondary";
       case "WARNING":
         return "warning";
+      case "ERROR":
+        return "danger";
+      case "FATAL":
+        return "danger";
     }
   }
+
+
 
   console.log(`message: ${props.value}`)
   return (
     <Row className="mb-1">
-      <Badge variant="primary" className="mr-2">{props.count+1}</Badge>
-      {` ${message}` }
+      <Badge variant="primary" className="mr-2">{props.count + 1}</Badge>
+      {` ${message}`}
       <span className="float-right">
-      <Badge variant={badgeVariant(name)} className="ml-2 mr-2">{name}</Badge>
-      <Badge variant="info" className="mr-2">{data}</Badge></span>
+        <Badge variant={badgeVariant(name)} className="ml-2 mr-2">{name}</Badge>
+        <Badge variant="info" className="mr-2">{data}</Badge></span>
     </Row>
   )
 }
@@ -47,13 +53,30 @@ const Log = props => {
 
   let entryList = [];
 
-  const nameList = ["INFO", "I", "WARNING", "WARN", "ERROR", "FATAL"];
+  const nameList = ["DEBUG", "DG", "INFO", "I", "WARNING", "WARN", "ERROR", "FATAL"];
   let nameFilterList = [];
   let dataFilterList = [];
 
+  function normalizeName(v) {
+    switch (v) {
+      case "DG":
+      case "DEBUG":
+        return "DEBUG";
+      case "INFO":
+      case "I":
+        return "INFO";
+      case "WARN":
+      case "WARNING":
+        return "WARNING";
+      case "ERROR":
+        return "ERROR";
+      case "FATAL":
+        return "FATAL";
+    }
+  }
+
   for (let i in props.log) {
-    const name = props.log[i].name;
-    console.log(`parse name ${name}`);
+    const name = normalizeName(props.log[i].name);
     if (nameList.includes(name)) {
       const tokenList = props.log[i].value.split(":");
       const data = tokenList[0];
@@ -71,7 +94,7 @@ const Log = props => {
 
   return (
     <AppContainer>
-      <Row>Log</Row>
+      <Row><h3>Log</h3></Row>
       <Row className="mb-2">
         {nameFilterList.map((element, index) => {
           return (
@@ -85,7 +108,7 @@ const Log = props => {
         })}
       </Row>
 
-      {entryList.map((element, index) => { return <Entry count={index} item={element} /> })}
+      {entryList.map((element, index) => { return <Entry count={index} item={element} key={index} /> })}
     </AppContainer>
   )
 }

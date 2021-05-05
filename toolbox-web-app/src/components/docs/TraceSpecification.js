@@ -13,6 +13,7 @@ import AppContainer from '../AppContainer'
 import Histogram from '../instrumentation/Histogram'
 import Plot from '../instrumentation/Plot'
 import TimePlot from '../instrumentation/TimePlot'
+import Log from '../instrumentation/Log'
 
 import { VictoryChart, VictoryHistogram } from "victory";
 
@@ -84,12 +85,8 @@ D:malloc:130
 `
 
   const histogramModel0 = React.useRef({ directiveList: [], data: [], log: []});
-
-  const histoOutputLines = histoOutput.split('\n');
-  for(let i in histoOutputLines){
-    TraceLineParser(histogramModel0.current, histoOutputLines[i]);
-  }
-
+  TraceLineParser(histogramModel0.current, histoOutput);
+  
   const histogramText = `#### Histograms
 
 You can generate histograms by writing a directive following by data points to be included in the histogram.
@@ -138,12 +135,7 @@ D:xy:21,130,200
 `
 
   const plotModel0 = React.useRef({ directiveList: [], data: [], log: []});
-
-  const plotOutputLines = plotOutput.split('\n');
-  for(let i in plotOutputLines){
-    TraceLineParser(plotModel0.current, plotOutputLines[i]);
-  }
-
+  TraceLineParser(plotModel0.current, plotOutput);
   const plotText = `#### Plots
 
 You can generate an x,y plot by writing a directive followed by data points to be included in the plot.
@@ -192,11 +184,7 @@ t2.300000:D:y:30,200
 `
 
   const timePlotModel0 = React.useRef({ directiveList: [], data: [], log: []});
-
-  const timePlotOutputLines = timePlotOutput.split('\n');
-  for(let i in timePlotOutputLines){
-    TraceLineParser(timePlotModel0.current, timePlotOutputLines[i]);
-  }
+  TraceLineParser(timePlotModel0.current, timePlotOutput);
 
   const timePlotText = `#### Time Series Plot
 
@@ -219,6 +207,37 @@ ${timePlotOutput}
 This produces:
 `
 
+const logOutput = `t0.100000:INFO:USER:Hello
+t0.150000:INFO:USER:World
+t0.200000:WARN:SYS:This is a warning
+t0.300000:ERROR:SYS:Yikes!
+t0.300000:ERROR:USER:Yikes!
+t0.310000:DG:USER:First debug message!
+t0.320000:DEBUG:USER:Debug message
+t0.330000:DG:USER:Another debug message!
+`
+
+  const logModel0 = React.useRef({ directiveList: [], data: [], log: []});
+  TraceLineParser(logModel0.current, logOutput);
+
+  const logText = `#### Log
+
+You can generate a log using different message levels from different code modules. You don't need a directive,
+you just need to print log output in the following form:
+
+\`\`\`
+[t<timestamp>:]DEBUG|DG|I|INFO|WARN|WARNING|ERROR|FATAL:<name>:<message>
+\`\`\`
+
+For example:
+
+\`\`\`
+${logOutput}
+\`\`\`
+
+This produces:
+`
+
   return (
     <div className="mb-3">
       <Section markdown={intro} ></Section>
@@ -228,7 +247,8 @@ This produces:
       <Plot directive={plotModel0.current.directiveList[0]} data={plotModel0.current.data} />
       <Section markdown={timePlotText} ></Section>
       <TimePlot directive={timePlotModel0.current.directiveList[0]} data={timePlotModel0.current.data} />
-
+      <Section markdown={logText} ></Section>
+      <Log log={logModel0.current.log} />
     </div>
   )
 }
