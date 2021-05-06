@@ -1,5 +1,5 @@
 import React from 'react'
-import { VictoryChart, VictoryAxis, VictoryLabel, VictoryBar, VictoryZoomContainer } from "victory";
+import { VictoryChart, VictoryAxis, VictoryBar, VictoryZoomContainer } from "victory";
 import { Col, Row } from 'react-bootstrap'
 import AppContainer from '../AppContainer';
 import Theme from './Theme'
@@ -31,24 +31,24 @@ const Heap = props => {
 
   let stateCount = 0;
   for (let i in props.data) {
-    if (props.data[i].name == source) {
+    if (props.data[i].name === source) {
       const values = props.data[i].value.split(",");
       if (values.length) {
 
         if (values[0] === "alloc") {
           //alloc,address,size
           allocateBlock(values[1], values[2]);
-        } else if (values[0] == "free") {
+        } else if (values[0] === "free") {
           //free,address
           freeBlock(values[1]);
-        } else if (values[0] == "resize") {
+        } else if (values[0] === "resize") {
           //resize,base address, size
           heap = { address: values[1], size: values[2] };
         }
 
         snapshots.push({ state: stateCount, heap: { ...heap }, allocatedBlocks: JSON.parse(JSON.stringify(allocatedBlocks)) });
         stateCount++;
-        if (stateCount == 50) {
+        if (stateCount === 50) {
           break;
         }
       }

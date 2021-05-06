@@ -1,13 +1,10 @@
 import React from 'react'
 
-import { Button, Col, Row, Badge } from 'react-bootstrap'
+import { Button, Row, Badge } from 'react-bootstrap'
 import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
 import {
   faFilter,
 } from '@fortawesome/free-solid-svg-icons'
-
-import { VictoryChart, VictoryStack, VictoryArea, VictoryBar, VictoryZoomContainer } from "victory";
-import Theme from './Theme'
 
 import AppContainer from '../AppContainer'
 
@@ -24,6 +21,8 @@ function getVariant(v) {
       return "danger";
     case "FATAL":
       return "danger";
+    default:
+      return "primary";
   }
 }
 
@@ -63,8 +62,9 @@ const Log = props => {
         return "INFO";
       case "WARN":
         return "WARNING";
+      default:
+        return v;
     }
-    return v;
   }
 
   for (let i in props.log) {
@@ -74,10 +74,10 @@ const Log = props => {
       const data = tokenList[0];
       const message = tokenList.splice(1).join(":");
       entryList.push({ ts: props.log[i].ts, name: name, data: data, message: message })
-      if (nameFilterList.includes(name) == false) {
+      if (nameFilterList.includes(name) === false) {
         nameFilterList.push(name);
       }
-      if (dataFilterList.includes(data) == false) {
+      if (dataFilterList.includes(data) === false) {
         dataFilterList.push(data);
       }
     }

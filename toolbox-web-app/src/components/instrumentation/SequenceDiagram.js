@@ -1,6 +1,6 @@
 import React from 'react'
 import mermaid from "mermaid"
-import { Button, Col, Row, ListGroup } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import AppContainer from '../AppContainer';
 
 const SequenceDiagram = props => {

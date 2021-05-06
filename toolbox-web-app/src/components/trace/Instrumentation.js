@@ -1,19 +1,7 @@
 import React from 'react'
-import { Container, Card, Button, Row, Col } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faTerminal,
-  faChartLine,
-  faWaveSquare,
-  faStop,
-  faChartBar,
-  faList,
-  faExchangeAlt,
-  faMap
-} from '@fortawesome/free-solid-svg-icons'
+import { Container, Row, Col } from 'react-bootstrap'
 
 import InstrumentationDetail from './InstrumentationDetail'
-
 
 const Instrumentation = props => {
 

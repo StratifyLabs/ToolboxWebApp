@@ -1,35 +1,24 @@
 import React from 'react'
 
-import { Button, Col, Row, ListGroup } from 'react-bootstrap'
+import { Row } from 'react-bootstrap'
 
 import { NetworkContext } from '../../contexts/NetworkContext'
-import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
-import {
-  faTerminal,
-  faChartArea,
-  faSpinner
-} from '@fortawesome/free-solid-svg-icons'
-
 
 import Terminal from './Terminal'
 import Instrumentation from './Instrumentation'
 import TraceLineParser from '../../parser/TraceLineParser'
-import AppContainer from '../AppContainer'
 
 
 const Viewer = props => {
 
-  const buttonClass = "mr-2 mb-2 btn btn-secondary"
   const network = React.useContext(NetworkContext);
-  const [view, setView] = React.useState("instrumentation");
-
   const [terminalContent, setTerminalContent] = React.useState("Hello");
   const incomingContent = React.useRef("");
   const model = React.useRef({ directiveList: [], data: [], log: []});
 
   //use state to save the result
   React.useEffect(() => {
-    if (props.source == "realTime") {
+    if (props.source === "realTime") {
       console.log("create new event source");
       const source = new EventSource(`${network.host}/trace.sse/stream/reset/true`);
 

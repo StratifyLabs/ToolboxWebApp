@@ -12,7 +12,7 @@ const Histogram = props => {
   const source = props.directive.sources;
 
   for (let i in props.data) {
-    if (props.data[i].name == source) {
+    if (props.data[i].name === source) {
       data.push({ x: parseFloat(props.data[i].value) });
     }
   }

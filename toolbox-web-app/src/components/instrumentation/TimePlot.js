@@ -10,7 +10,7 @@ const TimePlot = props => {
   const source = props.directive.sources;
 
   for (let i in props.data) {
-    if (props.data[i].name == source) {
+    if (props.data[i].name === source) {
       let values = [props.data[i].ts, ...props.data[i].value.split(",").map(Number)];
       data.push(values);
     }

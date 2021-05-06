@@ -1,9 +1,5 @@
 import React from 'react'
-import { Container, Button, Col, Row, ListGroup } from 'react-bootstrap'
-import { FontAwesomeIcon as FA } from '@fortawesome/react-fontawesome'
-import {
-  faTimes,
-} from '@fortawesome/free-solid-svg-icons'
+import { Container, Row } from 'react-bootstrap'
 
 import Heap from '../instrumentation/Heap'
 import Plot from '../instrumentation/Plot'
@@ -38,9 +34,6 @@ const InstrumentationDetail = props => {
     return null;
   }
 
-  function onBackClicked() {
-    props.backClicked();
-  }
 
   return (<Container className="mb-3">
     <Row>{getComponent()}</Row>

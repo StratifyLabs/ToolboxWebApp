@@ -1,15 +1,6 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
-import {
-  faSlidersH,
-  faExternalLinkAlt,
-} from '@fortawesome/free-solid-svg-icons'
-import { VictoryChart, VictoryHistogram } from "victory";
 
 import Section from './Section'
-import InternalJump from './InternalJump'
-import ExternalJump from './ExternalJump'
-import AppContainer from '../AppContainer'
 
 import Histogram from '../instrumentation/Histogram'
 import Plot from '../instrumentation/Plot'
