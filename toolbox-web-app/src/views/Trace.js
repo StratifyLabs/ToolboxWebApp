@@ -7,7 +7,8 @@ import {
   faHistory,
   faChartArea,
   faChevronRight,
-  faWaveSquare
+  faWaveSquare,
+  faSpinner
 } from '@fortawesome/free-solid-svg-icons'
 
 import AppContainer from '../components/AppContainer'
@@ -22,6 +23,9 @@ const Trace = props => {
   const [list, setList] = React.useState();
   const [activeFile, setActiveFile] = React.useState("");
   const [view, setView] = React.useState("history");
+  const [outputView, setOutputView] = React.useState("terminal");
+  const [historyFile, setHistoryFile] = React.useState("");
+  const [isBusy, setBusy] = React.useState(false);
 
   async function loadTraceHistory() {
     const path = "/home/trace"
@@ -37,21 +41,31 @@ const Trace = props => {
     }
   }
 
-
   function onHistoryClicked() {
     loadTraceHistory();
     setView("history");
+    setHistoryFile("");
   }
 
   function onRealTimeClicked() {
     setView("viewer");
+    setHistoryFile("");
   }
 
-  function onFileClicked(key){
-    console.log(`view /home/trace/${key}`);
-    setView("/home/trace/" + key);
+  function onTerminalClicked() {
+    setOutputView("terminal")
+  }
+
+  function onInstrumentationClicked() {
+    setOutputView("instrumentation")
+  }
+
+  function onFileClicked(key) {
+    setHistoryFile("/home/trace/" + key);
     setActiveFile(key);
   }
+
+  const isTraceView = view === "viewer" || historyFile !== "";
 
   return (
     <AppContainer>
@@ -59,9 +73,12 @@ const Trace = props => {
         <Col>
           <Button className={buttonClass} onClick={onHistoryClicked} ><FA icon={faHistory} /> History</Button>
           <Button className={buttonClass} onClick={onRealTimeClicked} ><FA icon={faWaveSquare} /> Real Time</Button>
+          {isTraceView && <Button variant="secondary" className={buttonClass} onClick={onTerminalClicked} ><FA icon={faTerminal} /> Output</Button>}
+          {isTraceView && <Button variant="secondary" className={buttonClass} onClick={onInstrumentationClicked} ><FA icon={faChartArea} /> Instrumentation</Button>}
+          {isBusy && <span ><FA icon={faSpinner} spin={true} /></span>}
         </Col>
       </Row>
-      { view === "history" && <div>
+      { view === "history" && historyFile === "" && <div>
         <h4><FA icon={faHistory} /> Trace History</h4>
         <Row>
           <Col md={8}>
@@ -85,8 +102,8 @@ const Trace = props => {
         </Row>
       </div>}
 
-      { view === "realTime" && <Viewer source="realTime" />}
-      { String(view).startsWith("/home/trace") && <Viewer source={view} /> }
+      { view === "realTime" && <Viewer setBusy={setBusy} source="realTime" view={outputView} />}
+      { String(historyFile).startsWith("/home/trace") && <Viewer setBusy={setBusy} source={historyFile} view={outputView}  />}
 
     </AppContainer>
   )

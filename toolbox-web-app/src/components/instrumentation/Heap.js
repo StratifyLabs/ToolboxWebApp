@@ -1,5 +1,5 @@
 import React from 'react'
-import { VictoryChart, VictoryStack, VictoryArea, VictoryBar, VictoryZoomContainer } from "victory";
+import { VictoryChart, VictoryAxis, VictoryLabel, VictoryBar, VictoryZoomContainer } from "victory";
 import { Col, Row } from 'react-bootstrap'
 import AppContainer from '../AppContainer';
 import Theme from './Theme'
@@ -60,7 +60,7 @@ const Heap = props => {
       <Row>
         <h3>{props.directive.name}</h3>
       </Row>
-      <VictoryChart domainPadding={{ y: 5 }}
+      <VictoryChart padding={{ left: 60, top: 10, right: 15, bottom: 20 }}
         style={{ padding: { right: 50 } }}
         theme={Theme}
         height={250}
@@ -90,7 +90,11 @@ const Heap = props => {
             ]}
           />)
         })}
-
+        <VictoryAxis
+        />
+        <VictoryAxis dependentAxis
+          tickFormat={x => `0x${x.toString(16)}`}
+        />
 
         {snapshots.map((elementOuter, indexOuter) => elementOuter.allocatedBlocks.map((element, index) => {
           if (parseInt(element.size) > 0) {

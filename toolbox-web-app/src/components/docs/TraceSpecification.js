@@ -248,7 +248,7 @@ ${sequenceOutput}
 **Output**
 `
 
-  const heapOutput = `DIR:heap:Heap History:h:
+  const heapOutput = `DIR:heap:Heap History:h:System heap state changes
 t0.100000:D:h:resize,0,1000
 t0.101000:D:h:alloc,0,500
 t0.102000:D:h:alloc,500,250
