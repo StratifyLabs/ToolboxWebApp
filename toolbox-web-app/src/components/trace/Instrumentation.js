@@ -25,6 +25,23 @@ const Instrumentation = props => {
         <h2>Instrumentation Report</h2>
       </Row>
       <Row>
+        <h6>Contents</h6>
+      </Row>
+      <Row>
+        <ul>
+          {
+            props.model !== undefined && props.model.directiveList.map((directive, index) => {
+              return (
+                <li>
+                  {directive.name}
+                </li>
+              )
+            })
+          }
+        </ul>
+      </Row>
+      <Row>
+        <Col md={10}>
         {
           props.model !== undefined && props.model.directiveList.map((directive, index) => {
             return (
@@ -34,6 +51,7 @@ const Instrumentation = props => {
             )
           })
         }
+        </Col>
       </Row>
     </Container >
   )
