@@ -60,7 +60,7 @@ const Heap = props => {
       <Row>
         <h3>{props.directive.name}</h3>
       </Row>
-      <VictoryChart padding={{ left: 60, top: 10, right: 15, bottom: 20 }}
+      <VictoryChart padding={{ left: 80, top: 10, right: 15, bottom: 20 }}
         style={{ padding: { right: 50 } }}
         theme={Theme}
         height={250}
