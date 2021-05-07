@@ -28,7 +28,7 @@ const SequenceDiagram = props => {
       output.innerHTML = svgCode
     })
 
-    SaveSvg(document.getElementById(svgId), svgId);
+    //SaveSvg(document.getElementById(svgId), svgId);
 
   }, [graphDefinition]);
 

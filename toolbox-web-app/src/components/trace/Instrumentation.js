@@ -1,7 +1,8 @@
 import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
 
 import InstrumentationDetail from './InstrumentationDetail'
+import SaveSvg from '../../utility/SaveSvg'
 
 const Instrumentation = props => {
 
@@ -11,10 +12,14 @@ const Instrumentation = props => {
     return name.split(" ").join("-");
   }
 
+  function onExportClicked(){
+    SaveSvg(document.getElementsByClassName("Malloc-Perf")[0].firstChild, "Malloc-Perf")
+  }
+
   return (
     <Container fluid>
       <Row>
-        <h2 id="top">Instrumentation Report</h2>
+        <h2 id="top">Instrumentation Report</h2> <Button onClick={onExportClicked} className="ml-3">Export</Button>
       </Row>
       <Row>
         <h6>Contents</h6>
