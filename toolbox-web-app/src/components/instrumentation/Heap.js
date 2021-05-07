@@ -57,9 +57,6 @@ const Heap = props => {
 
   return (
     <AppContainer>
-      <Row>
-        <h3>{props.directive.name}</h3>
-      </Row>
       <VictoryChart padding={{ left: 80, top: 10, right: 15, bottom: 20 }}
         style={{ padding: { right: 50 } }}
         theme={Theme}
@@ -120,11 +117,6 @@ const Heap = props => {
         }))}
 
       </VictoryChart>
-      <Row>
-        <Col md={12} className="text-center">
-          <span>{props.directive.description}</span>
-        </Col>
-      </Row>
     </AppContainer>
   )
 }

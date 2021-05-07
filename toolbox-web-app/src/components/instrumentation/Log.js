@@ -86,7 +86,6 @@ const Log = props => {
 
   return (
     <AppContainer>
-      <Row><h3>Log</h3></Row>
       <Row className="mb-2">
         {nameFilterList.map((element, index) => {
           return (

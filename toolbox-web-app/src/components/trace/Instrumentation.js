@@ -7,10 +7,14 @@ const Instrumentation = props => {
 
   const model = props.model;
 
+  function getId(name){
+    return name.split(" ").join("-");
+  }
+
   return (
     <Container fluid>
       <Row>
-        <h2>Instrumentation Report</h2>
+        <h2 id="top">Instrumentation Report</h2>
       </Row>
       <Row>
         <h6>Contents</h6>
@@ -20,8 +24,8 @@ const Instrumentation = props => {
           {
             props.model !== undefined && props.model.directiveList.map((directive, index) => {
               return (
-                <li>
-                  {directive.name}
+                <li key={index}>
+                  <a href={`#${getId(directive.name)}`}>{directive.name}</a>
                 </li>
               )
             })
@@ -30,15 +34,13 @@ const Instrumentation = props => {
       </Row>
       <Row>
         <Col md={10}>
-        {
-          props.model !== undefined && props.model.directiveList.map((directive, index) => {
-            return (
-              <Col md={12} className="mb-3">
-                <InstrumentationDetail key={`${directive}${index}`} directive={directive} data={model.data} log={model.log} />
-              </Col>
-            )
-          })
-        }
+          {
+            props.model !== undefined && props.model.directiveList.map((directive, index) => {
+              return (
+                <InstrumentationDetail anchor={getId(directive.name)} key={`${directive}${index}`} directive={directive} data={model.data} log={model.log} />
+              )
+            })
+          }
         </Col>
       </Row>
     </Container >

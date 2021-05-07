@@ -2,14 +2,9 @@ import React from 'react'
 
 import Section from './Section'
 
-import Histogram from '../instrumentation/Histogram'
-import Plot from '../instrumentation/Plot'
-import TimePlot from '../instrumentation/TimePlot'
 import Log from '../instrumentation/Log'
-import Heap from '../instrumentation/Heap'
-
-import TraceLineParser from '../../parser/TraceLineParser'
-import SequenceDiagram from '../instrumentation/SequenceDiagram'
+import InstrumentationDetail from '../trace/InstrumentationDetail'
+import TraceLineParser from '../../utility/TraceLineParser'
 
 const TraceSpecification = props => {
 
@@ -275,21 +270,63 @@ ${heapOutput}
 **Output**
 `
 
+const eventCounterOutput = `DIR:eventCounter:Event Counter:i2c,spi,gpio,timer:Interrupt Event Counter
+t0.100000:D:i2c:10
+t0.101000:D:spi:10
+t0.102000:D:gpio:10
+t0.103000:D:timer:10
+t0.104000:D:i2c:20
+t0.105000:D:spi:20
+t0.107000:D:timer:20
+t0.108000:D:i2c:30
+t0.109000:D:spi:30
+t0.110000:D:gpio:20
+t0.111000:D:timer:40
+t0.112000:D:i2c:40
+t0.114000:D:timer:50
+t0.115000:D:timer:60
+`
+
+  const eventCounterModel0 = React.useRef({ directiveList: [], data: [], log: []});
+  TraceLineParser(eventCounterModel0.current, eventCounterOutput);
+
+  const eventCounterText = `### Event Counter
+
+An event counter bar graph will plot the highest data point in the list of data sources. This
+is handy to compare how often different functions (especially interrupts) are executed. For functions that execute
+with a high frequency, it is helpful to only output the trace every X iterations.
+
+\`\`\`
+[t<timestamp>:]DIR|DIRECTIVE:eventCounter:<title>:<data0 name>[,<data1 name>...]:<description>
+[t<timestamp>:]D|DATA:<data name>:<count>
+\`\`\`
+
+**Example**
+
+\`\`\`
+${eventCounterOutput}
+\`\`\`
+
+**Output**
+`
+
   return (
     <div className="mb-3">
       <Section markdown={intro} />
       <Section markdown={histogramText} />
-      <Histogram directive={histogramModel0.current.directiveList[0]} data={histogramModel0.current.data} />
+      <InstrumentationDetail directive={histogramModel0.current.directiveList[0]} data={histogramModel0.current.data} />
       <Section markdown={plotText} />
-      <Plot directive={plotModel0.current.directiveList[0]} data={plotModel0.current.data} />
+      <InstrumentationDetail directive={plotModel0.current.directiveList[0]} data={plotModel0.current.data} />
       <Section markdown={timePlotText} />
-      <TimePlot directive={timePlotModel0.current.directiveList[0]} data={timePlotModel0.current.data} />
+      <InstrumentationDetail directive={timePlotModel0.current.directiveList[0]} data={timePlotModel0.current.data} />
       <Section markdown={logText} />
       <Log log={logModel0.current.log} />
       <Section markdown={sequenceText} />
-      <SequenceDiagram directive={sequenceModel0.current.directiveList[0]} data={sequenceModel0.current.data} />
+      <InstrumentationDetail directive={sequenceModel0.current.directiveList[0]} data={sequenceModel0.current.data} />
       <Section markdown={heapText} />
-      <Heap directive={heapModel0.current.directiveList[0]} data={heapModel0.current.data} />
+      <InstrumentationDetail directive={heapModel0.current.directiveList[0]} data={heapModel0.current.data} />
+      <Section markdown={eventCounterText} />
+      <InstrumentationDetail directive={eventCounterModel0.current.directiveList[0]} data={eventCounterModel0.current.data} />
     </div>
   )
 }

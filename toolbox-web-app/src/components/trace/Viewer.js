@@ -6,7 +6,7 @@ import { NetworkContext } from '../../contexts/NetworkContext'
 
 import Terminal from './Terminal'
 import Instrumentation from './Instrumentation'
-import TraceLineParser from '../../parser/TraceLineParser'
+import TraceLineParser from '../../utility/TraceLineParser'
 
 
 const Viewer = props => {

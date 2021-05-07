@@ -19,7 +19,6 @@ const Histogram = props => {
 
   return (
     <AppContainer fluid className="mr-0 ml-0 pr-0 pl-0">
-      <h3>{props.directive.name}</h3>
       <VictoryChart
         theme={Theme}
         height={250}
@@ -29,11 +28,6 @@ const Histogram = props => {
         />
 
       </VictoryChart>
-      <Row>
-        <Col md={12} className="text-center">
-          <span >{props.directive.description}</span>
-        </Col>
-      </Row>
     </AppContainer>
   )
 }
