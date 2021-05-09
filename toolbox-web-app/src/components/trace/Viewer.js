@@ -12,14 +12,20 @@ import TraceLineParser from '../../utility/TraceLineParser'
 const Viewer = props => {
 
   const network = React.useContext(NetworkContext);
-  const [terminalContent, setTerminalContent] = React.useState("Hello");
   const incomingContent = React.useRef("");
-  const model = React.useRef({ directiveList: [], data: [], log: []});
+  const [terminalContent, setTerminalContent] = React.useState("");
+  const model = React.useRef({ directiveList: [], data: [], log: [], isRealTime: props.source === "realTime"});
+
+  const source = props.source;
+  const isRealTime = source === "realTime";
+  const setBusy = props.setBusy;
 
   //use state to save the result
   React.useEffect(() => {
-    if (props.source === "realTime") {
+    console.log(`source is ${source}`)
+    if (isRealTime) {
       console.log("create new event source");
+      setBusy(true);
       const source = new EventSource(`${network.host}/trace.sse/stream/reset/true`);
 
       source.onopen = function (event) {
@@ -33,36 +39,37 @@ const Viewer = props => {
       source.onmessage = function (event) {
         const incoming = atob(String(event.data));
         incomingContent.current += incoming;
-        setTerminalContent(incomingContent.current);
+        setTerminalContent(incoming);
         TraceLineParser(model.current, incoming);
       }
 
       return () => {
+        setBusy(false);
         console.log("cleanup event source");
         source.close();
       }
     } else {
       //request the source path at /home/trace/${source}
-      const path =`/fs${props.source}`;
-      props.setBusy(true);
+      const path =`/fs${source}`;
+      setBusy(true);
       console.log(`request ${network.host}${path}`)
       fetch(`${network.host}${path}`)
         .then(response => response.text())
         .then(result => {
           TraceLineParser(model.current, result);
-          props.setBusy(false);
+          setBusy(false);
           setTerminalContent(result)
         })
     }
 
-  }, [network.host, props.source])
+  }, [network.host, setBusy, source, isRealTime])
 
 
   return (
     <div>
       <Row>
-      {props.view === "terminal" && <Terminal content={terminalContent} isFilterDirective={false} isFilterData={true} />}
-      {props.view === "instrumentation" && <Instrumentation model={model.current} />}
+      {props.view === "terminal" && <Terminal setBusy={setBusy} content={terminalContent} isFilterDirective={false} isFilterData={false} />}
+      {props.view === "instrumentation" && <Instrumentation setBusy={setBusy} model={model.current} />}
       </Row>
     </div>
   )

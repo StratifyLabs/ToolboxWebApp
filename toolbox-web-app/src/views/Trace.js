@@ -48,21 +48,28 @@ const Trace = props => {
   }
 
   function onRealTimeClicked() {
+    console.log(`set viewer to viewer`);
+    setBusy(true)
     setView("viewer");
     setHistoryFile("");
   }
 
   function onTerminalClicked() {
+    setBusy(true)
     setOutputView("terminal")
   }
 
   function onInstrumentationClicked() {
+    console.log(`set busy with instrumentation`)
+    setBusy(true)
     setOutputView("instrumentation")
   }
 
   function onFileClicked(key) {
+    setBusy(true)
     setHistoryFile("/home/trace/" + key);
     setActiveFile(key);
+    setView("viewer");
   }
 
   const isTraceView = view === "viewer" || historyFile !== "";
@@ -70,13 +77,11 @@ const Trace = props => {
   return (
     <AppContainer>
       <Row className="mb-3">
-        <Col>
           <Button className={buttonClass} onClick={onHistoryClicked} ><FA icon={faHistory} /> History</Button>
           <Button className={buttonClass} onClick={onRealTimeClicked} ><FA icon={faWaveSquare} /> Real Time</Button>
           {isTraceView && <Button variant="secondary" className={buttonClass} onClick={onTerminalClicked} ><FA icon={faTerminal} /> Output</Button>}
           {isTraceView && <Button variant="secondary" className={buttonClass} onClick={onInstrumentationClicked} ><FA icon={faChartArea} /> Instrumentation</Button>}
           {isBusy && <span ><FA icon={faSpinner} spin={true} /></span>}
-        </Col>
       </Row>
       { view === "history" && historyFile === "" && <div>
         <h4><FA icon={faHistory} /> Trace History</h4>
@@ -102,8 +107,8 @@ const Trace = props => {
         </Row>
       </div>}
 
-      { view === "realTime" && <Viewer setBusy={setBusy} source="realTime" view={outputView} />}
-      { String(historyFile).startsWith("/home/trace") && <Viewer setBusy={setBusy} source={historyFile} view={outputView}  />}
+      { view === "viewer" && historyFile === "" && <Viewer setBusy={setBusy} source="realTime" view={outputView} />}
+      { view === "viewer" && String(historyFile).startsWith("/home/trace") && <Viewer setBusy={setBusy} source={historyFile} view={outputView}  />}
 
     </AppContainer>
   )

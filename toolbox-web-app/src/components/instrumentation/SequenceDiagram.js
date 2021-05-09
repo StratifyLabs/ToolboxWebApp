@@ -8,7 +8,7 @@ import SaveSvg from '../../utility/SaveSvg'
 const SequenceDiagram = props => {
 
   const directive = props.directive;
-  const data = props.data;
+  const data = props.model.data;
   const source = directive.sources;
   const svgId = `svg${directive.name.split(" ").join("-")}`;
 
@@ -30,7 +30,7 @@ const SequenceDiagram = props => {
 
     //SaveSvg(document.getElementById(svgId), svgId);
 
-  }, [graphDefinition]);
+  }, [graphDefinition, svgId]);
 
   return (
     <AppContainer>

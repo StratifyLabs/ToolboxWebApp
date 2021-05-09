@@ -53,6 +53,7 @@ const Log = props => {
   const nameList = ["DEBUG", "DG", "INFO", "I", "WARNING", "WARN", "ERROR", "FATAL"];
   let nameFilterList = [];
   let dataFilterList = [];
+  const logModel = props.log;
 
   function normalizeName(v) {
     switch (v) {
@@ -67,13 +68,13 @@ const Log = props => {
     }
   }
 
-  for (let i in props.log) {
-    const name = normalizeName(props.log[i].name);
+  for (let i in logModel) {
+    const name = normalizeName(logModel[i].name);
     if (nameList.includes(name)) {
-      const tokenList = props.log[i].value.split(":");
+      const tokenList = logModel[i].value.split(":");
       const data = tokenList[0];
       const message = tokenList.splice(1).join(":");
-      entryList.push({ ts: props.log[i].ts, name: name, data: data, message: message })
+      entryList.push({ ts: logModel[i].ts, name: name, data: data, message: message })
       if (nameFilterList.includes(name) === false) {
         nameFilterList.push(name);
       }

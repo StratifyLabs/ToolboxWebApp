@@ -17,24 +17,25 @@ import EventCounter from '../instrumentation/EventCounter'
 const InstrumentationDetail = props => {
 
   const directive = props.directive;
+  //console.log(`directive detail ${JSON.stringify(directive)}`)
 
   function getComponent() {
     switch (directive.type) {
       case "sequenceDiagram":
-        return <SequenceDiagram directive={props.directive} data={props.data} />
+        return <SequenceDiagram directive={directive} model={props.model} />
       case "heap":
-        return <Heap directive={props.directive} data={props.data} />
+        return <Heap directive={directive} model={props.model}  />
       case "plot":
-        return <Plot directive={props.directive} data={props.data} />
+        return <Plot directive={directive} model={props.model}  />
       case "histogram":
       case "hist":
-        return <Histogram directive={props.directive} data={props.data} />
+        return <Histogram directive={directive} model={props.model}  />
       case "log":
-        return <Log directive={props.directive} log={props.log} />
+        return <Log directive={directive} model={props.model}  />
       case "logic":
-        return <Logic directive={props.directive} data={props.data} />
+        return <Logic directive={directive} model={props.model}  />
       case "eventCounter":
-        return <EventCounter directive={props.directive} data={props.data} />
+        return <EventCounter directive={directive} model={props.model}  />
       default:
         break;
     }
@@ -44,8 +45,8 @@ const InstrumentationDetail = props => {
 
 
   return (<Container className="mb-3">
-    <Row><h3 id={props.anchor}>{props.directive.name} </h3><small className="text-sm"><a href='#top'><FA icon={faArrowCircleUp} /> top</a></small></Row>
-    <Row><span>{props.directive.description}</span></Row>
+    <Row><h3 id={props.anchor}>{directive.name} </h3><small className="text-sm"><a href='#top'><FA icon={faArrowCircleUp} /> top</a></small></Row>
+    <Row><span>{directive.description}</span></Row>
     <Row className="mb-3">{getComponent()}</Row>
     <hr />
   </Container>)

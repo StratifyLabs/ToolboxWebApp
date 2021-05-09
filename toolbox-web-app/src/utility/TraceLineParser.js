@@ -46,6 +46,7 @@ const TraceLineParser = (model, input) => {
         }
       }
     }
+    return null;
   })
 }
 

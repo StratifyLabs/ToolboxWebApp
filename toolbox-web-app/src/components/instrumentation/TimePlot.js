@@ -7,11 +7,13 @@ import { Row, Col } from 'react-bootstrap'
 const TimePlot = props => {
 
   let data = [];
-  const source = props.directive.sources;
+  const directive = props.directive;
+  const source = directive.sources;
+  const dataModel = props.model.data;
 
-  for (let i in props.data) {
-    if (props.data[i].name === source) {
-      let values = [props.data[i].ts, ...props.data[i].value.split(",").map(Number)];
+  for (let i in dataModel) {
+    if (dataModel[i].name === source) {
+      let values = [dataModel[i].ts, ...dataModel[i].value.split(",").map(Number)];
       data.push(values);
     }
   }

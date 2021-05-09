@@ -7,14 +7,20 @@ import SaveSvg from '../../utility/SaveSvg'
 const Instrumentation = props => {
 
   const model = props.model;
+  const setBusy = props.setBusy;
 
   function getId(name){
     return name.split(" ").join("-");
   }
 
   function onExportClicked(){
+    //need to export a md file as well as SVG files for all the charts
     SaveSvg(document.getElementsByClassName("Malloc-Perf")[0].firstChild, "Malloc-Perf")
   }
+  React.useEffect(() => {
+    // code to run after render goes here
+    setBusy(false);
+  }, [setBusy]);
 
   return (
     <Container fluid>
@@ -42,7 +48,7 @@ const Instrumentation = props => {
           {
             props.model !== undefined && props.model.directiveList.map((directive, index) => {
               return (
-                <InstrumentationDetail anchor={getId(directive.name)} key={`${directive}${index}`} directive={directive} data={model.data} log={model.log} />
+                <InstrumentationDetail anchor={getId(directive.name)} key={`${directive}${index}`} directive={directive} model={props.model} />
               )
             })
           }

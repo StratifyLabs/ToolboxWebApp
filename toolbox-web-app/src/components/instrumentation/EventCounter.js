@@ -2,18 +2,18 @@ import React from 'react'
 import { VictoryChart, VictoryBar } from "victory";
 import Theme from './Theme'
 import AppContainer from '../AppContainer';
-import { Row, Col } from 'react-bootstrap'
 
 const EventCounter = props => {
 
   let data = [];
   const sourceList = props.directive.sources.split(",");
+  const dataModel = props.model.data;
 
-  for (let i in props.data) {
-    const name = props.data[i].name;
+  for (let i in dataModel) {
+    const name = dataModel[i].name;
     if( sourceList.includes(name) ) {
       //does data already include this
-      const value = parseInt(props.data[i].value);
+      const value = parseInt(dataModel[i].value);
       let element = data.find(element => element.x === name);
       if( element !== undefined ){
         if( value > element.y ){

@@ -1,6 +1,5 @@
 import React from 'react'
 import { VictoryChart, VictoryAxis, VictoryBar, VictoryZoomContainer } from "victory";
-import { Col, Row } from 'react-bootstrap'
 import AppContainer from '../AppContainer';
 import Theme from './Theme'
 
@@ -10,7 +9,9 @@ const Heap = props => {
   let snapshots = [];
   let allocatedBlocks = [];
   let heap = { address: 0, size: 0 };
-  const source = props.directive.sources;
+  const dataModel = props.model.data;
+  const directive = props.directive;
+  const source = directive.sources;
 
   function freeBlock(address) {
     const index = allocatedBlocks.findIndex(element => element.address === address);
@@ -30,9 +31,9 @@ const Heap = props => {
   }
 
   let stateCount = 0;
-  for (let i in props.data) {
-    if (props.data[i].name === source) {
-      const values = props.data[i].value.split(",");
+  for (let i in dataModel) {
+    if (dataModel[i].name === source) {
+      const values = dataModel[i].value.split(",");
       if (values.length) {
 
         if (values[0] === "alloc") {

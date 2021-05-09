@@ -1,31 +1,33 @@
 import React from 'react'
 import { VictoryChart, VictoryContainer, VictoryHistogram } from "victory";
 import AppContainer from '../AppContainer';
-import { Row, Col } from 'react-bootstrap'
 
 import Theme from './Theme'
 
+import LoadingSpinner from '../LoadingSpinner'
 
 const Histogram = props => {
 
-  let data = [];
-  const source = props.directive.sources;
-  const id = props.directive.name.split(" ").join("-");
+  const directive = props.directive;
+  const source = directive.sources;
+  const id = directive.name.split(" ").join("-");
+  const dataModel = props.model.data;
 
-  for (let i in props.data) {
-    if (props.data[i].name === source) {
-      data.push({ x: parseFloat(props.data[i].value) });
+  let data = [];
+  for (let i in dataModel) {
+    if (dataModel[i].name === source) {
+      data.push({ x: parseFloat(dataModel[i].value) });
     }
   }
 
   return (
     <AppContainer fluid className="mr-0 ml-0 pr-0 pl-0">
       <VictoryChart
-          containerComponent={
-            <VictoryContainer
+        containerComponent={
+          <VictoryContainer
             className={id}
-            />
-          }
+          />
+        }
         theme={Theme}
         height={250}
       >
