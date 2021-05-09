@@ -1,7 +1,9 @@
 import React from 'react'
-import { VictoryChart, VictoryLine } from "victory";
+import { VictoryChart, VictoryContainer, VictoryLine } from "victory";
 import Theme from './Theme'
 import AppContainer from '../AppContainer';
+
+import SaveSvg from '../../utility/SaveSvg'
 
 const Plot = props => {
 
@@ -9,6 +11,8 @@ const Plot = props => {
   const directive = props.directive;
   const dataModel = props.model.data;
   const source = directive.sources;
+  const id = props.svgId;
+  const addExportFunction = props.addExportFunction;
 
   for (let i in dataModel) {
     if (dataModel[i].name === source) {
@@ -18,11 +22,24 @@ const Plot = props => {
   }
   const series = data[0];
 
+  function exportFunction(){
+    SaveSvg(document.getElementsByClassName(id)[0].firstChild, id)
+  }
+
+  React.useEffect(() => {
+    addExportFunction(exportFunction);
+  }, [addExportFunction]);
+
   return (
     <AppContainer fluid className="mr-0 ml-0 pr-0 pl-0">
       <VictoryChart padding={{ left: 80, top: 10, right: 15, bottom: 20 }}
         theme={Theme}
         height={250}
+        containerComponent={
+          <VictoryContainer
+            className={id}
+          />
+        }
       >
         {series.length && series.map((value, index) => {
           return index ? <VictoryLine data={data} x={0} y={index} key={"series" + index} /> : null;

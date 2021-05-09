@@ -10,9 +10,8 @@ const SequenceDiagram = props => {
   const directive = props.directive;
   const data = props.model.data;
   const source = directive.sources;
-  const svgId = `svg${directive.name.split(" ").join("-")}`;
-
-  
+  const id = props.svgId;
+  const addExportFunction = props.addExportFunction;
 
   let graphDefinition = `sequenceDiagram\n`;
   for (let i in data) {
@@ -21,16 +20,21 @@ const SequenceDiagram = props => {
     }
   }
 
+  function exportFunction(){
+    SaveSvg(document.getElementById(id), id);
+  }
+
   React.useEffect(() => {
     mermaid.initialize({ startOnLoad: true });
     var output = document.getElementById("output")
-    mermaid.render(svgId, graphDefinition, function (svgCode) {
+    mermaid.render(id, graphDefinition, function (svgCode) {
       output.innerHTML = svgCode
     })
 
-    //SaveSvg(document.getElementById(svgId), svgId);
+    addExportFunction(exportFunction);
 
-  }, [graphDefinition, svgId]);
+
+  }, [graphDefinition, id, addExportFunction]);
 
   return (
     <AppContainer>

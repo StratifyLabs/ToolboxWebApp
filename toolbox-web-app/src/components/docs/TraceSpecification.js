@@ -314,19 +314,19 @@ ${eventCounterOutput}
     <div className="mb-3">
       <Section markdown={intro} />
       <Section markdown={histogramText} />
-      <InstrumentationDetail directive={histogramModel0.current.directiveList[0]} data={histogramModel0.current.data} />
+      <InstrumentationDetail directive={histogramModel0.current.directiveList[0]} model={histogramModel0.current} />
       <Section markdown={plotText} />
-      <InstrumentationDetail directive={plotModel0.current.directiveList[0]} data={plotModel0.current.data} />
+      <InstrumentationDetail directive={plotModel0.current.directiveList[0]} model={plotModel0.current} />
       <Section markdown={timePlotText} />
-      <InstrumentationDetail directive={timePlotModel0.current.directiveList[0]} data={timePlotModel0.current.data} />
+      <InstrumentationDetail directive={timePlotModel0.current.directiveList[0]} model={timePlotModel0.current} />
       <Section markdown={logText} />
-      <Log log={logModel0.current.log} />
+      <Log model={logModel0.current} />
       <Section markdown={sequenceText} />
-      <InstrumentationDetail directive={sequenceModel0.current.directiveList[0]} data={sequenceModel0.current.data} />
+      <InstrumentationDetail directive={sequenceModel0.current.directiveList[0]} model={sequenceModel0.current} />
       <Section markdown={heapText} />
-      <InstrumentationDetail directive={heapModel0.current.directiveList[0]} data={heapModel0.current.data} />
+      <InstrumentationDetail directive={heapModel0.current.directiveList[0]} model={heapModel0.current} />
       <Section markdown={eventCounterText} />
-      <InstrumentationDetail directive={eventCounterModel0.current.directiveList[0]} data={eventCounterModel0.current.data} />
+      <InstrumentationDetail directive={eventCounterModel0.current.directiveList[0]} model={eventCounterModel0.current} />
     </div>
   )
 }

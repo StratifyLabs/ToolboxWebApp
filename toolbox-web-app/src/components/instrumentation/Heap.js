@@ -3,6 +3,7 @@ import { VictoryChart, VictoryAxis, VictoryBar, VictoryZoomContainer } from "vic
 import AppContainer from '../AppContainer';
 import Theme from './Theme'
 
+import SaveSvg from '../../utility/SaveSvg'
 
 const Heap = props => {
 
@@ -12,6 +13,8 @@ const Heap = props => {
   const dataModel = props.model.data;
   const directive = props.directive;
   const source = directive.sources;
+  const id = props.svgId;
+  const addExportFunction = props.addExportFunction;
 
   function freeBlock(address) {
     const index = allocatedBlocks.findIndex(element => element.address === address);
@@ -56,17 +59,27 @@ const Heap = props => {
     }
   }
 
+  function exportFunction(){
+    SaveSvg(document.getElementsByClassName(id)[0].firstChild, id)
+  }
+
+  React.useEffect(() => {
+    addExportFunction(exportFunction);
+  }, [addExportFunction]);
+
   return (
     <AppContainer>
       <VictoryChart padding={{ left: 80, top: 10, right: 15, bottom: 20 }}
         style={{ padding: { right: 50 } }}
         theme={Theme}
         height={250}
+
         containerComponent={
           <VictoryZoomContainer
             zoomDimension={"x"}
             allowZoom={false}
             allowPan={true}
+            className={id}
           />
         }
       >

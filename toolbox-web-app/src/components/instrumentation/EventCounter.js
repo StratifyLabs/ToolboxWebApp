@@ -1,13 +1,17 @@
 import React from 'react'
-import { VictoryChart, VictoryBar } from "victory";
+import { VictoryChart, VictoryContainer, VictoryBar } from "victory";
 import Theme from './Theme'
 import AppContainer from '../AppContainer';
+
+import SaveSvg from '../../utility/SaveSvg'
 
 const EventCounter = props => {
 
   let data = [];
   const sourceList = props.directive.sources.split(",");
   const dataModel = props.model.data;
+  const id = props.svgId;
+  const addExportFunction = props.addExportFunction;
 
   for (let i in dataModel) {
     const name = dataModel[i].name;
@@ -25,11 +29,24 @@ const EventCounter = props => {
     }
   }
 
+  function exportFunction(){
+    SaveSvg(document.getElementsByClassName(id)[0].firstChild, id)
+  }
+
+  React.useEffect(() => {
+    addExportFunction(exportFunction);
+  }, [addExportFunction]);
+
   return (
     <AppContainer fluid className="mr-0 ml-0 pr-0 pl-0">
       <VictoryChart domainPadding={{ x: 30, y: 5 }}
         theme={Theme}
         height={250}
+        containerComponent={
+          <VictoryContainer
+            className={id}
+          />
+        }
       >
       <VictoryBar 
       data={data}

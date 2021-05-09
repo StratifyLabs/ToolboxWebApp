@@ -4,14 +4,15 @@ import AppContainer from '../AppContainer';
 
 import Theme from './Theme'
 
-import LoadingSpinner from '../LoadingSpinner'
+import SaveSvg from '../../utility/SaveSvg'
 
 const Histogram = props => {
 
   const directive = props.directive;
   const source = directive.sources;
-  const id = directive.name.split(" ").join("-");
   const dataModel = props.model.data;
+  const id = props.svgId;
+  const addExportFunction = props.addExportFunction;
 
   let data = [];
   for (let i in dataModel) {
@@ -19,6 +20,14 @@ const Histogram = props => {
       data.push({ x: parseFloat(dataModel[i].value) });
     }
   }
+
+  function exportFunction(){
+    SaveSvg(document.getElementsByClassName(id)[0].firstChild, id)
+  }
+
+  React.useEffect(() => {
+    addExportFunction(exportFunction);
+  }, [addExportFunction]);
 
   return (
     <AppContainer fluid className="mr-0 ml-0 pr-0 pl-0">
