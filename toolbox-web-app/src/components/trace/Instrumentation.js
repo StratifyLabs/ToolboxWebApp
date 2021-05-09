@@ -23,7 +23,7 @@ const Instrumentation = props => {
     //Table of Contents
     for(let i in model.directiveList){
       const directive = model.directiveList[i];
-      md += ` - [${directive.name}](${getId(directive.name)})\n`
+      md += ` - [${directive.name}](#${getId(directive.name)})\n`
     }
 
     md += '\n';

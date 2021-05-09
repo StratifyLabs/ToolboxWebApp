@@ -1,10 +1,26 @@
 import React from 'react'
-
 import Section from './Section'
+import { Col, Row } from 'react-bootstrap'
 
 import Log from '../instrumentation/Log'
 import InstrumentationDetail from '../trace/InstrumentationDetail'
 import TraceLineParser from '../../utility/TraceLineParser'
+
+const Example = props => {
+
+  function addExportFunction(){}
+
+  return (
+    <Row>
+      <Col md={10}>
+        <InstrumentationDetail 
+          addExportFunction={addExportFunction}
+          directive={props.directive} 
+          model={props.model} />
+      </Col>
+    </Row>
+  )
+}
 
 const TraceSpecification = props => {
 
@@ -310,23 +326,25 @@ ${eventCounterOutput}
 **Output**
 `
 
+
+
   return (
     <div className="mb-3">
       <Section markdown={intro} />
       <Section markdown={histogramText} />
-      <InstrumentationDetail directive={histogramModel0.current.directiveList[0]} model={histogramModel0.current} />
+      <Example directive={histogramModel0.current.directiveList[0]} model={histogramModel0.current} />
       <Section markdown={plotText} />
-      <InstrumentationDetail directive={plotModel0.current.directiveList[0]} model={plotModel0.current} />
+      <Example directive={plotModel0.current.directiveList[0]} model={plotModel0.current} />
       <Section markdown={timePlotText} />
-      <InstrumentationDetail directive={timePlotModel0.current.directiveList[0]} model={timePlotModel0.current} />
+      <Example directive={timePlotModel0.current.directiveList[0]} model={timePlotModel0.current} />
       <Section markdown={logText} />
       <Log model={logModel0.current} />
       <Section markdown={sequenceText} />
-      <InstrumentationDetail directive={sequenceModel0.current.directiveList[0]} model={sequenceModel0.current} />
+      <Example directive={sequenceModel0.current.directiveList[0]} model={sequenceModel0.current} />
       <Section markdown={heapText} />
-      <InstrumentationDetail directive={heapModel0.current.directiveList[0]} model={heapModel0.current} />
+      <Example directive={heapModel0.current.directiveList[0]} model={heapModel0.current} />
       <Section markdown={eventCounterText} />
-      <InstrumentationDetail directive={eventCounterModel0.current.directiveList[0]} model={eventCounterModel0.current} />
+      <Example directive={eventCounterModel0.current.directiveList[0]} model={eventCounterModel0.current} />
     </div>
   )
 }
