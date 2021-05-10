@@ -5,7 +5,7 @@ import AppContainer from '../AppContainer';
 
 import SaveSvg from '../../utility/SaveSvg'
 
-const SequenceDiagram = props => {
+const StateDiagram = props => {
 
   const directive = props.directive;
   const data = props.model.data;
@@ -14,12 +14,13 @@ const SequenceDiagram = props => {
   const addExportFunction = props.addExportFunction;
   const containerId = `container${id}`
 
-  let graphDefinition = `sequenceDiagram\n`;
+  let graphDefinition = `stateDiagram-v2\n`;
   for (let i in data) {
     if (data[i].name === source) {
       graphDefinition += (` ${data[i].value}\n`);
     }
   }
+  console.log(`state diagram def is ${graphDefinition}`)
 
   function exportFunction(){
     SaveSvg(document.getElementById(id), id);
@@ -48,4 +49,4 @@ const SequenceDiagram = props => {
   )
 }
 
-export default SequenceDiagram
+export default StateDiagram

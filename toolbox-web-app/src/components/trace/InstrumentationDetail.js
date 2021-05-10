@@ -12,6 +12,7 @@ import Log from '../instrumentation/Log'
 import Logic from '../instrumentation/Logic'
 import Histogram from '../instrumentation/Histogram'
 import SequenceDiagram from '../instrumentation/SequenceDiagram'
+import StateDiagram from '../instrumentation/StateDiagram'
 import EventCounter from '../instrumentation/EventCounter'
 
 const InstrumentationDetail = props => {
@@ -26,19 +27,21 @@ const InstrumentationDetail = props => {
     switch (directive.type) {
       case "sequenceDiagram":
         return <SequenceDiagram addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model} />
+      case "stateDiagram":
+        return <StateDiagram addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model} />
       case "heap":
-        return <Heap addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model}  />
+        return <Heap addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model} />
       case "plot":
-        return <Plot addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model}  />
+        return <Plot addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model} />
       case "histogram":
       case "hist":
-        return <Histogram addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model}  />
+        return <Histogram addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model} />
       case "log":
-        return <Log addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model}  />
+        return <Log addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model} />
       case "logic":
-        return <Logic addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model}  />
+        return <Logic addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model} />
       case "eventCounter":
-        return <EventCounter addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model}  />
+        return <EventCounter addExportFunction={addExportFunction} svgId={svgId} directive={directive} model={props.model} />
       default:
         break;
     }

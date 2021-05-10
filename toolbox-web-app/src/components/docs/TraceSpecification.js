@@ -16,6 +16,7 @@ const Example = props => {
         <InstrumentationDetail 
           addExportFunction={addExportFunction}
           directive={props.directive} 
+          anchor={props.directive.name.split(" ").join('-')}
           model={props.model} />
       </Col>
     </Row>
@@ -217,7 +218,7 @@ ${logOutput}
 **Output**
 `
 
-  const sequenceOutput = `DIR:sequenceDiagram:Host <-> Device:sd:This is an example message sequence diagram
+  const sequenceOutput = `DIR:sequenceDiagram:Host - Device:sd:This is an example message sequence diagram
 t0.100000:D:sd:participant H as Host
 t0.101000:D:sd:participant D as Device
 t0.102000:D:sd:H->>D: solid line with arrowhead
@@ -326,6 +327,39 @@ ${eventCounterOutput}
 **Output**
 `
 
+const stateDiagramOutput = `DIR:stateDiagram:State Diagram:sys:System State Diagram
+t0.100000:D:sys:[*] --> ConnectSWD
+t0.102000:D:sys:ConnectSWD --> GetInfo
+t0.103000:D:sys:GetInfo --> Erase
+t0.103000:D:sys:GetInfo --> Error
+t0.104000:D:sys:Erase --> Flash
+t0.104000:D:sys:Erase --> Error
+t0.105000:D:sys:Flash --> Done
+t0.105000:D:sys:Flash --> Error
+t0.105000:D:sys:Error --> Done
+t0.102000:D:sys:Done --> [*]
+`
+
+  const stateDiagramModel0 = React.useRef({ directiveList: [], data: [], log: []});
+  TraceLineParser(stateDiagramModel0.current, stateDiagramOutput);
+
+  const stateDiagramText = `### State Diagram
+
+
+\`\`\`
+[t<timestamp>:]DIR|DIRECTIVE:stateDiagram:<title>:<data name>:<description>
+[t<timestamp>:]D|DATA:<data name>:<diagram entry>
+\`\`\`
+
+**Example**
+
+\`\`\`
+${stateDiagramOutput}
+\`\`\`
+
+**Output**
+`
+
 
 
   return (
@@ -345,6 +379,9 @@ ${eventCounterOutput}
       <Example directive={heapModel0.current.directiveList[0]} model={heapModel0.current} />
       <Section markdown={eventCounterText} />
       <Example directive={eventCounterModel0.current.directiveList[0]} model={eventCounterModel0.current} />
+      <Section markdown={stateDiagramText} />
+      <Example directive={stateDiagramModel0.current.directiveList[0]} model={stateDiagramModel0.current} />
+
     </div>
   )
 }
