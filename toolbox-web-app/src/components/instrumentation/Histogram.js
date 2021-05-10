@@ -21,13 +21,15 @@ const Histogram = props => {
     }
   }
 
-  function exportFunction(){
-    SaveSvg(document.getElementsByClassName(id)[0].firstChild, id)
-  }
+
 
   React.useEffect(() => {
+    function exportFunction(){
+      SaveSvg(document.getElementsByClassName(id)[0].firstChild, id)
+    }
+
     addExportFunction(exportFunction);
-  }, [addExportFunction]);
+  }, [id, addExportFunction]);
 
   return (
     <AppContainer fluid className="mr-0 ml-0 pr-0 pl-0">

@@ -21,9 +21,6 @@ const SequenceDiagram = props => {
     }
   }
 
-  function exportFunction(){
-    SaveSvg(document.getElementById(id), id);
-  }
 
   React.useEffect(() => {
     mermaid.initialize({ startOnLoad: true });
@@ -32,10 +29,13 @@ const SequenceDiagram = props => {
       output.innerHTML = svgCode
     })
 
+    function exportFunction(){
+      SaveSvg(document.getElementById(id), id);
+    }
+
     addExportFunction(exportFunction);
 
-
-  }, [graphDefinition, id, addExportFunction]);
+  }, [graphDefinition, id, containerId, addExportFunction]);
 
   return (
     <AppContainer>

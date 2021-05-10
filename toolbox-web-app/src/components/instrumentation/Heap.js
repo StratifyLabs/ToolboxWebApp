@@ -59,13 +59,14 @@ const Heap = props => {
     }
   }
 
-  function exportFunction(){
-    SaveSvg(document.getElementsByClassName(id)[0].firstChild, id)
-  }
-
   React.useEffect(() => {
+
+    function exportFunction() {
+      SaveSvg(document.getElementsByClassName(id)[0].firstChild, id)
+    }
+
     addExportFunction(exportFunction);
-  }, [addExportFunction]);
+  }, [id, addExportFunction]);
 
   return (
     <AppContainer>

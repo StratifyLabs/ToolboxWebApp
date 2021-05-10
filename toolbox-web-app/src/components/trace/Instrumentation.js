@@ -2,7 +2,6 @@ import React from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 
 import InstrumentationDetail from './InstrumentationDetail'
-import SaveSvg from '../../utility/SaveSvg'
 import SaveMarkdown from '../../utility/SaveMarkdown'
 
 const Instrumentation = props => {
